@@ -71,6 +71,7 @@ export function getStoreSummary(state) {
     taxRate,
     taxLabel: delivery.taxLabel,
     tax,
+    address: state.shop?.address?.trim() || '742 Evergreen Terrace, Springfield',
     total: subtotal + deliveryCharge + tax,
   }
 }

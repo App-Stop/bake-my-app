@@ -2,18 +2,52 @@ import { useEffect, useState } from 'react'
 
 const STORAGE_KEY = 'bake-my-app:onboarding:v1'
 
-export const DEFAULT_BRAND_COLOR = '#554cf1'
+export const DEFAULT_BRAND_COLOR = '#c15400'
+
+export const DEFAULT_SETTINGS = {
+  businessHours: [
+    { day: 'Monday', from: '7:00 AM', to: '9:00 PM', open: true },
+    { day: 'Tuesday', from: '7:00 AM', to: '9:00 PM', open: true },
+    { day: 'Wednesday', from: '7:00 AM', to: '9:00 PM', open: true },
+    { day: 'Thursday', from: '7:00 AM', to: '9:00 PM', open: true },
+    { day: 'Friday', from: '7:00 AM', to: '9:00 PM', open: true },
+    { day: 'Saturday', from: '8:00 AM', to: '9:00 PM', open: true },
+    { day: 'Sunday', from: '--:--', to: '--:--', open: false },
+  ],
+  orderSettings: {
+    acceptDelivery: true,
+    acceptPickup: true,
+    estimatedDeliveryTime: '25',
+    minOrderAmount: '$10.00',
+    deliveryRadius: '5',
+    taxRate: '2.5',
+    taxLabel: 'VAT',
+  },
+  notifications: {
+    newOrders: true,
+    statusUpdates: true,
+    lowStock: true,
+    dailySummary: false,
+    weeklyReport: true,
+    customerReviews: true,
+  },
+  security: {
+    loginEmail: 'ross@rossbakers.co',
+    password: '••••••••••••••••',
+    twoFactorEnabled: false,
+  },
+}
 
 export const INITIAL_STATE = {
   step: 0,
   launched: false,
   shop: {
-    name: '',
-    tagline: '',
+    name: 'Ross Bakers Co.',
+    tagline: 'Freshly baked goods',
     logo: null, // data URL
-    address: '',
-    phone: '',
-    email: '',
+    address: '742 Evergreen Terrace, Springfield',
+    phone: '+1 555-321-8876',
+    email: 'hello@rossbakers.co',
   },
   brandColor: DEFAULT_BRAND_COLOR,
   menu: {
@@ -29,11 +63,12 @@ export const INITIAL_STATE = {
   delivery: {
     fee: '',
     freeAbove: '',
-    estimatedTime: '20-30 minutes',
-    allowPickup: false,
-    taxRate: '',
+    estimatedTime: '25 mins',
+    allowPickup: true,
+    taxRate: '2.5',
     taxLabel: 'VAT',
   },
+  settings: DEFAULT_SETTINGS,
 }
 
 function load() {
@@ -51,6 +86,26 @@ function load() {
         item: { ...INITIAL_STATE.menu.item, ...saved.menu?.item },
       },
       delivery: { ...INITIAL_STATE.delivery, ...saved.delivery },
+      settings: {
+        ...DEFAULT_SETTINGS,
+        ...saved.settings,
+        orderSettings: {
+          ...DEFAULT_SETTINGS.orderSettings,
+          ...saved.settings?.orderSettings,
+        },
+        notifications: {
+          ...DEFAULT_SETTINGS.notifications,
+          ...saved.settings?.notifications,
+        },
+        security: {
+          ...DEFAULT_SETTINGS.security,
+          ...saved.settings?.security,
+        },
+        businessHours:
+          saved.settings?.businessHours && saved.settings.businessHours.length === 7
+            ? saved.settings.businessHours
+            : DEFAULT_SETTINGS.businessHours,
+      },
     }
   } catch {
     return INITIAL_STATE
@@ -78,6 +133,22 @@ export function useOnboardingState() {
       setState((s) => ({ ...s, menu: { ...s.menu, item: { ...s.menu.item, ...patch } } })),
     updateDelivery: (patch) =>
       setState((s) => ({ ...s, delivery: { ...s.delivery, ...patch } })),
+    updateSettings: (patch) =>
+      setState((s) => ({
+        ...s,
+        settings: {
+          ...s.settings,
+          ...patch,
+        },
+      })),
+    saveAllSettings: (updates) =>
+      setState((s) => ({
+        ...s,
+        ...(updates.shop ? { shop: { ...s.shop, ...updates.shop } } : {}),
+        ...(updates.brandColor ? { brandColor: updates.brandColor } : {}),
+        ...(updates.delivery ? { delivery: { ...s.delivery, ...updates.delivery } } : {}),
+        ...(updates.settings ? { settings: { ...s.settings, ...updates.settings } } : {}),
+      })),
     launch: () => setState((s) => ({ ...s, launched: true })),
     unlaunch: () => setState((s) => ({ ...s, launched: false })),
     reset: () => setState(INITIAL_STATE),

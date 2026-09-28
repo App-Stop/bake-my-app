@@ -26,6 +26,7 @@ export function StepShell({
   children,
   onBack,
   onNext,
+  onSkip,
   nextLabel = 'Continue',
   nextDisabled = false,
 }) {
@@ -33,9 +34,20 @@ export function StepShell({
     <div className="flex w-full flex-col gap-[60px]">
       <header className="flex items-center justify-between">
         <img src={logo} alt="Bake My App" width={84} height={61.2} className="h-[61.2px] w-[84px]" />
-        <p className="rounded-[20px] bg-primary-light px-3 py-1.5 text-center text-sm leading-normal font-medium tracking-[0.28px] text-primary uppercase">
-          Step {step + 1} of {TOTAL_STEPS}
-        </p>
+        <div className="flex items-center gap-3">
+          {onSkip && (
+            <button
+              type="button"
+              onClick={onSkip}
+              className="text-xs font-medium text-muted hover:text-primary transition-colors cursor-pointer"
+            >
+              Skip to Dashboard &rarr;
+            </button>
+          )}
+          <p className="rounded-[20px] bg-primary-light px-3 py-1.5 text-center text-sm leading-normal font-medium tracking-[0.28px] text-primary uppercase">
+            Step {step + 1} of {TOTAL_STEPS}
+          </p>
+        </div>
       </header>
 
       <section className="flex flex-col gap-10" aria-labelledby="step-title">

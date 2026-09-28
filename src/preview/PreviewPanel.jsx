@@ -30,7 +30,7 @@ function useStageScale(ref) {
   return scale
 }
 
-function DeviceToggle({ device, onChange }) {
+export function DeviceToggle({ device, onChange }) {
   const options = [
     { id: 'mobile', icon: SmartPhone01Icon, label: 'Mobile preview' },
     { id: 'desktop', icon: ComputerIcon, label: 'Desktop preview' },
@@ -83,13 +83,19 @@ export function PreviewPanel({ state }) {
             <CartScreen summary={summary} />
           </div>
         ) : (
-          <div className="mx-10 flex max-w-[420px] flex-col items-center gap-2 rounded-[20px] border border-dashed border-dash bg-white px-8 py-10 text-center leading-normal">
-            <Icon icon={ComputerIcon} size={30} className="text-subtle" />
-            <p className="text-sm text-body">Desktop preview is coming soon</p>
-            <p className="text-xs text-muted">Switch back to mobile to see your storefront update live.</p>
-          </div>
+          <DesktopPreviewPlaceholder />
         )}
       </div>
     </aside>
+  )
+}
+
+export function DesktopPreviewPlaceholder() {
+  return (
+    <div className="mx-10 flex max-w-[420px] flex-col items-center gap-2 rounded-[20px] border border-dashed border-dash bg-white px-8 py-10 text-center leading-normal">
+      <Icon icon={ComputerIcon} size={30} className="text-subtle" />
+      <p className="text-sm text-body">Desktop preview is coming soon</p>
+      <p className="text-xs text-muted">Switch back to mobile to see your storefront update live.</p>
+    </div>
   )
 }

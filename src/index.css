@@ -1,8 +1,22 @@
 @import 'tailwindcss';
 
+/* Landing display face. Drop the font file into public/fonts/ (any one of these formats works). */
+@font-face {
+  font-family: 'Super Malibu';
+  src:
+    url('/fonts/super-malibu.woff2') format('woff2'),
+    url('/fonts/super-malibu.woff') format('woff'),
+    url('/fonts/super-malibu.otf') format('opentype'),
+    url('/fonts/super-malibu.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Design tokens from the Figma file (cozy / Onboarding). */
 @theme {
   --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-malibu: 'Super Malibu', 'Poppins', ui-sans-serif, system-ui, sans-serif;
   --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sf: -apple-system, 'SF Pro Text', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
@@ -32,6 +46,8 @@
 :root {
   --brand: #554cf1;
   --on-brand: #ffffff;
+  /* Landing: one Figma px at the 1920 design width, scaled down on narrower screens. */
+  --u: min(1px, calc(100vw / 1920));
 }
 
 /* Re-derive the tint wherever --brand is overridden (custom props resolve where declared). */
@@ -54,6 +70,12 @@
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(.landing-page) {
+      scroll-behavior: smooth;
+    }
   }
 }
 

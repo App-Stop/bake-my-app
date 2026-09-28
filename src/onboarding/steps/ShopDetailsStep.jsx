@@ -11,6 +11,7 @@ export function ShopDetailsStep({ state, actions, onNext }) {
       title="Tell us about your shop"
       description="Basic details so we can set up your storefront. You can change everything later."
       onNext={onNext}
+      onSkip={actions.launch}
       nextDisabled={!shop.name.trim()}
     >
       <div className="flex flex-col gap-2.5">

@@ -26,7 +26,7 @@ function Star() {
   )
 }
 
-function Header({ logo }) {
+function Header({ logo, address }) {
   return (
     <div className="absolute top-0 left-0 flex h-[115.2px] w-full flex-col items-center justify-end gap-[6px] overflow-clip rounded-b-[18px] bg-white px-[9.6px] pb-[9.6px]">
       <BgGlow />
@@ -41,7 +41,9 @@ function Header({ logo }) {
         <div className={`flex h-[30px] min-w-px flex-1 items-center justify-center gap-[4.8px] rounded-[60px] px-[6px] text-ink ${glass}`}>
           <div className="flex flex-col items-center gap-[1.2px] leading-normal whitespace-nowrap">
             <span className="text-[6px] opacity-60">Deliver to</span>
-            <span className="text-[8.4px] font-medium">742 Evergreen Terrace, Texas</span>
+            <span className="text-[8.4px] font-medium truncate max-w-[110px]" title={address || '742 Evergreen Terrace, Springfield'}>
+              {address || '742 Evergreen Terrace, Springfield'}
+            </span>
           </div>
           <Icon icon={ArrowDown01Icon} size={9.6} />
         </div>
@@ -152,10 +154,10 @@ function ProductCard({ product }) {
   )
 }
 
-export function HomeScreen({ summary, logo }) {
+export function HomeScreen({ summary, logo, address }) {
   return (
     <PhoneFrame label="Storefront home screen preview">
-      <Header logo={logo} />
+      <Header logo={logo} address={address || summary?.address} />
       <div className="absolute top-[127.2px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px]">
         <CategoryTabs firstLabel={summary.categoryLabel} firstCount={summary.products.length} />
         <div className="flex w-full flex-col gap-[6px]">

@@ -20,6 +20,12 @@ function App() {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [state.step, state.launched])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('dashboard')) {
+      actions.launch()
+    }
+  }, [actions])
+
   const brandVars = {
     '--brand': state.brandColor,
     '--brand-light': `color-mix(in oklab, ${state.brandColor} 10%, white)`,
@@ -31,6 +37,7 @@ function App() {
       <div className="brand-scope h-full w-full" style={brandVars}>
         <DashboardScreen
           state={state}
+          actions={actions}
           onEdit={actions.unlaunch}
           onStartOver={actions.reset}
         />
