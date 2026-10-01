@@ -1,4 +1,3 @@
-import { BiscuitIcon, Bread04Icon, CroissantIcon, DonutIcon } from '@hugeicons/core-free-icons'
 import { Composite, CtaPair, Deco, HeartItem } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
@@ -137,10 +136,10 @@ export function Solutions() {
   return (
     <>
       <section id="solution" className="relative mt-[clamp(64px,calc(201*var(--u)),201px)] scroll-mt-10">
-        <Deco icon={CroissantIcon} x={58} y={-142} size={84} />
-        <Deco icon={DonutIcon} x={1163} y={-184} size={84} />
-        <Deco icon={BiscuitIcon} x={1703} y={700} size={84} />
-        <Deco icon={Bread04Icon} x={204.18} y={730} size={100.19} />
+        <Deco src="deco-croissant.svg" x={58} y={-142} />
+        <Deco src="deco-donut.svg" x={1163} y={-184} />
+        <Deco src="deco-biscuit.svg" x={1703} y={700} />
+        <Deco src="deco-bread.svg" x={204.18} y={730} size={100.19} rotate={12.5} />
         <div className={`relative flex flex-col gap-[clamp(80px,calc(174*var(--u)),174px)] ${CONTAINER}`}>
           <CustomerApp />
           <CustomerWebsite />

@@ -100,7 +100,7 @@ export function Footer() {
         <div className="flex w-full flex-col items-center gap-[clamp(40px,calc(60*var(--u)),60px)]">
           <nav
             aria-label="Footer"
-            className="grid w-full grid-cols-1 gap-10 text-[clamp(16px,1.042vw,20px)] leading-normal sm:grid-cols-3 sm:gap-[clamp(24px,calc(160*var(--u)),160px)]"
+            className="grid w-full grid-cols-1 gap-10 text-[clamp(16px,1.5625vw,20px)] leading-normal sm:grid-cols-3 sm:gap-[clamp(24px,calc(160*var(--u)),160px)]"
           >
             {FOOTER_COLUMNS.map((column) => (
               <div key={column.title} className="flex flex-col items-center gap-5 text-center">

@@ -70,15 +70,15 @@ export function Faq() {
       <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-[clamp(20px,calc(160*var(--u)),160px)] lg:flex-row lg:gap-[calc(70*var(--u))]">
         <div className="flex min-w-px flex-1 flex-col gap-[clamp(32px,calc(60*var(--u)),60px)]">
           <div className="flex flex-col gap-2.5 text-ink">
-            <h2 id="faq-title" className="font-malibu text-[clamp(28px,1.875vw,36px)] leading-[1.389]">
+            <h2 id="faq-title" className="font-malibu text-[clamp(28px,2.8125vw,36px)] leading-[1.389]">
               frequently baked questions
             </h2>
-            <p className="text-[clamp(16px,1.042vw,20px)] leading-[1.6] font-medium">
+            <p className="text-[clamp(16px,1.5625vw,20px)] leading-[1.6] font-medium">
               Everything you need to know about launching and running your branded bakery ordering experience.
             </p>
           </div>
           <div className="flex flex-col items-start gap-5">
-            <p className="text-[clamp(16px,1.042vw,20px)] leading-[1.6] font-medium text-ink">
+            <p className="text-[clamp(16px,1.5625vw,20px)] leading-[1.6] font-medium text-ink">
               Need to know something else?
             </p>
             <Pill to={ROUTES.comingSoon} variant="soft" arrow>

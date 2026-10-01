@@ -68,18 +68,18 @@ function PlanCard({ plan }) {
         />
       )}
       <div className="relative flex flex-col gap-2.5 leading-normal text-ink">
-        <h3 className="text-[clamp(20px,1.25vw,24px)] font-semibold">{plan.name}</h3>
+        <h3 className="text-[clamp(20px,1.875vw,24px)] font-semibold">{plan.name}</h3>
         <p className="text-base opacity-80">{plan.description}</p>
       </div>
       <div className="relative flex flex-col leading-normal">
-        <p className={`font-malibu text-[clamp(48px,3.333vw,64px)] ${featured ? 'text-primary' : 'text-ink'}`}>
+        <p className={`font-malibu text-[clamp(48px,5vw,64px)] ${featured ? 'text-primary' : 'text-ink'}`}>
           {plan.price}
         </p>
         <p className="text-base text-ink opacity-80">{plan.priceNote}</p>
       </div>
       <Link
         to={ROUTES.comingSoon}
-        className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[clamp(18px,1.042vw,20px)] leading-normal font-semibold whitespace-nowrap transition ${
+        className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'
             : 'text-primary shadow-[inset_0_0_0_1px_var(--color-primary)] hover:bg-primary-light'

@@ -35,7 +35,7 @@ function Card({ image, alt, className = '', children }) {
 function CardText({ title, children, align = 'center' }) {
   return (
     <div className={`flex flex-col gap-2.5 leading-normal text-ink ${align === 'center' ? 'text-center' : ''}`}>
-      <h3 className="text-[clamp(20px,1.25vw,24px)] font-semibold">{title}</h3>
+      <h3 className="text-[clamp(20px,1.875vw,24px)] font-semibold">{title}</h3>
       <p className="text-base opacity-80">{children}</p>
     </div>
   )

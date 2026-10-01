@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  CakeIcon,
   ChartColumnBigIcon,
-  Cupcake02Icon,
   PackagingIcon,
   PaintBoardIcon,
   Store01Icon,
@@ -32,8 +30,8 @@ export function BusinessTools() {
       id="business-tools"
       className="relative mt-[clamp(80px,calc(160*var(--u)),160px)] scroll-mt-10"
     >
-      <Deco icon={Cupcake02Icon} x={159.03} y={-54.5} size={101.93} />
-      <Deco icon={CakeIcon} x={1685.79} y={87} size={113.3} />
+      <Deco src="deco-cupcake.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
+      <Deco src="deco-cake.svg" x={1685.79} y={87} size={113.3} rotate={27.5} />
       <div className={`relative flex flex-col items-center ${GAP[60]} ${CONTAINER}`}>
         <div className={`flex max-w-[976px] flex-col items-center text-center ${GAP[30]}`}>
           <h2 className={`text-primary ${TYPE.h2}`}>manage, operate and grow your business</h2>
@@ -53,7 +51,7 @@ export function BusinessTools() {
                 role="tab"
                 aria-selected={selected}
                 onClick={() => setActive(tab.id)}
-                className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[60px] px-3 py-5 text-[clamp(16px,1.042vw,20px)] leading-normal whitespace-nowrap transition-colors ${
+                className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[60px] px-3 py-5 text-[clamp(16px,1.5625vw,20px)] leading-normal whitespace-nowrap transition-colors ${
                   selected ? 'bg-primary-light font-semibold text-primary' : 'font-medium text-body hover:bg-primary-light/50'
                 }`}
               >
@@ -70,8 +68,8 @@ export function BusinessTools() {
         <div className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-[4.024%]">
           <div className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
             <div className="flex flex-col gap-4 leading-normal text-ink">
-              <h3 className="text-[clamp(28px,2.083vw,40px)] font-bold">Daily revenue &amp; item velocity at a glance.</h3>
-              <p className="text-[clamp(16px,1.042vw,20px)] font-medium">
+              <h3 className="text-[clamp(28px,3.125vw,40px)] font-bold">Daily revenue &amp; item velocity at a glance.</h3>
+              <p className="text-[clamp(16px,1.5625vw,20px)] font-medium">
                 Check your numbers in real time. Know your gross sales ($1,247.50 today), average ticket size, and
                 exactly how many classic butter croissants and caramel macchiatos were sold.
               </p>
@@ -80,7 +78,7 @@ export function BusinessTools() {
               {HIGHLIGHTS.map((text) => (
                 <li key={text} className="flex items-center gap-2.5">
                   <CheckCircle className="size-[clamp(24px,1.667vw,32px)]" />
-                  <span className="text-[clamp(16px,1.042vw,20px)] leading-normal font-semibold text-ink">{text}</span>
+                  <span className="text-[clamp(16px,1.5625vw,20px)] leading-normal font-semibold text-ink">{text}</span>
                 </li>
               ))}
             </ul>

@@ -15,7 +15,7 @@ function Nav() {
   return (
     <nav
       aria-label="Main"
-      className="absolute top-2.5 left-1/2 z-20 flex w-[min(1211px,calc(100%-32px))] -translate-x-1/2 items-center justify-between rounded-[60px] bg-[rgba(45,45,45,0.1)] px-5 py-[15px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
+      className="fixed top-2.5 left-1/2 z-50 flex w-[min(1211px,calc(100%-32px))] -translate-x-1/2 items-center justify-between rounded-[60px] bg-[#2D2D2D]/10 px-5 py-[15px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] backdrop-blur-xl backdrop-saturate-150"
     >
       <Link to={ROUTES.home} aria-label="Bake my App home" className="shrink-0">
         <img src={asset('logo-nav.svg')} alt="Bake my App" width={111} height={51} className="h-[51px] w-[111px]" />

@@ -2,7 +2,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, FavouriteIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { Link } from '../components/Link'
 import { ROUTES } from '../router'
-import { GAP } from './styles'
+import { GAP, asset } from './styles'
 
 /** Hugeicons (stroke set) icon; `filled` paints the outline solid, for Figma's solid glyphs. */
 export function Icon({ icon, size = 24, strokeWidth, filled = false, className = '', ...props }) {
@@ -38,8 +38,8 @@ const VARIANTS = {
 }
 
 const SIZES = {
-  lg: 'text-[clamp(18px,1.25vw,24px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
-  md: 'text-[clamp(16px,1.042vw,20px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
+  lg: 'text-[clamp(18px,1.875vw,24px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
+  md: 'text-[clamp(16px,1.5625vw,20px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
   sm: 'text-[16px] px-[clamp(24px,2.083vw,40px)] py-[clamp(12px,0.833vw,16px)]',
 }
 
@@ -104,23 +104,31 @@ export function Composite({ src, alt = '', box, art, className = '' }) {
 }
 
 /**
- * Faint bakery icon floating around the page. `x`/`y`/`size` are Figma px relative to the
- * parent full-width section; `--u` is 1px at 1920 and shrinks with the viewport.
+ * Faint bakery icon floating around the page, exported from Figma as an 84×84 SVG. `x`/`y`/`size`
+ * are the Figma bounding box (px) relative to the parent full-width section — larger than 84 when
+ * the icon is rotated; `--u` is 1px at 1920 and shrinks with the viewport.
  */
-export function Deco({ icon, x, y, size }) {
+export function Deco({ src, x, y, size = 84, rotate = 0 }) {
   return (
-    <Icon
-      icon={icon}
-      filled
+    <div
       aria-hidden="true"
-      className="pointer-events-none absolute hidden text-[#eeedfe] md:block"
+      className="pointer-events-none absolute hidden items-center justify-center md:flex"
       style={{
         left: `calc(50% + ${x - 960} * var(--u))`,
         top: `calc(${y} * var(--u))`,
         width: `calc(${size} * var(--u))`,
         height: `calc(${size} * var(--u))`,
       }}
-    />
+    >
+      <img
+        src={asset(src)}
+        alt=""
+        width={84}
+        height={84}
+        className="max-w-none shrink-0 select-none"
+        style={{ width: 'calc(84 * var(--u))', height: 'calc(84 * var(--u))', rotate: `${rotate}deg` }}
+      />
+    </div>
   )
 }
 
@@ -134,7 +142,7 @@ export function HeartItem({ title, children }) {
         </span>
       </span>
       <div className="flex min-w-px flex-1 flex-col gap-1.5 leading-normal text-ink">
-        <p className="text-[clamp(18px,1.042vw,20px)] font-bold">{title}</p>
+        <p className="text-[clamp(18px,1.5625vw,20px)] font-bold">{title}</p>
         <p className="text-base opacity-80">{children}</p>
       </div>
     </li>

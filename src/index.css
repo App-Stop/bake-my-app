@@ -72,6 +72,11 @@
     cursor: pointer;
   }
 
+  /* Keep anchor targets clear of the fixed landing nav. */
+  html:has(.landing-page) {
+    scroll-padding-top: 100px;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html:has(.landing-page) {
       scroll-behavior: smooth;

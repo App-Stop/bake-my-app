@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { Coffee02Icon, DonutIcon, Tick02Icon } from '@hugeicons/core-free-icons'
+import { Tick02Icon } from '@hugeicons/core-free-icons'
 import { normalizeHex, readableTextOn } from '../../lib/color'
 import { DEFAULT_BRAND_COLOR, INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { CartScreen } from '../../preview/CartScreen'
@@ -52,7 +52,7 @@ function Swatch({ hex, label, selected, onSelect }) {
 function ColorGroup({ label, children }) {
   return (
     <div className="flex flex-col gap-2.5">
-      <p className="text-[clamp(18px,1.042vw,20px)] leading-normal font-semibold text-ink">{label}</p>
+      <p className="text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold text-ink">{label}</p>
       <div role="radiogroup" aria-label={label} className="flex flex-wrap gap-2.5">
         {children}
       </div>
@@ -98,8 +98,8 @@ export function Customize() {
 
   return (
     <section id="customize" className="relative scroll-mt-10">
-      <Deco icon={DonutIcon} x={101.34} y={57} size={114.89} />
-      <Deco icon={Coffee02Icon} x={789} y={1102.09} size={105.93} />
+      <Deco src="deco-donut-2.svg" x={101.34} y={57} size={114.89} rotate={30.26} />
+      <Deco src="deco-coffee.svg" x={789} y={1102.09} size={105.93} rotate={-18.09} />
       <div className="relative mx-auto flex max-w-[1920px] flex-col lg:flex-row">
         <div
           className={`flex flex-col px-[clamp(20px,calc(140*var(--u)),140px)] pt-[clamp(80px,calc(205*var(--u)),205px)] pb-16 lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
@@ -132,7 +132,7 @@ export function Customize() {
                 ))}
               </ColorGroup>
               <div className="flex flex-col gap-2.5">
-                <p className="text-[clamp(18px,1.042vw,20px)] leading-normal font-semibold text-ink">Custom</p>
+                <p className="text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold text-ink">Custom</p>
                 <div className="flex items-start gap-2.5">
                   <Swatch hex={color} label="Custom color" selected={customSelected} onSelect={choose} />
                   <label
