@@ -48,6 +48,37 @@
   --on-brand: #ffffff;
   /* Landing: one Figma px at the 1920 design width, scaled down on narrower screens. */
   --u: min(1px, calc(100vw / 1920));
+  /* Below the desktop layout sizes stay fixed: --px is a plain px and --m switches on the floors. */
+  --px: 1px;
+  --m: 1px;
+}
+
+/*
+ * Landing, desktop layout (lg+): the page is the 1920 Figma frame scaled to the viewport, so every
+ * length — arbitrary values (--px), Tailwind's spacing scale and named text sizes — follows --u.
+ */
+@media (min-width: 64rem) {
+  .landing-page {
+    --px: var(--u);
+    --m: 0px;
+    --spacing: calc(4 * var(--u));
+    --text-xs: calc(12 * var(--u));
+    --text-sm: calc(14 * var(--u));
+    --text-base: calc(16 * var(--u));
+    --text-lg: calc(18 * var(--u));
+    --text-xl: calc(20 * var(--u));
+  }
+
+  /* Embedded app UI (the storefront phones) keeps its own 1× sizes; it is scaled as a whole. */
+  .landing-page .landing-unscaled {
+    --px: 1px;
+    --spacing: 0.25rem;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+  }
 }
 
 /* Re-derive the tint wherever --brand is overridden (custom props resolve where declared). */

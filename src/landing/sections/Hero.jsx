@@ -15,12 +15,12 @@ function Nav() {
   return (
     <nav
       aria-label="Main"
-      className="fixed top-2.5 left-1/2 z-50 flex w-[min(1211px,calc(100%-32px))] -translate-x-1/2 items-center justify-between rounded-[60px] bg-[#2D2D2D]/10 px-5 py-[15px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] backdrop-blur-xl backdrop-saturate-150"
+      className="fixed top-2.5 left-1/2 z-50 flex w-[min(calc(1211*var(--px)),calc(100%-32px))] -translate-x-1/2 items-center justify-between rounded-[calc(60*var(--px))] bg-[#2D2D2D]/10 px-5 py-[calc(15*var(--px))] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] backdrop-blur-xl backdrop-saturate-150"
     >
       <Link to={ROUTES.home} aria-label="Bake my App home" className="shrink-0">
-        <img src={asset('logo-nav.svg')} alt="Bake my App" width={111} height={51} className="h-[51px] w-[111px]" />
+        <img src={asset('logo-nav.svg')} alt="Bake my App" width={111} height={51} className="h-[calc(51*var(--px))] w-[calc(111*var(--px))]" />
       </Link>
-      <ul className="hidden items-center gap-[clamp(28px,3.125vw,60px)] text-base leading-normal font-medium whitespace-nowrap text-white lg:flex">
+      <ul className="hidden items-center gap-[max(28*var(--m),60*var(--u))] text-base leading-normal font-medium whitespace-nowrap text-white lg:flex">
         {NAV_LINKS.map((link) => (
           <li key={link.href}>
             <a href={link.href} className="transition-opacity hover:opacity-75">
@@ -44,7 +44,7 @@ export function Hero() {
     <>
       <header className="relative overflow-hidden bg-primary">
         <Nav />
-        <div className="relative mx-auto max-w-[1920px] pt-[clamp(96px,calc(140*var(--u)),140px)]">
+        <div className="relative mx-auto max-w-[1920px] pt-[max(96*var(--m),140*var(--u))]">
           {/* Devices strip (1920×544 in Figma). Phones show its middle 800px; md+ shows it all. */}
           <div className="relative aspect-[800/544] md:aspect-[1920/544]">
             <img
@@ -55,7 +55,7 @@ export function Hero() {
           </div>
 
           <div className={`relative z-10 mt-[calc(10*var(--u))] flex flex-col items-center px-5 text-center text-white ${GAP[30]}`}>
-            <h1 className={`relative max-w-[1368px] ${TYPE.display}`}>
+            <h1 className={`relative max-w-[calc(1368*var(--px))] ${TYPE.display}`}>
               everything to run
               <br />
               your cafe
@@ -72,7 +72,7 @@ export function Hero() {
                 className="absolute top-[1.104em] left-[calc(50%-3.73em)] hidden w-[0.952em] md:block"
               />
             </h1>
-            <div className={`flex max-w-[966px] flex-col items-center ${GAP[40]}`}>
+            <div className={`flex max-w-[calc(966*var(--px))] flex-col items-center ${GAP[40]}`}>
               <p className={TYPE.lead}>
                 Your own white-label iOS &amp; Android ordering app, touch kitchen display system (KDS), and
                 multi-branch admin control deck — beautifully baked together.

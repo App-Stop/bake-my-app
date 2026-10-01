@@ -29,9 +29,9 @@ export function Values() {
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
       <div className="-mt-px bg-primary">
         <div
-          className={`mx-auto flex max-w-[1920px] flex-col items-center px-[clamp(20px,calc(52*var(--u)),52px)] py-[clamp(64px,calc(160*var(--u)),160px)] ${GAP[80]}`}
+          className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(64*var(--m),160*var(--u))] ${GAP[80]}`}
         >
-          <div className="grid w-full grid-cols-1 gap-[clamp(48px,calc(60*var(--u)),60px)] text-white md:grid-cols-3">
+          <div className="grid w-full grid-cols-1 gap-[max(48*var(--m),60*var(--u))] text-white md:grid-cols-3">
             {VALUES.map((value) => (
               <div key={value.title} className="flex flex-col items-center gap-5 text-center">
                 <img
@@ -39,7 +39,7 @@ export function Values() {
                   alt=""
                   loading="lazy"
                   className="h-auto"
-                  style={{ width: `max(200px, calc(${value.size} * var(--u)))` }}
+                  style={{ width: `max(calc(200 * var(--m)), calc(${value.size} * var(--u)))` }}
                 />
                 <h3 className={`whitespace-nowrap ${TYPE.h3}`}>{value.title}</h3>
                 <p className={TYPE.body}>{value.text}</p>

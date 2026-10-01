@@ -28,14 +28,14 @@ export function BusinessTools() {
   return (
     <section
       id="business-tools"
-      className="relative mt-[clamp(80px,calc(160*var(--u)),160px)] scroll-mt-10"
+      className="relative mt-[max(80*var(--m),160*var(--u))] scroll-mt-10"
     >
       <Deco src="deco-cupcake.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <Deco src="deco-cake.svg" x={1685.79} y={87} size={113.3} rotate={27.5} />
       <div className={`relative flex flex-col items-center ${GAP[60]} ${CONTAINER}`}>
-        <div className={`flex max-w-[976px] flex-col items-center text-center ${GAP[30]}`}>
+        <div className={`flex max-w-[calc(976*var(--px))] flex-col items-center text-center ${GAP[30]}`}>
           <h2 className={`text-primary ${TYPE.h2}`}>manage, operate and grow your business</h2>
-          <p className={`max-w-[824px] text-ink ${TYPE.body}`}>
+          <p className={`max-w-[calc(824*var(--px))] text-ink ${TYPE.body}`}>
             Everything you need to run your bakery operations from your laptop, iPad, or phone. Real data, real
             control, zero technical headaches.
           </p>
@@ -51,14 +51,14 @@ export function BusinessTools() {
                 role="tab"
                 aria-selected={selected}
                 onClick={() => setActive(tab.id)}
-                className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[60px] px-3 py-5 text-[clamp(16px,1.5625vw,20px)] leading-normal whitespace-nowrap transition-colors ${
+                className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[calc(60*var(--px))] px-3 py-5 text-[length:max(16*var(--m),20*var(--u))] leading-normal whitespace-nowrap transition-colors ${
                   selected ? 'bg-primary-light font-semibold text-primary' : 'font-medium text-body hover:bg-primary-light/50'
                 }`}
               >
-                <HugeiconsIcon icon={tab.icon} size={32} color="currentColor" className="size-[clamp(24px,1.667vw,32px)] shrink-0" />
+                <HugeiconsIcon icon={tab.icon} size={32} color="currentColor" className="size-[max(24*var(--m),32*var(--u))] shrink-0" />
                 {tab.label}
                 {selected && (
-                  <span className="absolute top-[calc(50%+35px)] left-0 h-0.5 w-[67.82%] -translate-y-1/2 bg-primary" />
+                  <span className="absolute top-[calc(50%+35*var(--px))] left-0 h-0.5 w-[67.82%] -translate-y-1/2 bg-primary" />
                 )}
               </button>
             )
@@ -68,8 +68,8 @@ export function BusinessTools() {
         <div className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-[4.024%]">
           <div className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
             <div className="flex flex-col gap-4 leading-normal text-ink">
-              <h3 className="text-[clamp(28px,3.125vw,40px)] font-bold">Daily revenue &amp; item velocity at a glance.</h3>
-              <p className="text-[clamp(16px,1.5625vw,20px)] font-medium">
+              <h3 className="text-[length:max(28*var(--m),40*var(--u))] font-bold">Daily revenue &amp; item velocity at a glance.</h3>
+              <p className="text-[length:max(16*var(--m),20*var(--u))] font-medium">
                 Check your numbers in real time. Know your gross sales ($1,247.50 today), average ticket size, and
                 exactly how many classic butter croissants and caramel macchiatos were sold.
               </p>
@@ -77,8 +77,8 @@ export function BusinessTools() {
             <ul className="flex flex-col gap-4">
               {HIGHLIGHTS.map((text) => (
                 <li key={text} className="flex items-center gap-2.5">
-                  <CheckCircle className="size-[clamp(24px,1.667vw,32px)]" />
-                  <span className="text-[clamp(16px,1.5625vw,20px)] leading-normal font-semibold text-ink">{text}</span>
+                  <CheckCircle className="size-[max(24*var(--m),32*var(--u))]" />
+                  <span className="text-[length:max(16*var(--m),20*var(--u))] leading-normal font-semibold text-ink">{text}</span>
                 </li>
               ))}
             </ul>

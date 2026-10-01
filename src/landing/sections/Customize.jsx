@@ -38,7 +38,7 @@ function Swatch({ hex, label, selected, onSelect }) {
       title={label ? `${label} · ${hex.toUpperCase()}` : hex.toUpperCase()}
       onClick={() => onSelect(hex)}
       style={{ backgroundColor: hex }}
-      className={`flex size-[clamp(48px,calc(68*var(--u)),68px)] shrink-0 items-center justify-center rounded-full shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-transform hover:scale-[1.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+      className={`flex size-[max(48*var(--m),68*var(--u))] shrink-0 items-center justify-center rounded-full shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-transform hover:scale-[1.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
         selected ? 'border-2 border-ink' : ''
       }`}
     >
@@ -52,7 +52,7 @@ function Swatch({ hex, label, selected, onSelect }) {
 function ColorGroup({ label, children }) {
   return (
     <div className="flex flex-col gap-2.5">
-      <p className="text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold text-ink">{label}</p>
+      <p className="text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-ink">{label}</p>
       <div role="radiogroup" aria-label={label} className="flex flex-wrap gap-2.5">
         {children}
       </div>
@@ -102,7 +102,7 @@ export function Customize() {
       <Deco src="deco-coffee.svg" x={789} y={1102.09} size={105.93} rotate={-18.09} />
       <div className="relative mx-auto flex max-w-[1920px] flex-col lg:flex-row">
         <div
-          className={`flex flex-col px-[clamp(20px,calc(140*var(--u)),140px)] pt-[clamp(80px,calc(205*var(--u)),205px)] pb-16 lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
+          className={`flex flex-col px-[max(20*var(--m),140*var(--u))] pt-[max(80*var(--m),205*var(--u))] pb-16 lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
         >
           <div className={`flex flex-col ${GAP[40]}`}>
             <div className={`flex flex-col text-ink ${GAP[30]}`}>
@@ -132,11 +132,11 @@ export function Customize() {
                 ))}
               </ColorGroup>
               <div className="flex flex-col gap-2.5">
-                <p className="text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold text-ink">Custom</p>
+                <p className="text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-ink">Custom</p>
                 <div className="flex items-start gap-2.5">
                   <Swatch hex={color} label="Custom color" selected={customSelected} onSelect={choose} />
                   <label
-                    className={`flex w-[200px] flex-col justify-center gap-1 rounded-full border bg-white px-5 pt-2.5 pb-3 leading-normal transition-colors focus-within:border-primary ${
+                    className={`flex w-[calc(200*var(--px))] flex-col justify-center gap-1 rounded-full border bg-white px-5 pt-2.5 pb-3 leading-normal transition-colors focus-within:border-primary ${
                       hexValid ? 'border-line' : 'border-[#f30000]'
                     }`}
                   >
@@ -164,7 +164,7 @@ export function Customize() {
         </div>
 
         {/* Live preview; the gray panel bleeds to the right edge on wide screens. */}
-        <div className="brand-scope flex flex-col items-center bg-surface pt-[clamp(48px,calc(236*var(--u)),236px)] pb-16 lg:min-h-[calc(1331*var(--u))] lg:w-[49.48%] lg:pb-0 lg:shadow-[0_0_0_100vmax_var(--color-surface)] lg:[clip-path:inset(0_-100vmax_0_0)]" style={brandVars}>
+        <div className="brand-scope flex flex-col items-center bg-surface pt-[max(48*var(--m),236*var(--u))] pb-16 lg:min-h-[calc(1331*var(--u))] lg:w-[49.48%] lg:pb-0 lg:shadow-[0_0_0_100vmax_var(--color-surface)] lg:[clip-path:inset(0_-100vmax_0_0)]" style={brandVars}>
           <div
             ref={stageRef}
             className="relative w-[min(626.84px,calc(100%-32px))] lg:w-[calc(626.84*var(--u))]"
@@ -172,7 +172,7 @@ export function Customize() {
           >
             {device === 'mobile' ? (
               <div
-                className="absolute top-0 left-0 flex origin-top-left items-start gap-10"
+                className="landing-unscaled absolute top-0 left-0 flex origin-top-left items-start gap-10"
                 style={{ width: STAGE_WIDTH, height: STAGE_HEIGHT, transform: `scale(${scale})` }}
               >
                 <HomeScreen summary={SUMMARY} logo={null} />
@@ -184,7 +184,7 @@ export function Customize() {
               </div>
             )}
           </div>
-          <div className="mt-[clamp(32px,calc(58.12*var(--u)),58.12px)] flex items-center gap-5">
+          <div className="mt-[max(32*var(--m),58.12*var(--u))] flex items-center gap-5">
             <p className="text-xl leading-normal font-medium text-ink">Preview</p>
             <DeviceToggle device={device} onChange={setDevice} />
           </div>

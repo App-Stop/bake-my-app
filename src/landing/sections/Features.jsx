@@ -25,8 +25,8 @@ const FEATURES = [
 
 function Card({ image, alt, className = '', children }) {
   return (
-    <div className={`flex flex-col gap-3 rounded-[30px] bg-white px-1 pt-1 pb-5 ${className}`}>
-      <img src={asset(image)} alt={alt} loading="lazy" className="h-auto w-full rounded-[26px]" />
+    <div className={`flex flex-col gap-3 rounded-[calc(30*var(--px))] bg-white px-1 pt-1 pb-5 ${className}`}>
+      <img src={asset(image)} alt={alt} loading="lazy" className="h-auto w-full rounded-[calc(26*var(--px))]" />
       {children}
     </div>
   )
@@ -35,7 +35,7 @@ function Card({ image, alt, className = '', children }) {
 function CardText({ title, children, align = 'center' }) {
   return (
     <div className={`flex flex-col gap-2.5 leading-normal text-ink ${align === 'center' ? 'text-center' : ''}`}>
-      <h3 className="text-[clamp(20px,1.875vw,24px)] font-semibold">{title}</h3>
+      <h3 className="text-[length:max(20*var(--m),24*var(--u))] font-semibold">{title}</h3>
       <p className="text-base opacity-80">{children}</p>
     </div>
   )
@@ -43,11 +43,11 @@ function CardText({ title, children, align = 'center' }) {
 
 export function Features() {
   return (
-    <section id="features" className="mt-[clamp(80px,calc(160*var(--u)),160px)] scroll-mt-10 bg-primary-light">
+    <section id="features" className="mt-[max(80*var(--m),160*var(--u))] scroll-mt-10 bg-primary-light">
       <div
-        className={`mx-auto flex max-w-[1920px] flex-col items-center px-[clamp(20px,calc(200*var(--u)),200px)] py-[clamp(56px,calc(100*var(--u)),100px)] ${GAP[60]}`}
+        className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
       >
-        <div className={`flex max-w-[878px] flex-col items-center text-center text-ink ${GAP[30]}`}>
+        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink ${GAP[30]}`}>
           <h2 className={`lg:whitespace-nowrap ${TYPE.h2}`}>features customers love</h2>
           <p className={TYPE.body}>
             Every screen is designed to make ordering easy, earn repeat visits, and keep your customers informed.
@@ -68,7 +68,7 @@ export function Features() {
             alt="Web storefront with product page and cart"
             className="md:col-span-2"
           >
-            <div className="flex flex-col gap-5 px-[30px] py-4 md:flex-row md:items-center md:gap-[clamp(24px,calc(120*var(--u)),120px)]">
+            <div className="flex flex-col gap-5 px-[calc(30*var(--px))] py-4 md:flex-row md:items-center md:gap-[max(24*var(--m),120*var(--u))]">
               <div className="min-w-0 flex-1">
                 <CardText title="All the same perks, on the web too" align="left">
                   Customers get all the perks of mobile ordering on the web too — including easy ordering, points,

@@ -6,11 +6,11 @@ import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
 export function Ready() {
   return (
-    <section aria-labelledby="ready-title" className="relative mt-[clamp(80px,calc(131*var(--u)),131px)]">
+    <section aria-labelledby="ready-title" className="relative mt-[max(80*var(--m),131*var(--u))]">
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
       <div className="-mt-px overflow-hidden bg-primary">
         <div
-          className={`flex flex-col items-center py-[clamp(64px,calc(120*var(--u)),120px)] lg:flex-row ${GAP[80]} ${CONTAINER}`}
+          className={`flex flex-col items-center py-[max(64*var(--m),120*var(--u))] lg:flex-row ${GAP[80]} ${CONTAINER}`}
         >
           <div className={`flex w-full min-w-px flex-col text-white lg:flex-1 ${GAP[30]}`}>
             <h2 id="ready-title" className={TYPE.display}>
@@ -31,7 +31,7 @@ export function Ready() {
             alt="Customer app on a phone and the business dashboard on a tablet"
             box={{ w: 736, h: 567 }}
             art={{ x: 0, y: -43, h: 647 }}
-            className="w-full max-w-[736px] shrink-0 lg:w-[44.88%] lg:max-w-none"
+            className="w-full max-w-[calc(736*var(--px))] shrink-0 lg:w-[44.88%] lg:max-w-none"
           />
         </div>
       </div>
@@ -94,17 +94,17 @@ export function Footer() {
   return (
     <footer className="-mt-px bg-primary text-white">
       <div
-        className={`flex flex-col items-center gap-[clamp(40px,calc(60*var(--u)),60px)] pt-[clamp(56px,calc(80*var(--u)),80px)] pb-[clamp(40px,calc(60*var(--u)),60px)] ${CONTAINER}`}
+        className={`flex flex-col items-center gap-[max(40*var(--m),60*var(--u))] pt-[max(56*var(--m),80*var(--u))] pb-[max(40*var(--m),60*var(--u))] ${CONTAINER}`}
       >
-        <img src={asset('logo-footer.svg')} alt="Bake my App" width={210} height={153} className="h-auto w-[clamp(150px,calc(210*var(--u)),210px)]" />
-        <div className="flex w-full flex-col items-center gap-[clamp(40px,calc(60*var(--u)),60px)]">
+        <img src={asset('logo-footer.svg')} alt="Bake my App" width={210} height={153} className="h-auto w-[max(150*var(--m),210*var(--u))]" />
+        <div className="flex w-full flex-col items-center gap-[max(40*var(--m),60*var(--u))]">
           <nav
             aria-label="Footer"
-            className="grid w-full grid-cols-1 gap-10 text-[clamp(16px,1.5625vw,20px)] leading-normal sm:grid-cols-3 sm:gap-[clamp(24px,calc(160*var(--u)),160px)]"
+            className="grid w-full grid-cols-1 gap-10 text-[length:max(16*var(--m),20*var(--u))] leading-normal sm:grid-cols-3 sm:gap-[max(24*var(--m),160*var(--u))]"
           >
             {FOOTER_COLUMNS.map((column) => (
               <div key={column.title} className="flex flex-col items-center gap-5 text-center">
-                <p className="font-semibold tracking-[2px] uppercase opacity-40">{column.title}</p>
+                <p className="font-semibold tracking-[calc(2*var(--px))] uppercase opacity-40">{column.title}</p>
                 <ul className="flex flex-col items-center gap-3.5 font-medium">
                   {column.links.map((link) => (
                     <li key={link.label}>
@@ -123,7 +123,7 @@ export function Footer() {
                   aria-label={social.label}
                   className="flex size-10 items-center justify-center rounded-full bg-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] transition hover:bg-white/30"
                 >
-                  <Icon icon={social.icon} className="size-[18px]" />
+                  <Icon icon={social.icon} className="size-[calc(18*var(--px))]" />
                 </Link>
               </li>
             ))}

@@ -56,7 +56,7 @@ function PlanCard({ plan }) {
   const { featured } = plan
   return (
     <div
-      className={`relative flex h-full flex-col gap-9 overflow-hidden rounded-[40px] bg-white p-[30px] shadow-[inset_0_0_0_1px_var(--color-line)]`}
+      className={`relative flex h-full flex-col gap-9 overflow-hidden rounded-[calc(40*var(--px))] bg-white p-[calc(30*var(--px))] shadow-[inset_0_0_0_1px_var(--color-line)]`}
     >
       {featured && (
         // Soft "waves" glow at the top of the featured card (export overflows the card, clipped here).
@@ -68,18 +68,18 @@ function PlanCard({ plan }) {
         />
       )}
       <div className="relative flex flex-col gap-2.5 leading-normal text-ink">
-        <h3 className="text-[clamp(20px,1.875vw,24px)] font-semibold">{plan.name}</h3>
+        <h3 className="text-[length:max(20*var(--m),24*var(--u))] font-semibold">{plan.name}</h3>
         <p className="text-base opacity-80">{plan.description}</p>
       </div>
       <div className="relative flex flex-col leading-normal">
-        <p className={`font-malibu text-[clamp(48px,5vw,64px)] ${featured ? 'text-primary' : 'text-ink'}`}>
+        <p className={`font-malibu text-[length:max(48*var(--m),64*var(--u))] ${featured ? 'text-primary' : 'text-ink'}`}>
           {plan.price}
         </p>
         <p className="text-base text-ink opacity-80">{plan.priceNote}</p>
       </div>
       <Link
         to={ROUTES.comingSoon}
-        className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[clamp(18px,1.5625vw,20px)] leading-normal font-semibold whitespace-nowrap transition ${
+        className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'
             : 'text-primary shadow-[inset_0_0_0_1px_var(--color-primary)] hover:bg-primary-light'
@@ -115,9 +115,9 @@ function PlanCard({ plan }) {
 
 export function Pricing() {
   return (
-    <section id="pricing" className="mt-[clamp(80px,calc(180*var(--u)),180px)] scroll-mt-10">
+    <section id="pricing" className="mt-[max(80*var(--m),180*var(--u))] scroll-mt-10">
       <div className={`flex flex-col items-center ${GAP[80]} ${CONTAINER}`}>
-        <div className={`flex max-w-[878px] flex-col items-center text-center text-ink ${GAP[30]}`}>
+        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink ${GAP[30]}`}>
           <h2 className={TYPE.h2}>baked to grow</h2>
           <p className={TYPE.body}>
             Fair flat monthly fees. No order commissions, no hidden percentages, and no long-term contracts.
@@ -127,7 +127,7 @@ export function Pricing() {
           {PLANS.map((plan) => (
             <div key={plan.name} className="relative">
               {plan.featured && (
-                <p className="absolute top-[-24px] left-1/2 -translate-x-1/2 rounded-t-[20px] bg-primary px-3 pt-1 pb-0.5 font-malibu text-xs leading-normal tracking-[0.24px] whitespace-nowrap text-white">
+                <p className="absolute top-[calc(-24*var(--px))] left-1/2 -translate-x-1/2 rounded-t-[calc(20*var(--px))] bg-primary px-3 pt-1 pb-0.5 font-malibu text-xs leading-normal tracking-[calc(0.24*var(--px))] whitespace-nowrap text-white">
                   MOST POPULAR
                 </p>
               )}

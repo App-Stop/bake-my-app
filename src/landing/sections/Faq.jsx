@@ -31,7 +31,7 @@ function FaqItem({ faq, open, onToggle }) {
   const id = useId()
   return (
     <div
-      className={`flex w-full gap-5 overflow-clip rounded-[40px] bg-primary-light p-[clamp(20px,calc(30*var(--u)),30px)] ${open ? 'items-start' : 'items-center'}`}
+      className={`flex w-full gap-5 overflow-clip rounded-[calc(40*var(--px))] bg-primary-light p-[max(20*var(--m),30*var(--u))] ${open ? 'items-start' : 'items-center'}`}
     >
       <div className="flex min-w-px flex-1 flex-col gap-2.5 text-base text-ink">
         <h3>
@@ -66,19 +66,19 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
-    <section aria-labelledby="faq-title" className="mt-[clamp(80px,calc(130*var(--u)),130px)]">
-      <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-[clamp(20px,calc(160*var(--u)),160px)] lg:flex-row lg:gap-[calc(70*var(--u))]">
-        <div className="flex min-w-px flex-1 flex-col gap-[clamp(32px,calc(60*var(--u)),60px)]">
+    <section aria-labelledby="faq-title" className="mt-[max(80*var(--m),130*var(--u))]">
+      <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-[max(20*var(--m),160*var(--u))] lg:flex-row lg:gap-[calc(70*var(--u))]">
+        <div className="flex min-w-px flex-1 flex-col gap-[max(32*var(--m),60*var(--u))]">
           <div className="flex flex-col gap-2.5 text-ink">
-            <h2 id="faq-title" className="font-malibu text-[clamp(28px,2.8125vw,36px)] leading-[1.389]">
+            <h2 id="faq-title" className="font-malibu text-[length:max(28*var(--m),36*var(--u))] leading-[1.389]">
               frequently baked questions
             </h2>
-            <p className="text-[clamp(16px,1.5625vw,20px)] leading-[1.6] font-medium">
+            <p className="text-[length:max(16*var(--m),20*var(--u))] leading-[1.6] font-medium">
               Everything you need to know about launching and running your branded bakery ordering experience.
             </p>
           </div>
           <div className="flex flex-col items-start gap-5">
-            <p className="text-[clamp(16px,1.5625vw,20px)] leading-[1.6] font-medium text-ink">
+            <p className="text-[length:max(16*var(--m),20*var(--u))] leading-[1.6] font-medium text-ink">
               Need to know something else?
             </p>
             <Pill to={ROUTES.comingSoon} variant="soft" arrow>

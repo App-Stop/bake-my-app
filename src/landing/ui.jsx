@@ -38,12 +38,12 @@ const VARIANTS = {
 }
 
 const SIZES = {
-  lg: 'text-[clamp(18px,1.875vw,24px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
-  md: 'text-[clamp(16px,1.5625vw,20px)] px-[clamp(24px,2.083vw,40px)] py-[clamp(14px,1.042vw,20px)]',
-  sm: 'text-[16px] px-[clamp(24px,2.083vw,40px)] py-[clamp(12px,0.833vw,16px)]',
+  lg: 'text-[length:max(18*var(--m),24*var(--u))] px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))]',
+  md: 'text-[length:max(16*var(--m),20*var(--u))] px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))]',
+  sm: 'text-[length:calc(16*var(--px))] px-[max(24*var(--m),40*var(--u))] py-[max(12*var(--m),16*var(--u))]',
 }
 
-export function ArrowIcon({ className = 'size-[clamp(24px,1.667vw,32px)]' }) {
+export function ArrowIcon({ className = 'size-[max(24*var(--m),32*var(--u))]' }) {
   return <HugeiconsIcon icon={ArrowRight02Icon} size={32} color="currentColor" className={`shrink-0 ${className}`} />
 }
 
@@ -137,12 +137,12 @@ export function HeartItem({ title, children }) {
   return (
     <li className="flex items-start gap-2.5">
       <span className="flex shrink-0 items-center justify-center px-0.5 py-1">
-        <span className="flex size-[clamp(24px,1.667vw,32px)] items-center justify-center rounded-full bg-primary text-white">
+        <span className="flex size-[max(24*var(--m),32*var(--u))] items-center justify-center rounded-full bg-primary text-white">
           <Icon icon={FavouriteIcon} filled className="size-[56%]" />
         </span>
       </span>
       <div className="flex min-w-px flex-1 flex-col gap-1.5 leading-normal text-ink">
-        <p className="text-[clamp(18px,1.5625vw,20px)] font-bold">{title}</p>
+        <p className="text-[length:max(18*var(--m),20*var(--u))] font-bold">{title}</p>
         <p className="text-base opacity-80">{children}</p>
       </div>
     </li>

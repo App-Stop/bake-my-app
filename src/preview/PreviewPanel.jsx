@@ -45,11 +45,11 @@ export function DeviceToggle({ device, onChange }) {
           aria-selected={device === id}
           aria-label={label}
           onClick={() => onChange(id)}
-          className={`flex w-[60px] items-center justify-center rounded-full px-1 py-2 text-ink transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
+          className={`flex w-15 items-center justify-center rounded-full px-1 py-2 text-ink transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
             device === id ? 'bg-white' : 'hover:bg-white/50'
           }`}
         >
-          <Icon icon={icon} size={20} />
+          <Icon icon={icon} size={20} className="size-5" />
         </button>
       ))}
     </div>
