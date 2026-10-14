@@ -5,7 +5,8 @@ import { normalizeHex, readableTextOn } from '../../lib/color'
 import { DEFAULT_BRAND_COLOR, INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { CartScreen } from '../../preview/CartScreen'
 import { HomeScreen } from '../../preview/HomeScreen'
-import { DesktopPreviewPlaceholder, DeviceToggle } from '../../preview/PreviewPanel'
+import { DESKTOP_HEIGHT, DESKTOP_WIDTH, DesktopScreen } from '../../preview/DesktopScreen'
+import { DeviceToggle } from '../../preview/PreviewPanel'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { CtaPair, Deco } from '../ui'
 import { GAP, TYPE } from '../styles'
@@ -24,8 +25,11 @@ const PRESETS = [
 const SUGGESTED = ['#efbb00', '#a7921b', '#8fa200']
 
 // The two storefront phones render at 1× as 522.4 × 524.4; Figma shows them at 1.2× (626.84 wide).
-const STAGE_WIDTH = 522.4
-const STAGE_HEIGHT = 524.4
+// The desktop (website) preview is fitted to the same stage width.
+const STAGES = {
+  mobile: { width: 522.4, height: 524.4 },
+  desktop: { width: DESKTOP_WIDTH, height: DESKTOP_HEIGHT },
+}
 const SUMMARY = getStoreSummary(INITIAL_STATE)
 
 function Swatch({ hex, label, selected, onSelect }) {
@@ -60,16 +64,16 @@ function ColorGroup({ label, children }) {
   )
 }
 
-/** Scales the 1× phone pair to whatever width the stage box gets. */
-function useFitScale(ref) {
+/** Scales the 1× preview (`width` px wide) to whatever width the stage box gets. */
+function useFitScale(ref, width) {
   const [scale, setScale] = useState(1.2)
   useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
-    const observer = new ResizeObserver(([entry]) => setScale(entry.contentRect.width / STAGE_WIDTH))
+    const observer = new ResizeObserver(([entry]) => setScale(entry.contentRect.width / width))
     observer.observe(el)
     return () => observer.disconnect()
-  }, [ref])
+  }, [ref, width])
   return scale
 }
 
@@ -78,7 +82,8 @@ export function Customize() {
   const [draft, setDraft] = useState(null)
   const [device, setDevice] = useState('mobile')
   const stageRef = useRef(null)
-  const scale = useFitScale(stageRef)
+  const stage = STAGES[device]
+  const scale = useFitScale(stageRef, stage.width)
 
   const hexDraft = draft ?? color.slice(1).toUpperCase()
   const hexValid = normalizeHex(hexDraft) !== null
@@ -168,19 +173,22 @@ export function Customize() {
           <div
             ref={stageRef}
             className="relative w-[min(626.84px,calc(100%-32px))] lg:w-[calc(626.84*var(--u))]"
-            style={{ aspectRatio: `${STAGE_WIDTH} / ${STAGE_HEIGHT}` }}
+            style={{ aspectRatio: `${stage.width} / ${stage.height}` }}
           >
             {device === 'mobile' ? (
               <div
                 className="landing-unscaled absolute top-0 left-0 flex origin-top-left items-start gap-10"
-                style={{ width: STAGE_WIDTH, height: STAGE_HEIGHT, transform: `scale(${scale})` }}
+                style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
               >
                 <HomeScreen summary={SUMMARY} logo={null} />
                 <CartScreen summary={SUMMARY} />
               </div>
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <DesktopPreviewPlaceholder />
+              <div
+                className="landing-unscaled absolute top-0 left-0 origin-top-left"
+                style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
+              >
+                <DesktopScreen summary={SUMMARY} />
               </div>
             )}
           </div>

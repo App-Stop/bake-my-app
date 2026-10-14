@@ -13,20 +13,9 @@ import {
   ShoppingBasketAdd03Icon,
 } from '@hugeicons/core-free-icons'
 import fire from '../assets/fire.svg'
-import { BgGlow, Icon, PhoneFrame, TabBar, glass } from './phone'
+import { BgGlow, Icon, PhoneFrame, Star, TabBar, glass } from './phone'
 
-function Star() {
-  return (
-    <svg width="7.2" height="7.2" viewBox="0 0 7.2 7.2" fill="none" aria-hidden="true" className="shrink-0">
-      <path
-        d="M4.11833 1.03325L4.64627 2.09786C4.71827 2.24606 4.91024 2.38821 5.07224 2.41543L6.02912 2.57572C6.64106 2.67856 6.78506 3.12618 6.34409 3.56775L5.60018 4.31781C5.47418 4.44483 5.40521 4.68981 5.44418 4.86525L5.65718 5.79375C5.82515 6.52869 5.43818 6.813 4.79327 6.42888L3.89636 5.89356C3.73439 5.79678 3.46742 5.79678 3.30242 5.89356L2.40553 6.42888C1.7636 6.813 1.37364 6.52566 1.54163 5.79375L1.7546 4.86525C1.7936 4.68981 1.7246 4.44483 1.59862 4.31781L0.854701 3.56775C0.416749 3.12618 0.557734 2.67856 1.16966 2.57572L2.12656 2.41543C2.28554 2.38821 2.47752 2.24606 2.54951 2.09786L3.07745 1.03325C3.36542 0.455582 3.83336 0.455582 4.11833 1.03325Z"
-        fill="var(--brand)"
-      />
-    </svg>
-  )
-}
-
-function Header({ logo, address }) {
+function Header({ logo, mark, address }) {
   return (
     <div className="absolute top-0 left-0 flex h-[115.2px] w-full flex-col items-center justify-end gap-[6px] overflow-clip rounded-b-[18px] bg-white px-[9.6px] pb-[9.6px]">
       <BgGlow />
@@ -34,14 +23,16 @@ function Header({ logo, address }) {
         <div className="flex size-[30px] shrink-0 items-center justify-center overflow-hidden rounded-[60px] bg-brand text-on-brand">
           {logo ? (
             <img src={logo} alt="" className="size-full bg-white object-contain p-[3px]" />
+          ) : mark ? (
+            <img src={mark} alt="" width={23.868} height={17.238} className="h-[17.238px] w-[23.868px]" />
           ) : (
             <Icon icon={CroissantIcon} size={19.2} />
           )}
         </div>
         <div className={`flex h-[30px] min-w-px flex-1 items-center justify-center gap-[4.8px] rounded-[60px] px-[6px] text-ink ${glass}`}>
-          <div className="flex flex-col items-center gap-[1.2px] leading-normal whitespace-nowrap">
+          <div className="flex min-w-0 flex-col items-center gap-[1.2px] leading-normal whitespace-nowrap">
             <span className="text-[6px] opacity-60">Deliver to</span>
-            <span className="text-[8.4px] font-medium truncate max-w-[110px]" title={address || '742 Evergreen Terrace, Springfield'}>
+            <span className="max-w-full truncate text-[8.4px] font-medium" title={address || '742 Evergreen Terrace, Springfield'}>
               {address || '742 Evergreen Terrace, Springfield'}
             </span>
           </div>
@@ -131,7 +122,7 @@ function ProductCard({ product }) {
             60kCal
           </span>
           <span className="flex items-center gap-[1.2px]">
-            <Star />
+            <Star size={7.2} />
             4.7
             <span className="text-black opacity-40">(1.2k+)</span>
           </span>
@@ -154,10 +145,11 @@ function ProductCard({ product }) {
   )
 }
 
-export function HomeScreen({ summary, logo, address }) {
+/** `logo` is an uploaded store logo (on white); `mark` a white glyph drawn on the brand circle. */
+export function HomeScreen({ summary, logo, mark, address }) {
   return (
     <PhoneFrame label="Storefront home screen preview">
-      <Header logo={logo} address={address || summary?.address} />
+      <Header logo={logo} mark={mark} address={address || summary?.address} />
       <div className="absolute top-[127.2px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px]">
         <CategoryTabs firstLabel={summary.categoryLabel} firstCount={summary.products.length} />
         <div className="flex w-full flex-col gap-[6px]">

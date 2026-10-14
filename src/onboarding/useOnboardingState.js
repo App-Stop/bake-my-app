@@ -112,17 +112,21 @@ function load() {
   }
 }
 
-/** Onboarding answers, persisted to localStorage so a refresh doesn't lose progress. */
-export function useOnboardingState() {
-  const [state, setState] = useState(load)
+/**
+ * Onboarding answers, persisted to localStorage so a refresh doesn't lose progress. Pass
+ * `{ persist: false, initial }` for a throwaway copy (the landing demos), which never touches storage.
+ */
+export function useOnboardingState({ persist = true, initial = INITIAL_STATE } = {}) {
+  const [state, setState] = useState(() => (persist ? load() : initial))
 
   useEffect(() => {
+    if (!persist) return
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     } catch {
       // Storage full (large images) or unavailable — the flow still works in memory.
     }
-  }, [state])
+  }, [state, persist])
 
   const actions = {
     goTo: (step) => setState((s) => ({ ...s, step })),
@@ -151,7 +155,7 @@ export function useOnboardingState() {
       })),
     launch: () => setState((s) => ({ ...s, launched: true })),
     unlaunch: () => setState((s) => ({ ...s, launched: false })),
-    reset: () => setState(INITIAL_STATE),
+    reset: () => setState(initial),
   }
 
   return [state, actions]

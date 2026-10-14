@@ -30,10 +30,10 @@ function Nav() {
         ))}
       </ul>
       <Link
-        to={ROUTES.comingSoon}
+        to={ROUTES.app}
         className="shrink-0 rounded-full bg-white px-5 py-2.5 text-base leading-normal font-bold whitespace-nowrap text-primary transition hover:bg-white/90"
       >
-        Get your App
+        Start for Free
       </Link>
     </nav>
   )
@@ -77,7 +77,7 @@ export function Hero() {
                 Your own white-label iOS &amp; Android ordering app, touch kitchen display system (KDS), and
                 multi-branch admin control deck — beautifully baked together.
               </p>
-              <CtaPair tone="purple" size="lg" />
+              <CtaPair tone="purple" size="lg" align="center" />
             </div>
           </div>
         </div>

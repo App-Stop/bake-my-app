@@ -1,17 +1,21 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { ComputerIcon, SmartPhone01Icon } from '@hugeicons/core-free-icons'
+import { DESKTOP_HEIGHT, DESKTOP_WIDTH, DesktopScreen } from './DesktopScreen'
 import { getStoreSummary } from './storeSummary'
 import { CartScreen } from './CartScreen'
 import { HomeScreen } from './HomeScreen'
 import { Icon } from './phone'
 
-// Two 241.2px phones, 40px apart — the group is 522.4 × 524.4 in the 1440×1024 frame.
-const STAGE_WIDTH = 522.4
-const STAGE_HEIGHT = 524.4
+// Two 241.2px phones, 40px apart — the group is 522.4 × 524.4 in the 1440×1024 frame; the desktop
+// website preview is 641.2 × 457.57 with 34.8px either side in the 710px panel.
+const STAGES = {
+  mobile: { width: 522.4, height: 524.4, padX: (width) => Math.min(94, Math.max(24, width * 0.132)) },
+  desktop: { width: DESKTOP_WIDTH, height: DESKTOP_HEIGHT, padX: () => 34.8 },
+}
 const HEADER_SPACE = 110
 
-/** Scales the phone pair to fit the panel: 1× at the 1440×1024 design size, larger on big screens. */
-function useStageScale(ref) {
+/** Scales the preview to fit the panel: 1× at the 1440×1024 design size, larger on big screens. */
+function useStageScale(ref, stage) {
   const [scale, setScale] = useState(1)
 
   useLayoutEffect(() => {
@@ -19,13 +23,13 @@ function useStageScale(ref) {
     if (!el) return
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect
-      const padX = Math.min(94, Math.max(24, width * 0.132))
-      const next = Math.min((width - padX * 2) / STAGE_WIDTH, (height - HEADER_SPACE * 2) / STAGE_HEIGHT)
+      const padX = stage.padX(width)
+      const next = Math.min((width - padX * 2) / stage.width, (height - HEADER_SPACE * 2) / stage.height)
       setScale(Math.max(0.5, Math.min(1.5, next)))
     })
     observer.observe(el)
     return () => observer.disconnect()
-  }, [ref])
+  }, [ref, stage])
 
   return scale
 }
@@ -58,8 +62,8 @@ export function DeviceToggle({ device, onChange }) {
 
 export function PreviewPanel({ state }) {
   const panelRef = useRef(null)
-  const scale = useStageScale(panelRef)
   const [device, setDevice] = useState('mobile')
+  const scale = useStageScale(panelRef, STAGES[device])
   const summary = getStoreSummary(state)
 
   return (
@@ -77,25 +81,17 @@ export function PreviewPanel({ state }) {
         {device === 'mobile' ? (
           <div
             className="flex shrink-0 items-start gap-10 transition-transform duration-200"
-            style={{ width: STAGE_WIDTH, height: STAGE_HEIGHT, transform: `scale(${scale})` }}
+            style={{ width: STAGES.mobile.width, height: STAGES.mobile.height, transform: `scale(${scale})` }}
           >
             <HomeScreen summary={summary} logo={state.shop.logo} />
             <CartScreen summary={summary} />
           </div>
         ) : (
-          <DesktopPreviewPlaceholder />
+          <div className="shrink-0 transition-transform duration-200" style={{ transform: `scale(${scale})` }}>
+            <DesktopScreen summary={summary} logo={state.shop.logo} />
+          </div>
         )}
       </div>
     </aside>
-  )
-}
-
-export function DesktopPreviewPlaceholder() {
-  return (
-    <div className="mx-10 flex max-w-[420px] flex-col items-center gap-2 rounded-[20px] border border-dashed border-dash bg-white px-8 py-10 text-center leading-normal">
-      <Icon icon={ComputerIcon} size={30} className="text-subtle" />
-      <p className="text-sm text-body">Desktop preview is coming soon</p>
-      <p className="text-xs text-muted">Switch back to mobile to see your storefront update live.</p>
-    </div>
   )
 }

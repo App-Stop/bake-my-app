@@ -75,7 +75,7 @@ export function Features() {
                   and rewards.
                 </CardText>
               </div>
-              <Pill to={ROUTES.comingSoon} size="sm" className="self-start md:self-auto">
+              <Pill to={ROUTES.app} size="sm" className="self-start md:self-auto">
                 Get your Website
               </Pill>
             </div>

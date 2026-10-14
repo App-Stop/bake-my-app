@@ -4,6 +4,10 @@ export const ROUTES = {
   home: '/',
   app: '/app',
   comingSoon: '/coming-soon',
+  demoMobile: '/demo/mobile-app',
+  demoWebsite: '/demo/website',
+  demoAdmin: '/demo/admin',
+  demoStaff: '/demo/staff',
 }
 
 export function navigate(to) {

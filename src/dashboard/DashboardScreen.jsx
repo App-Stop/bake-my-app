@@ -44,7 +44,8 @@ const NAV_ITEMS = [
   { id: 'settings', label: 'Settings', icon: Setting07Icon },
 ]
 
-export function DashboardScreen({ state, actions, onEdit, onStartOver }) {
+/** `className` sizes the screen: the full viewport by default, `h-full` inside a demo frame. */
+export function DashboardScreen({ state, actions, onEdit, onStartOver, className = 'h-screen' }) {
   const [activeNav, setActiveNav] = useState('overview')
   const [activeTimeRange, setActiveTimeRange] = useState('7d')
   const [showUserMenu, setShowUserMenu] = useState(false)
@@ -115,7 +116,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver }) {
   ].slice(0, 5)
 
   return (
-    <div className="brand-scope flex h-screen w-full overflow-hidden bg-[#f5f5f5] font-sans text-ink">
+    <div className={`brand-scope flex w-full overflow-hidden bg-[#f5f5f5] font-sans text-ink ${className}`}>
       {/* Sidebar */}
       <aside className="flex w-[230px] lg:w-[260px] min-w-[230px] lg:min-w-[260px] flex-col justify-between border-r border-[#f0ece9] bg-white px-3.5 lg:px-5 py-5 lg:py-8 shrink-0">
         <div className="flex flex-col gap-6 lg:gap-10">

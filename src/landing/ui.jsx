@@ -2,6 +2,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, FavouriteIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { Link } from '../components/Link'
 import { ROUTES } from '../router'
+import { useModals } from './useModals'
 import { GAP, asset } from './styles'
 
 /** Hugeicons (stroke set) icon; `filled` paints the outline solid, for Figma's solid glyphs. */
@@ -47,35 +48,54 @@ export function ArrowIcon({ className = 'size-[max(24*var(--m),32*var(--u))]' })
   return <HugeiconsIcon icon={ArrowRight02Icon} size={32} color="currentColor" className={`shrink-0 ${className}`} />
 }
 
-export function Pill({ to, variant = 'primary', size = 'md', arrow = false, className = '', children }) {
-  return (
-    <Link
-      to={to}
-      className={`inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full leading-normal font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
-    >
+/** Rounded CTA: a link when given `to`, otherwise a button (`onClick`). */
+export function Pill({ to, onClick, variant = 'primary', size = 'md', arrow = false, className = '', children }) {
+  const classes = `inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full leading-normal font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${VARIANTS[variant]} ${SIZES[size]} ${className}`
+  const content = (
+    <>
       {children}
       {arrow && <ArrowIcon />}
+    </>
+  )
+  return to ? (
+    <Link to={to} onClick={onClick} className={classes}>
+      {content}
     </Link>
+  ) : (
+    <button type="button" onClick={onClick} className={classes}>
+      {content}
+    </button>
   )
 }
 
-/** "Get …" CTA (coming soon) + "Launch Demo" (opens the web app), as used in every section. */
-export function CtaPair({ label = 'Get your App', tone = 'light', size = 'md', demoClassName = '' }) {
-  const onPurple = tone === 'purple'
+/** "Launch Demo" CTA: opens the "preview a demo" picker. */
+export function DemoPill(props) {
+  const { openDemo } = useModals()
   return (
-    <div className={`flex flex-wrap items-center ${GAP[30]}`}>
-      <Pill to={ROUTES.comingSoon} variant={onPurple ? 'white' : 'primary'} size={size}>
-        {label}
-      </Pill>
-      <Pill
-        to={ROUTES.app}
-        variant={tone === 'light' ? 'soft' : 'glass'}
-        size={size}
-        arrow
-        className={demoClassName}
-      >
-        Launch Demo
-      </Pill>
+    <Pill {...props} onClick={openDemo} arrow>
+      Launch Demo
+    </Pill>
+  )
+}
+
+/**
+ * "Get …" CTA (web app onboarding) + "Launch Demo" (demo picker), as used in every section, with the
+ * "FIRST MONTH FREE*" note underneath (left aligned, or centered with `align="center"`).
+ */
+export function CtaPair({ label = 'Get your App', tone = 'light', size = 'md', align = 'start', demoClassName = '' }) {
+  const onPurple = tone === 'purple'
+  const centered = align === 'center'
+  return (
+    <div className={`flex flex-col gap-2.5 ${centered ? 'items-center' : 'items-start'}`}>
+      <div className={`flex flex-wrap items-center ${centered ? 'justify-center' : ''} ${GAP[30]}`}>
+        <Pill to={ROUTES.app} variant={onPurple ? 'white' : 'primary'} size={size}>
+          {label}
+        </Pill>
+        <DemoPill variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />
+      </div>
+      <p className={`text-base leading-normal italic opacity-80 ${tone === 'light' ? 'text-ink' : 'text-white'}`}>
+        FIRST MONTH FREE*
+      </p>
     </div>
   )
 }

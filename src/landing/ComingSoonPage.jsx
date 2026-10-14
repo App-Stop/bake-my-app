@@ -1,6 +1,6 @@
 import { Link } from '../components/Link'
 import { ROUTES } from '../router'
-import { Pill } from './ui'
+import { DemoPill, Pill } from './ui'
 import { GAP, TYPE, asset } from './styles'
 
 /** Destination for every "Get your …" CTA until checkout/onboarding for real customers exists. */
@@ -30,9 +30,7 @@ export function ComingSoonPage() {
             demo for a spin.
           </p>
           <div className={`flex flex-wrap items-center justify-center ${GAP[30]}`}>
-            <Pill to={ROUTES.app} variant="white" size="lg" arrow>
-              Launch Demo
-            </Pill>
+            <DemoPill variant="white" size="lg" />
             <Pill to={ROUTES.home} variant="glass" size="lg">
               Back to home
             </Pill>
