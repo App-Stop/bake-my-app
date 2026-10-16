@@ -8,7 +8,7 @@ export function Ready() {
   return (
     <section aria-labelledby="ready-title" className="relative mt-[max(80*var(--m),131*var(--u))]">
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
-      <div className="-mt-px overflow-hidden bg-primary">
+      <div data-nav-theme="dark" className="-mt-px overflow-hidden bg-primary">
         <div
           className={`flex flex-col items-center py-[max(64*var(--m),120*var(--u))] lg:flex-row ${GAP[80]} ${CONTAINER}`}
         >
@@ -22,7 +22,7 @@ export function Ready() {
               <p className={TYPE.lead}>
                 Give your regulars the convenience of ordering ahead on mobile while keeping 100% of your earnings.
               </p>
-              <CtaPair tone="purple" size="lg" />
+              <CtaPair tone="purple" size="lg" note="No card needed. Cancel anytime." />
             </div>
           </div>
           {/* Export is 647px tall and starts 43px above the 736×567 box; its right edge runs off-screen. */}
@@ -92,7 +92,7 @@ function FooterLink({ link, className }) {
 
 export function Footer() {
   return (
-    <footer className="-mt-px bg-primary text-white">
+    <footer data-nav-theme="dark" className="-mt-px bg-primary text-white">
       <div
         className={`flex flex-col items-center gap-[max(40*var(--m),60*var(--u))] pt-[max(56*var(--m),80*var(--u))] pb-[max(40*var(--m),60*var(--u))] ${CONTAINER}`}
       >

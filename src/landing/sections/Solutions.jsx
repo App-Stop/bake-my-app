@@ -6,21 +6,20 @@ function CustomerApp() {
     <div className="flex flex-col lg:flex-row lg:items-start">
       <div className={`flex flex-col lg:mt-[calc(57*var(--u))] lg:w-[49.39%] ${GAP[40]}`}>
         <div className={`flex flex-col text-ink ${GAP[30]}`}>
-          <h2 className={TYPE.h2}>customer mobile app</h2>
+          <h2 className={TYPE.h2}>your cafe, right on their home screen</h2>
           <p className={TYPE.body}>
-            Your customers download your cafe&apos;s icon directly from the App Store and Google Play. They order
-            ahead to skip lines, accumulate loyalty stamps, and receive push notifications when cinnamon rolls come
-            fresh out of the oven.
+            Your regulars search for your name on the App Store or Google Play, tap your icon, and order ahead. No
+            line, no wait. They earn points every visit and get a ping when the cinnamon rolls come out of the oven.
           </p>
         </div>
         <ul className={`flex flex-col ${GAP[30]}`}>
-          <HeartItem title=" 1-Tap Apple & Google Pay">Friction-free checkout without typing long card numbers.</HeartItem>
-          <HeartItem title="Built-in Loyalty Points">
-            Custom reward tiers like &quot;100 pts = Free morning pastry&quot;.
+          <HeartItem title="1-tap checkout">Apple Pay and Google Pay, so nobody has to type in a card.</HeartItem>
+          <HeartItem title="Loyalty that brings them back">
+            Set your own rewards, like 100 points for a free morning pastry.
           </HeartItem>
-          <HeartItem title="Fully Customization">Customize your menu, app icon, navigation, and brand palette.</HeartItem>
+          <HeartItem title="Yours, top to bottom">Your logo, colors, icon and menu.</HeartItem>
         </ul>
-        <CtaPair label="Get your App" />
+        <CtaPair label="Put my cafe in the App Store" />
       </div>
       <Composite
         src={asset('mobile-app.png')}
@@ -45,23 +44,22 @@ function CustomerWebsite() {
       />
       <div className={`flex flex-col lg:mt-[calc(15*var(--u))] lg:ml-[10.12%] lg:w-[49.39%] ${GAP[40]}`}>
         <div className={`flex flex-col text-ink ${GAP[30]}`}>
-          <h2 className={TYPE.h2}>customer website</h2>
+          <h2 className={TYPE.h2}>Free setup. No contracts. We do the techy part.</h2>
           <p className={TYPE.body}>
-            Your customers download your cafe&apos;s icon directly from the App Store and Google Play. They order
-            ahead to skip lines, accumulate loyalty stamps, and receive push notifications when cinnamon rolls come
-            fresh out of the oven.
+            Customers who don&apos;t want to download anything can still order from your own domain, with the same
+            menu, rewards and checkout. Every order lands in the same place.
           </p>
         </div>
         <ul className={`flex flex-col ${GAP[30]}`}>
-          <HeartItem title="You custom domain link">Let customers place orders directly from your website.</HeartItem>
-          <HeartItem title="Built-in Loyalty Points">
-            Custom reward tiers like &quot;100 pts = Free morning pastry&quot;.
+          <HeartItem title="Your domain, your orders">No marketplace sits between you and your customer.</HeartItem>
+          <HeartItem title="Same points, everywhere">
+            Rewards carry over between the website and the app.
           </HeartItem>
           <HeartItem title="Fully customizable">
-            Customize your menu, hero banner, navigation, and brand palette.
+            Change the menu, banner and colors whenever you like.
           </HeartItem>
         </ul>
-        <CtaPair label="Get your Website" />
+        <CtaPair label="Take orders on my own site" demoLabel="Try a live bakery website" />
       </div>
     </div>
   )
@@ -91,13 +89,18 @@ function KitchenStation() {
         >
           <div className={`flex flex-col text-white drop-shadow-[0_0_40px_rgba(0,0,0,0.8)] lg:max-w-[59.7%] ${GAP[30]}`}>
             <h2 id="kitchen-title" className={TYPE.h2}>
-              Kitchen order station
+              one screen, zero lost tickets
             </h2>
             <p className={TYPE.body}>
-              All orders from your app, website, and counter show up on one screen for your bakers and baristas—no
-              more lost or messy tickets.
+              Orders from your app, website and counter all show up on one screen your bakers and baristas can read
+              at a glance. It runs on any iPad, Android tablet or touchscreen you already have.
             </p>
-            <CtaPair label="Get your Order Station" tone="photo" demoClassName="backdrop-blur-[calc(10*var(--px))]" />
+            <CtaPair
+              label="End the ticket chaos"
+              demoLabel="Try a live kitchen station"
+              tone="photo"
+              demoClassName="backdrop-blur-[calc(10*var(--px))]"
+            />
           </div>
 
           <div className="relative mt-[max(32*var(--m),60*var(--u))] flex flex-col gap-5 drop-shadow-[0_10px_60px_rgba(85,76,241,0.1)] md:flex-row">

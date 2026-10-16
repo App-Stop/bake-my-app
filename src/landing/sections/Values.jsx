@@ -5,20 +5,20 @@ const VALUES = [
   {
     image: 'value-no-commission.png',
     size: 303,
-    title: 'no comission',
-    text: 'Delivery aggregators take 30% on every order. With Bake my app, your customers order directly from you and you keep every single dollar.',
+    title: 'we do the setup',
+    text: 'Send your menu, logo and photos. We build your apps and website and handle the App Store and Google Play submissions.',
   },
   {
     image: 'value-live-48h.png',
     size: 300,
-    title: 'live in 48h',
-    text: 'Send us your menu, logo, and photos. We set up your mobile apps, configure your web storefront, and submit to Apple and Google for you.',
+    title: 'keep every dollar',
+    text: 'Delivery apps can take up to 30% of every order. With your own app, customers order straight from you, and the full amount is yours.',
   },
   {
     image: 'value-easy-setup.png',
     size: 300,
-    title: 'easy setup',
-    text: 'No expensive proprietary POS hardware leases. The kitchen display runs smoothly on any iPad, Android tablet, or existing touch monitor in your shop.',
+    title: 'no new hardware',
+    text: 'Send us your menu, logo, and photos. We set up your mobile apps, configure your web storefront, and submit to Apple and Google for you.',
   },
 ]
 
@@ -27,7 +27,7 @@ export function Values() {
     // The top wave overlaps the bottom of the customize panel by 102px, as in Figma.
     <section aria-label="Why Bake my App" className="relative -mt-[calc(102*var(--u))]">
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
-      <div className="-mt-px bg-primary">
+      <div data-nav-theme="dark" className="-mt-px bg-primary">
         <div
           className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(64*var(--m),160*var(--u))] ${GAP[80]}`}
         >
@@ -46,7 +46,7 @@ export function Values() {
               </div>
             ))}
           </div>
-          <CtaPair tone="purple" size="lg" />
+          <CtaPair tone="purple" size="lg" note="No card needed. Cancel anytime." />
         </div>
       </div>
       <img

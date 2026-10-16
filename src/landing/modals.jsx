@@ -44,7 +44,7 @@ function Modal({ label, onClose, className = '', children }) {
   return (
     <div className="landing-page fixed inset-0 z-[100] overflow-y-auto bg-black/60 font-sans text-ink backdrop-blur-sm">
       <div
-        className="flex min-h-full items-center justify-center px-4 pt-32 pb-6 lg:py-[calc(140*var(--px))]"
+        className="flex min-h-full items-center justify-center px-4 pt-16 pb-6 sm:pt-32 lg:py-[calc(140*var(--px))]"
         onMouseDown={(e) => e.target === e.currentTarget && onClose()}
       >
         <div
@@ -53,7 +53,7 @@ function Modal({ label, onClose, className = '', children }) {
           aria-modal="true"
           aria-label={label}
           tabIndex={-1}
-          className={`relative rounded-[calc(40*var(--px))] bg-white shadow-[0_calc(20*var(--px))_calc(60*var(--px))_rgba(0,0,0,0.3)] outline-none ${className}`}
+          className={`relative rounded-3xl sm:rounded-[calc(40*var(--px))] bg-white shadow-[0_calc(20*var(--px))_calc(60*var(--px))_rgba(0,0,0,0.3)] outline-none ${className}`}
         >
           {children}
         </div>
@@ -68,7 +68,7 @@ function CloseButton({ onClose, className }) {
       type="button"
       onClick={onClose}
       aria-label="Close"
-      className={`absolute z-10 size-[calc(32*var(--px))] transition-opacity hover:opacity-60 ${className}`}
+      className={`absolute z-10 size-6 sm:size-[calc(32*var(--px))] transition-opacity hover:opacity-60 ${className}`}
     >
       <img src={asset('promo/close.svg')} alt="" width={32} height={32} className="size-full" />
     </button>
@@ -90,9 +90,9 @@ function PromoModal({ onClose }) {
     <Modal
       label="First month free offer"
       onClose={onClose}
-      className="flex w-[min(calc(500*var(--px)),100%)] flex-col gap-10 px-10 pt-[calc(120*var(--px))] pb-10"
+      className="flex w-[min(calc(500*var(--px)),calc(100vw-32px))] max-w-[340px] flex-col gap-5 px-6 pt-16 pb-6 sm:max-w-none sm:gap-10 sm:px-10 sm:pt-[calc(120*var(--px))] sm:pb-10"
     >
-      <CloseButton onClose={onClose} className="top-[calc(30*var(--px))] right-[calc(30*var(--px))]" />
+      <CloseButton onClose={onClose} className="top-3 right-3 sm:top-[calc(30*var(--px))] sm:right-[calc(30*var(--px))]" />
       {/* Waving mascot pokes out above the card (217×218 in Figma). */}
       <img
         src={asset('promo/mascot.png')}
@@ -100,13 +100,13 @@ function PromoModal({ onClose }) {
         aria-hidden="true"
         width={217}
         height={218}
-        className="pointer-events-none absolute top-[calc(-106*var(--px))] left-[calc(50%-0.5*var(--px))] h-[calc(218*var(--px))] w-[calc(217*var(--px))] max-w-none -translate-x-1/2 object-contain select-none"
+        className="pointer-events-none absolute top-[-56px] left-1/2 h-[120px] w-[120px] -translate-x-1/2 object-contain select-none sm:top-[calc(-106*var(--px))] sm:left-[calc(50%-0.5*var(--px))] sm:h-[calc(218*var(--px))] sm:w-[calc(217*var(--px))] sm:max-w-none"
       />
-      <div className="flex w-full flex-col items-center gap-5 text-center leading-normal">
-        <h2 id={titleId} className="w-full font-malibu text-[length:calc(36*var(--px))] font-normal text-primary">
+      <div className="flex w-full flex-col items-center gap-2 sm:gap-5 text-center leading-normal">
+        <h2 id={titleId} className="w-full font-malibu text-2xl sm:text-[length:calc(36*var(--px))] leading-tight sm:leading-normal font-normal text-primary">
           first month, completely free!
         </h2>
-        <p className="w-full text-base text-ink opacity-80">
+        <p className="w-full text-sm sm:text-base text-ink opacity-80 leading-relaxed sm:leading-normal">
           Get your bakery managed and live with all the tools and perks you need—plus your first month free.
         </p>
       </div>
@@ -119,11 +119,11 @@ function PromoModal({ onClose }) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter email address"
           aria-label="Email address"
-          className="w-full rounded-full bg-primary-light px-10 py-5 text-center text-base leading-normal text-ink shadow-[inset_0_0_0_1px_white] outline-none placeholder:text-ink/40 focus-visible:shadow-[inset_0_0_0_1px_var(--color-primary)]"
+          className="w-full rounded-full bg-primary-light px-5 py-3 sm:px-10 sm:py-5 text-center text-sm sm:text-base leading-normal text-ink shadow-[inset_0_0_0_1px_white] outline-none placeholder:text-ink/40 focus-visible:shadow-[inset_0_0_0_1px_var(--color-primary)]"
         />
         <button
           type="submit"
-          className="w-full rounded-full bg-primary px-10 py-5 text-base leading-normal font-semibold text-white transition hover:brightness-110"
+          className="w-full rounded-full bg-primary px-5 py-3 sm:px-10 sm:py-5 text-sm sm:text-base leading-normal font-semibold text-white transition hover:brightness-110"
         >
           Claim Offer
         </button>

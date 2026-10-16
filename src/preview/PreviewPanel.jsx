@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { ComputerIcon, SmartPhone01Icon } from '@hugeicons/core-free-icons'
+import { Cancel01Icon, ComputerIcon, SmartPhone01Icon } from '@hugeicons/core-free-icons'
+import { navigate, ROUTES } from '../router'
 import { DESKTOP_HEIGHT, DESKTOP_WIDTH, DesktopScreen } from './DesktopScreen'
 import { getStoreSummary } from './storeSummary'
 import { CartScreen } from './CartScreen'
@@ -72,10 +73,19 @@ export function PreviewPanel({ state }) {
       aria-label="Live storefront preview"
       className="relative h-full w-[49.3%] shrink-0 overflow-hidden bg-surface"
     >
-      <div className="absolute top-10 left-1/2 flex -translate-x-1/2 items-center gap-5">
+      <div className="absolute top-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-5">
         <p className="text-xl leading-normal font-medium text-ink">Preview</p>
         <DeviceToggle device={device} onChange={setDevice} />
       </div>
+
+      <button
+        type="button"
+        aria-label="Close onboarding"
+        onClick={() => navigate(ROUTES.home)}
+        className="absolute top-[30px] right-[30px] z-10 flex size-8 items-center justify-center rounded-full text-ink transition-colors hover:bg-line focus-visible:outline-2 focus-visible:outline-primary"
+      >
+        <Icon icon={Cancel01Icon} size={24} />
+      </button>
 
       <div className="absolute inset-0 flex items-center justify-center">
         {device === 'mobile' ? (

@@ -5,61 +5,81 @@ import { MinusSignIcon } from '@hugeicons/core-free-icons'
 import { ArrowIcon, CheckCircle, Icon } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
-const FEATURES = [
-  'Custom font, images, logo, theme',
-  'Order tracking, and updates to customers',
-  'AI based offers & rewards system',
-  'Integration with your existing POS',
-  'Customizable banners & popups',
-  'SEO and enhanced suggestions',
-  'Inventory & orders management ',
-  'Loyalty wallet and rewards system',
-  'Hosted directly to your domain',
-  'Customizable upsells and featured items',
-]
-
-/*
- * First month free on the Startup and Growth plans: `regular` is the struck-through price per
- * billing period (yearly saves 50%), with `strike` the Figma strike-through line drawn over it.
- */
 const PLANS = [
   {
     name: 'Startup',
-    description: 'Ideal for neighborhood bakeries launching direct digital pre-orders and pickup.',
-    regular: { yearly: 89, monthly: 178 },
-    strike: 'pricing/strike-89.svg',
+    description: 'For a neighborhood bakery that wants to start taking direct orders.',
+    rates: { yearly: 99, monthly: 199 },
+    alternateRate: 129,
+    limited: true,
     cta: 'Start for Free',
-    features: FEATURES,
-    included: 5,
+    features: [
+      '1 location',
+      'Branded ordering website on your own domain',
+      'Kitchen order station that runs on any iPad, Android tablet or touch monitor',
+      'Apple Pay and Google Pay checkout',
+      'Basic loyalty points',
+      'Order confirmations and receipts',
+      'Basic sales dashboard',
+      '0% commission and free setup',
+      'First month free on yearly billing',
+    ],
+    included: 9,
     more: { label: 'Learn more', tone: 'text-ink' },
   },
   {
     name: 'Growth',
-    description: 'More customized and scaled up to match your growing cafe business',
-    regular: { yearly: 149, monthly: 298 },
-    strike: 'pricing/strike-149.svg',
+    description: 'For cafes ready for their own app and repeat customers.',
+    rates: { yearly: 249, monthly: 349 },
+    alternateRate: 299,
     cta: 'Start for Free',
-    features: FEATURES,
-    included: 8,
+    features: [
+      'Everything in Starter plus',
+      'Up to 3 locations',
+      'Your own branded iOS and Android app, published for you',
+      'Push notifications',
+      'Custom loyalty tiers and member perks',
+      'SMS promotions and alerts, with a monthly credit bundle',
+      'One-tap upsells at checkout',
+      'POS integration',
+      'Full live analytics: revenue, ticket size and best sellers',
+      'Priority support',
+    ],
+    included: 10,
     more: { label: 'See all 45+ features', tone: 'text-primary' },
     featured: true,
   },
   {
     name: 'Business Suite',
-    description: 'For artisan bakery groups, multi-location cafes, and commissary roasteries.',
-    price: '$$$',
-    priceNote: 'You decide the price',
+    description: 'For bakery groups, multi-location cafes and commissaries.',
+    price: { yearly: 'from $499', monthly: 'from $599' },
+    priceSuffix: '/mo',
+    priceNote: 'custom quote',
     cta: 'Get a quote',
-    // Same list, ordered as in the design, with everything included.
-    features: [0, 1, 5, 2, 3, 4, 6, 8, 7, 9].map((i) => FEATURES[i]),
-    included: 10,
+    features: [
+      'Everything in Growth plus',
+      'Unlimited locations',
+      'Apps with location picker across all branches',
+      'Central menu and pricing control for every branch',
+      'Catering, wholesale and commissary orders',
+      'Branch-by-branch analytics and shift audit logs',
+      'Custom integrations',
+      'Dedicated account manager',
+      'Launch strategy call',
+      'Addons',
+      'Extra location: $79/mo',
+      'Extra SMS credits',
+      'Gift cards',
+      'Launch marketing kit with in-store QR signage and social graphics',
+    ],
+    included: 14,
     more: { label: 'See all 66+ features', tone: 'text-primary' },
   },
 ]
 
 const BILLING = [
   { key: 'monthly', label: 'Monthly' },
-  { key: 'yearly', label: 'Yearly', badge: 'save 50%' },
+  { key: 'yearly', label: 'Yearly', badge: 'save 2 months' },
 ]
 
 function BillingToggle({ billing, onChange }) {
@@ -102,36 +122,34 @@ function BillingToggle({ billing, onChange }) {
 const PRICE = 'font-malibu text-[length:max(48*var(--m),64*var(--u))] whitespace-nowrap'
 
 function PlanPrice({ plan, billing }) {
-  const { featured, regular } = plan
-  if (!regular) {
+  const { featured, rates } = plan
+  if (!rates) {
     return (
       <div className="relative flex flex-col leading-normal">
-        <p className={`${PRICE} text-ink`}>{plan.price}</p>
+        <div className="flex items-baseline gap-1">
+          <p className={`${PRICE} text-ink`}>{plan.price[billing]}</p>
+          <span className="text-base text-ink">{plan.priceSuffix}</span>
+        </div>
         <p className="text-base text-ink opacity-80">{plan.priceNote}</p>
       </div>
     )
   }
-  const price = `$${regular[billing]}`
+  const price = `$${rates[billing]}`
   return (
     <div className="relative flex flex-col leading-normal">
-      <div className="flex items-center gap-5">
-        <p className={`${PRICE} ${featured ? 'text-primary' : 'text-ink'}`}>FREE</p>
-        <p className={`relative ${PRICE} text-dash`}>
-          <span className="sr-only">instead of </span>
-          {price}
-          <img
-            src={asset(plan.strike)}
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute top-[calc(50%+3*var(--px))] left-0 h-[calc(4*var(--px))] w-full -translate-y-1/2"
-          />
-        </p>
-        <span className="-ml-0.5 shrink-0 rounded-[calc(4*var(--px))] bg-[#ea0101] px-1 py-0.5 text-[length:calc(10*var(--px))] leading-normal font-bold tracking-[calc(0.6*var(--px))] whitespace-nowrap text-white">
-          LIMITED TIME!
-        </span>
+      <div className="flex items-center gap-2">
+        <p className={`${PRICE} ${featured ? 'text-primary' : 'text-ink'}`}>{price}</p>
+        <span className="text-base text-ink">/mo</span>
+        {plan.limited && (
+          <span className="shrink-0 rounded-[calc(4*var(--px))] bg-[#ea0101] px-1 py-0.5 text-[length:calc(10*var(--px))] leading-normal font-bold tracking-[calc(0.6*var(--px))] whitespace-nowrap text-white">
+            LIMITED TIME!
+          </span>
+        )}
       </div>
       <p className="text-base text-ink opacity-80">
-        For first month, then {price}/mo billed {billing}
+        {billing === 'yearly'
+          ? `billed yearly, or $${plan.alternateRate} month to month`
+          : `billed month to month, or $${plan.rates.yearly}/mo billed yearly`}
       </p>
     </div>
   )
@@ -158,7 +176,7 @@ function PlanCard({ plan, billing }) {
       </div>
       <PlanPrice plan={plan} billing={billing} />
       <Link
-        to={plan.regular ? ROUTES.app : ROUTES.comingSoon}
+        to={plan.rates ? ROUTES.app : ROUTES.comingSoon}
         className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'
@@ -209,8 +227,7 @@ function ContactExpert() {
         <div className="flex min-w-px flex-1 flex-col gap-2.5 text-ink">
           <h3 className="text-[length:max(20*var(--m),24*var(--u))] leading-normal font-bold">Not sure what to choose?</h3>
           <p className="text-[length:max(16*var(--m),20*var(--u))] leading-[1.6] opacity-80">
-            Our experts will help you find the right plan for your bakery business, whether you’re just starting out,
-            growing, or scaling up. Reach out.
+            Tell us about your shop and we&apos;ll point you to the right plan. No sales pitch.
           </p>
         </div>
       </div>
@@ -218,7 +235,7 @@ function ContactExpert() {
         to={ROUTES.comingSoon}
         className="shrink-0 rounded-full bg-primary px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))] text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap text-white transition hover:brightness-110"
       >
-        Contact an expert
+        Help me pick a plan
       </Link>
     </div>
   )
@@ -230,7 +247,7 @@ function Title() {
     <h2 className={TYPE.h2}>
       baked to g<span className="text-[1.09375em]">r</span>
       <span className="text-[1.1875em]">o</span>
-      <span className="text-[1.28125em]">w</span>
+      <span className="text-[1.28125em]">w</span>, priced to stay fair
     </h2>
   )
 }
@@ -243,7 +260,7 @@ export function Pricing() {
         <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink ${GAP[30]}`}>
           <Title />
           <p className={TYPE.body}>
-            Free implementation. Fair flat monthly fees. No order commissions, no hidden percentages, and no long-term contracts.
+            Free setup. Flat monthly fee. 0% commission. Cancel anytime.
           </p>
         </div>
         <BillingToggle billing={billing} onChange={setBilling} />

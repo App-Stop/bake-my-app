@@ -39,15 +39,14 @@ export const DEFAULT_SETTINGS = {
 }
 
 export const INITIAL_STATE = {
-  step: 0,
   launched: false,
   shop: {
     name: 'Ross Bakers Co.',
     tagline: 'Freshly baked goods',
     logo: null, // data URL
     address: '742 Evergreen Terrace, Springfield',
-    phone: '+1 555-321-8876',
-    email: 'hello@rossbakers.co',
+    phone: '3141 Texas, US',
+    email: 'contact@rossbakers.com',
   },
   brandColor: DEFAULT_BRAND_COLOR,
   menu: {
@@ -129,7 +128,6 @@ export function useOnboardingState({ persist = true, initial = INITIAL_STATE } =
   }, [state, persist])
 
   const actions = {
-    goTo: (step) => setState((s) => ({ ...s, step })),
     updateShop: (patch) => setState((s) => ({ ...s, shop: { ...s.shop, ...patch } })),
     setBrandColor: (brandColor) => setState((s) => ({ ...s, brandColor })),
     setCategory: (category) => setState((s) => ({ ...s, menu: { ...s.menu, category } })),

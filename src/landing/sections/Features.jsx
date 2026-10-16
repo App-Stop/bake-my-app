@@ -6,20 +6,20 @@ const FEATURES = [
   {
     image: 'feature-points.png',
     alt: 'Loyalty wallet with earned points and milestones',
-    title: 'Points that bring them back.',
-    text: 'Keep customers coming back with points, personalized deals, and exclusive member perks.',
+    title: 'Points that pull them back.',
+    text: 'Rewards, personal deals and member-only perks.',
   },
   {
     image: 'feature-ordering.png',
     alt: 'Product page and delivered order confirmation',
-    title: 'Easy & Simple Ordering',
-    text: 'Let customers browse your menu and place orders directly from their phone — anytime, anywhere.',
+    title: 'Ordering in a few taps.',
+    text: 'Browse, pick and pay, from anywhere, anytime.',
   },
   {
     image: 'feature-alerts.png',
     alt: 'Promotional push notifications on a lock screen',
-    title: 'SMS / Alerts Updates',
-    text: "Send targeted promotions and real-time updates straight to your customers' phones.",
+    title: 'Texts that fill tables.',
+    text: 'Send a quick SMS about a slow-afternoon deal or a fresh batch.',
   },
 ]
 
@@ -47,11 +47,8 @@ export function Features() {
       <div
         className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
       >
-        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink ${GAP[30]}`}>
-          <h2 className={`lg:whitespace-nowrap ${TYPE.h2}`}>features customers love</h2>
-          <p className={TYPE.body}>
-            Every screen is designed to make ordering easy, earn repeat visits, and keep your customers informed.
-          </p>
+        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-primary ${GAP[30]}`}>
+          <h2 className={`lg:whitespace-nowrap ${TYPE.h2}`}>built for the regulars you already have</h2>
         </div>
 
         <div className="grid w-full grid-cols-1 items-center gap-5 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">
@@ -70,9 +67,8 @@ export function Features() {
           >
             <div className="flex flex-col gap-5 px-[calc(30*var(--px))] py-4 md:flex-row md:items-center md:gap-[max(24*var(--m),120*var(--u))]">
               <div className="min-w-0 flex-1">
-                <CardText title="All the same perks, on the web too" align="left">
-                  Customers get all the perks of mobile ordering on the web too — including easy ordering, points,
-                  and rewards.
+                <CardText title="The web gets it all too" align="left">
+                  Website customers earn the same points and rewards.
                 </CardText>
               </div>
               <Pill to={ROUTES.app} size="sm" className="self-start md:self-auto">
@@ -83,9 +79,8 @@ export function Features() {
 
           <Card image="feature-upsells.png" alt="Cart with suggested add-ons">
             <div className="p-4">
-              <CardText title="Upsells that feel helpful.">
-                Customers easily add caramel sauce, extra espresso, or seasonal pastries with one tap before
-                checkout.
+              <CardText title="Upsells that feel helpful">
+                Extra shot? Caramel drizzle? Added with one tap at checkout.
               </CardText>
             </div>
           </Card>

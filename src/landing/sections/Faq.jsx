@@ -6,23 +6,23 @@ import { Icon, Pill } from '../ui'
 // Only the first answer exists in Figma; the rest restate what the page already promises.
 const FAQS = [
   {
-    q: 'What is included with my branded ordering app?',
-    a: 'You get a white-label iOS and Android app with your logo, colors, menu, secure checkout, loyalty rewards, push notifications, and real-time order tracking. It connects with your web storefront, kitchen order station, and business dashboard so every order stays in sync.',
+    q: 'What do I actually get?',
+    a: 'Your own branded ordering website and kitchen screen. Growth adds your own iOS and Android apps. Everything comes with checkout, loyalty and live order tracking, and it all stays in sync.',
   },
   {
-    q: 'How quickly can Bake my App launch my ordering system?',
+    q: 'How fast can I go live?',
     a: 'Most cafés go live within 48 hours. Send us your menu, logo, and photos — we set up your mobile apps, configure your web storefront, and handle the App Store and Google Play submissions for you.',
   },
   {
-    q: 'Do you charge commission on customer orders?',
+    q: 'Do you take a cut of my orders?',
     a: 'No. You pay a flat monthly fee and keep 100% of every order. There are no order commissions, hidden percentages, or long-term contracts.',
   },
   {
-    q: 'Can Bake my App work with my existing POS and hardware?',
+    q: 'Will it work with my POS and iPad?',
     a: 'Yes. The kitchen order station runs on any iPad, Android tablet, or touch monitor you already own, and our plans include integration with your existing POS — no proprietary hardware leases.',
   },
   {
-    q: 'Can I manage multiple bakery or café locations from one place?',
+    q: 'I have more than one location. Can I manage them all?',
     a: 'Yes. The business dashboard shows every branch side by side — live revenue, orders, stock, and fleet health — so you can run all your locations from one login.',
   },
 ]
@@ -66,7 +66,7 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
-    <section aria-labelledby="faq-title" className="mt-[max(80*var(--m),130*var(--u))]">
+    <section id="faq" aria-labelledby="faq-title" className="mt-[max(80*var(--m),130*var(--u))]">
       <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-[max(20*var(--m),160*var(--u))] lg:flex-row lg:gap-[calc(70*var(--u))]">
         <div className="flex min-w-px flex-1 flex-col gap-[max(32*var(--m),60*var(--u))]">
           <div className="flex flex-col gap-2.5 text-ink">

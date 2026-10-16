@@ -69,11 +69,11 @@ export function Pill({ to, onClick, variant = 'primary', size = 'md', arrow = fa
 }
 
 /** "Launch Demo" CTA: opens the "preview a demo" picker. */
-export function DemoPill(props) {
+export function DemoPill({ label = 'Launch Demo', ...props }) {
   const { openDemo } = useModals()
   return (
     <Pill {...props} onClick={openDemo} arrow>
-      Launch Demo
+      {label}
     </Pill>
   )
 }
@@ -82,7 +82,15 @@ export function DemoPill(props) {
  * "Get …" CTA (web app onboarding) + "Launch Demo" (demo picker), as used in every section, with the
  * "FIRST MONTH FREE*" note underneath (left aligned, or centered with `align="center"`).
  */
-export function CtaPair({ label = 'Get your App', tone = 'light', size = 'md', align = 'start', demoClassName = '' }) {
+export function CtaPair({
+  label = 'Bake my app free for a month',
+  demoLabel = 'Try a live bakery app',
+  note = 'FIRST MONTH FREE*',
+  tone = 'light',
+  size = 'md',
+  align = 'start',
+  demoClassName = '',
+}) {
   const onPurple = tone === 'purple'
   const centered = align === 'center'
   return (
@@ -91,10 +99,10 @@ export function CtaPair({ label = 'Get your App', tone = 'light', size = 'md', a
         <Pill to={ROUTES.app} variant={onPurple ? 'white' : 'primary'} size={size}>
           {label}
         </Pill>
-        <DemoPill variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />
+        <DemoPill label={demoLabel} variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />
       </div>
       <p className={`text-base leading-normal italic opacity-80 ${tone === 'light' ? 'text-ink' : 'text-white'}`}>
-        FIRST MONTH FREE*
+        {note}
       </p>
     </div>
   )

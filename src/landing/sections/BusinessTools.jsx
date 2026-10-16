@@ -16,14 +16,85 @@ const TABS = [
   { id: 'customization', label: 'Customization', icon: PaintBoardIcon },
 ]
 
-const HIGHLIGHTS = [
-  'Live revenue metrics with month-over-month growth trends',
-  'See which category item is selling more',
-  'Shift audit logs, monitoring and live data analytics',
-]
+const TAB_CONTENT = {
+  analytics: {
+    title: 'know your numbers before your coffee cools',
+    description:
+      "See today's sales, average ticket and best sellers live, from your laptop, iPad or phone. Run one shop or ten from a single login.",
+    highlights: [
+      'Live revenue, with month-over-month trends',
+      'Your top sellers by category, so you know what to bake more of',
+      'Shift logs and branch-by-branch results',
+    ],
+    label: 'See my sales live',
+    demoLabel: 'Try admin portal',
+    image: 'manage-dashboard.png',
+    alt: 'Business dashboard showing live revenue, orders and branch health',
+  },
+  branches: {
+    title: 'Manage 1 location or 10 from one screen.',
+    description:
+      'Run Downtown Bakery, West End Branch, or your catering kitchen from a single dashboard. See performance by location and route customer delivery orders automatically to the nearest oven.',
+    highlights: [
+      'Live location status and daily sales per branch',
+      'Automatic geo-routing to the closest branch',
+      'Branch-specific staff credentials and kitchen displays',
+    ],
+    label: 'Get for your Business',
+    demoLabel: 'Launch Demo',
+    image: 'business-tools-branches.svg',
+    alt: 'Multi-branch dashboard showing location status, sales, active orders and performance',
+  },
+  orders: {
+    title: 'Track orders from placement to doorstep.',
+    description:
+      'Complete oversight over every customer order. Filter between active, completed, and canceled tickets. See customer contact info, delivery address, and payment method in one clean table.',
+    highlights: [
+      'Quick status updates: Preparing, Ready, Dispatched, Delivered',
+      'Card vs. Cash indicator for delivery drivers',
+      'Search receipts by customer name or order number instantly',
+    ],
+    label: 'Get for your Business',
+    demoLabel: 'Launch Demo',
+    image: 'business-tools-orders.svg',
+    alt: 'Order management dashboard showing revenue, branch totals and customer orders',
+  },
+  customization: {
+    title: "Full control over your bakery's digital store.",
+    description:
+      'Set up your shop in minutes. Pick your brand color (#C15400), set weekly business hours for each day, define delivery radiuses, and toggle audible kitchen chimes for incoming orders.',
+    highlights: [
+      'Upload your logo and choose custom brand colors',
+      'Set weekly opening hours and holiday schedules',
+      'Configure delivery boundaries and minimum order amounts',
+    ],
+    label: 'Get for your Business',
+    demoLabel: 'Launch Demo',
+    image: 'business-tools-customization.svg',
+    alt: 'Bakery customization dashboard showing store details, hours and order settings',
+  },
+}
 
 export function BusinessTools() {
   const [active, setActive] = useState(TABS[0].id)
+  const content = TAB_CONTENT[active]
+
+  const handleTabKeyDown = (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+
+    event.preventDefault()
+    const currentIndex = TABS.findIndex((tab) => tab.id === active)
+    const nextIndex =
+      event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? TABS.length - 1
+          : (currentIndex + (event.key === 'ArrowRight' ? 1 : -1) + TABS.length) % TABS.length
+    const nextTab = TABS[nextIndex]
+
+    setActive(nextTab.id)
+    document.getElementById(`business-tab-${nextTab.id}`)?.focus()
+  }
 
   return (
     <section
@@ -49,8 +120,12 @@ export function BusinessTools() {
                 key={tab.id}
                 type="button"
                 role="tab"
+                id={`business-tab-${tab.id}`}
+                aria-controls="business-tools-panel"
                 aria-selected={selected}
+                tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab.id)}
+                onKeyDown={handleTabKeyDown}
                 className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[calc(60*var(--px))] px-3 py-5 text-[length:max(16*var(--m),20*var(--u))] leading-normal whitespace-nowrap transition-colors ${
                   selected ? 'bg-primary-light font-semibold text-primary' : 'font-medium text-body hover:bg-primary-light/50'
                 }`}
@@ -65,28 +140,33 @@ export function BusinessTools() {
           })}
         </div>
 
-        <div className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-[4.024%]">
+        <div
+          id="business-tools-panel"
+          role="tabpanel"
+          aria-labelledby={`business-tab-${active}`}
+          className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-[4.024%]"
+        >
           <div className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
-            <div className="flex flex-col gap-4 leading-normal text-ink">
-              <h3 className="text-[length:max(28*var(--m),40*var(--u))] font-bold">Daily revenue &amp; item velocity at a glance.</h3>
+            <div className="flex flex-col gap-4 leading-normal text-ink lg:min-h-[calc(226*var(--u))]">
+              <h3 className="text-[length:max(28*var(--m),40*var(--u))] font-bold">{content.title}</h3>
               <p className="text-[length:max(16*var(--m),20*var(--u))] font-medium">
-                Check your numbers in real time. Know your gross sales ($1,247.50 today), average ticket size, and
-                exactly how many classic butter croissants and caramel macchiatos were sold.
+                {content.description}
               </p>
             </div>
             <ul className="flex flex-col gap-4">
-              {HIGHLIGHTS.map((text) => (
+              {content.highlights.map((text) => (
                 <li key={text} className="flex items-center gap-2.5">
                   <CheckCircle className="size-[max(24*var(--m),32*var(--u))]" />
                   <span className="text-[length:max(16*var(--m),20*var(--u))] leading-normal font-semibold text-ink">{text}</span>
                 </li>
               ))}
             </ul>
-            <CtaPair label="Get for your business" />
+            <CtaPair label={content.label} demoLabel={content.demoLabel} />
           </div>
           <img
-            src={asset('manage-dashboard.png')}
-            alt="Business dashboard showing revenue, orders and branch health"
+            key={content.image}
+            src={asset(content.image)}
+            alt={content.alt}
             loading="lazy"
             className="h-auto w-full lg:w-[49.39%]"
           />

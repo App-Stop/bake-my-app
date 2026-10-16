@@ -136,3 +136,44 @@
     animation: none;
   }
 }
+
+/* Landing savings calculator: native range behavior with the Figma track and thumb treatment. */
+.cost-calculator-range {
+  width: 100%;
+  height: calc(16 * var(--px));
+  appearance: none;
+  border: calc(1 * var(--px)) solid var(--color-line-strong);
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary) 0%,
+    var(--color-primary) var(--range-progress),
+    white var(--range-progress),
+    white 100%
+  );
+  cursor: pointer;
+}
+
+.cost-calculator-range::-webkit-slider-thumb {
+  width: calc(28 * var(--px));
+  height: calc(28 * var(--px));
+  appearance: none;
+  border: calc(4 * var(--px)) solid white;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 6px rgb(0 0 0 / 25%);
+}
+
+.cost-calculator-range::-moz-range-thumb {
+  width: calc(20 * var(--px));
+  height: calc(20 * var(--px));
+  border: calc(4 * var(--px)) solid white;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 6px rgb(0 0 0 / 25%);
+}
+
+.cost-calculator-range:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 5px;
+}

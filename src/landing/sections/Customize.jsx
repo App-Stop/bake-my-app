@@ -82,6 +82,7 @@ export function Customize() {
   const [draft, setDraft] = useState(null)
   const [device, setDevice] = useState('mobile')
   const stageRef = useRef(null)
+  const colorInputRef = useRef(null)
   const stage = STAGES[device]
   const scale = useFitScale(stageRef, stage.width)
 
@@ -111,11 +112,9 @@ export function Customize() {
         >
           <div className={`flex flex-col ${GAP[40]}`}>
             <div className={`flex flex-col text-ink ${GAP[30]}`}>
-              <h2 className={TYPE.h2}>Customize your way</h2>
+              <h2 className={TYPE.h2}>it should look like your cafe, not ours</h2>
               <p className={TYPE.body}>
-                Customize every part of your app to match your café—from colors, fonts, and icons to menus, loyalty
-                rewards, notifications, and more. Make it completely your own and create an experience your
-                customers will love.
+                Your colors, fonts, icon, menu, rewards and notifications. Everything matches your brand.
               </p>
             </div>
 
@@ -139,7 +138,28 @@ export function Customize() {
               <div className="flex flex-col gap-2.5">
                 <p className="text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-ink">Custom</p>
                 <div className="flex items-start gap-2.5">
-                  <Swatch hex={color} label="Custom color" selected={customSelected} onSelect={choose} />
+                  <button
+                    type="button"
+                    aria-label="Open color picker"
+                    title="Pick a custom color"
+                    onClick={() => colorInputRef.current?.click()}
+                    style={{ backgroundColor: color }}
+                    className={`relative flex size-[max(48*var(--m),68*var(--u))] shrink-0 items-center justify-center rounded-full shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-transform hover:scale-[1.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                      customSelected ? 'border-2 border-ink' : ''
+                    }`}
+                  >
+                    {customSelected && (
+                      <HugeiconsIcon icon={Tick02Icon} size={32} strokeWidth={2.5} color={readableTextOn(color)} className="size-[47%]" />
+                    )}
+                    <input
+                      ref={colorInputRef}
+                      type="color"
+                      tabIndex={-1}
+                      value={color}
+                      onChange={(e) => choose(e.target.value)}
+                      className="pointer-events-none absolute inset-0 size-full opacity-0"
+                    />
+                  </button>
                   <label
                     className={`flex w-[calc(200*var(--px))] flex-col justify-center gap-1 rounded-full border bg-white px-5 pt-2.5 pb-3 leading-normal transition-colors focus-within:border-primary ${
                       hexValid ? 'border-line' : 'border-[#f30000]'
@@ -165,7 +185,7 @@ export function Customize() {
               </div>
             </div>
           </div>
-          <CtaPair label="Get Customized App" />
+          <CtaPair label="Make it look like my cafe" demoLabel="Try it live" />
         </div>
 
         {/* Live preview; the gray panel bleeds to the right edge on wide screens. */}
