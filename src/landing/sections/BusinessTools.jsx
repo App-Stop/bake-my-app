@@ -10,10 +10,30 @@ import { CheckCircle, CtaPair, Deco } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
 const TABS = [
-  { id: 'analytics', label: 'Live Analytics', icon: ChartColumnBigIcon },
-  { id: 'branches', label: 'Multi-Branch Fleet', icon: Store01Icon },
-  { id: 'orders', label: 'Manage Orders', icon: PackagingIcon },
-  { id: 'customization', label: 'Customization', icon: PaintBoardIcon },
+  {
+    id: 'analytics',
+    label: 'Live Analytics',
+    icon: ChartColumnBigIcon,
+    filledIcon: 'business-tools-analytics-filled.svg',
+  },
+  {
+    id: 'branches',
+    label: 'Multi-Branch Fleet',
+    icon: Store01Icon,
+    filledIcon: 'business-tools-branches-filled.svg',
+  },
+  {
+    id: 'orders',
+    label: 'Manage Orders',
+    icon: PackagingIcon,
+    filledIcon: 'business-tools-orders-filled.svg',
+  },
+  {
+    id: 'customization',
+    label: 'Customization',
+    icon: PaintBoardIcon,
+    filledIcon: 'business-tools-customization-filled.svg',
+  },
 ]
 
 const TAB_CONTENT = {
@@ -130,7 +150,21 @@ export function BusinessTools() {
                   selected ? 'bg-primary-light font-semibold text-primary' : 'font-medium text-body hover:bg-primary-light/50'
                 }`}
               >
-                <HugeiconsIcon icon={tab.icon} size={32} color="currentColor" className="size-[max(24*var(--m),32*var(--u))] shrink-0" />
+                {selected ? (
+                  <img
+                    src={asset(tab.filledIcon)}
+                    alt=""
+                    aria-hidden="true"
+                    className="size-[max(24*var(--m),32*var(--u))] shrink-0"
+                  />
+                ) : (
+                  <HugeiconsIcon
+                    icon={tab.icon}
+                    size={32}
+                    color="currentColor"
+                    className="size-[max(24*var(--m),32*var(--u))] shrink-0"
+                  />
+                )}
                 {tab.label}
                 {selected && (
                   <span className="absolute top-[calc(50%+35*var(--px))] left-0 h-0.5 w-[67.82%] -translate-y-1/2 bg-primary" />

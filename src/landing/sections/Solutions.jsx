@@ -69,6 +69,7 @@ function KitchenStation() {
   return (
     <section
       aria-labelledby="kitchen-title"
+      data-nav-theme="dark"
       className="relative mt-[max(64*var(--m),153*var(--u))] overflow-hidden"
     >
       {/* Photo export already includes the 20% brand-purple overlay from Figma. */}
@@ -120,13 +121,13 @@ function KitchenStation() {
               src={asset('kitchen-note-stock.svg')}
               alt=""
               aria-hidden="true"
-              className="absolute top-[80.11%] left-[78.23%] hidden h-auto w-[17.01%] lg:block"
+              className="absolute top-[73.11%] left-[78.23%] hidden h-auto w-[17.01%] lg:block"
             />
             <img
               src={asset('kitchen-note-orders.svg')}
               alt=""
               aria-hidden="true"
-              className="absolute top-[103.17%] left-[29.19%] hidden h-auto w-[22.32%] lg:block"
+              className="absolute top-[95.17%] left-[29.19%] hidden h-auto w-[22.32%] lg:block"
             />
           </div>
         </div>
@@ -142,7 +143,7 @@ export function Solutions() {
         <Deco src="deco-croissant.svg" x={58} y={-142} />
         <Deco src="deco-donut.svg" x={1163} y={-184} />
         <Deco src="deco-biscuit.svg" x={1703} y={700} />
-        <Deco src="deco-bread.svg" x={204.18} y={730} size={100.19} rotate={12.5} />
+        <Deco src="deco-bread.svg" x={204.18} y={830} size={100.19} rotate={12.5} />
         <div className={`relative flex flex-col gap-[max(80*var(--m),174*var(--u))] ${CONTAINER}`}>
           <CustomerApp />
           <CustomerWebsite />

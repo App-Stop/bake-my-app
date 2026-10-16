@@ -1,98 +1,12 @@
-import { useEffect, useState } from 'react'
-import { Link } from '../../components/Link'
-import { ROUTES } from '../../router'
 import { CtaPair } from '../ui'
 import { GAP, TYPE, asset } from '../styles'
-
-const NAV_LINKS = [
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Business Tools', href: '#business-tools' },
-  { label: 'Customize', href: '#customize' },
-  { label: 'Contact Us', href: '#faq' },
-]
-
-function Nav() {
-  const [isDark, setIsDark] = useState(true)
-
-  useEffect(() => {
-    const checkTheme = () => {
-      const elements = document.querySelectorAll('[data-nav-theme]')
-      const navY = 40
-      let activeTheme = 'light'
-      for (const el of elements) {
-        const rect = el.getBoundingClientRect()
-        if (rect.top <= navY && rect.bottom >= navY) {
-          activeTheme = el.getAttribute('data-nav-theme') || 'light'
-          break
-        }
-      }
-      setIsDark(activeTheme === 'dark')
-    }
-
-    checkTheme()
-    window.addEventListener('scroll', checkTheme, { passive: true })
-    window.addEventListener('resize', checkTheme, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', checkTheme)
-      window.removeEventListener('resize', checkTheme)
-    }
-  }, [])
-
-  return (
-    <nav
-      aria-label="Main"
-      className={`fixed top-2.5 left-1/2 z-50 flex w-[min(calc(1211*var(--px)),calc(100%-32px))] -translate-x-1/2 items-center justify-between rounded-[calc(60*var(--px))] px-5 py-[calc(15*var(--px))] transition-all duration-300 backdrop-blur-xl ${
-        isDark
-          ? 'bg-[#2D2D2D]/10 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] backdrop-saturate-150'
-          : 'bg-white/80 shadow-[0_4px_24px_rgba(0,0,0,0.08),inset_0_0_0_1px_rgba(0,0,0,0.08)]'
-      }`}
-    >
-      <Link to={ROUTES.home} aria-label="Bake my App home" className="shrink-0">
-        <img
-          src={asset(isDark ? 'logo-nav.svg' : 'logo-nav-dark.svg')}
-          alt="Bake my App"
-          width={111}
-          height={51}
-          className="h-[calc(51*var(--px))] w-[calc(111*var(--px))]"
-        />
-      </Link>
-      <ul
-        className={`hidden items-center gap-[max(28*var(--m),60*var(--u))] text-base leading-normal font-medium whitespace-nowrap transition-colors duration-300 lg:flex ${
-          isDark ? 'text-white' : 'text-ink'
-        }`}
-      >
-        {NAV_LINKS.map((link) => (
-          <li key={link.href}>
-            <a
-              href={link.href}
-              className={`transition-colors ${
-                isDark ? 'hover:opacity-75' : 'hover:text-primary'
-              }`}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <Link
-        to={ROUTES.app}
-        className={`shrink-0 rounded-full px-5 py-2.5 text-base leading-normal font-bold whitespace-nowrap transition-all duration-300 ${
-          isDark
-            ? 'bg-white text-primary hover:bg-white/90'
-            : 'bg-primary text-white hover:brightness-110 shadow-sm'
-        }`}
-      >
-        Start for Free
-      </Link>
-    </nav>
-  )
-}
+import { SiteNav } from '../SiteNav'
 
 export function Hero() {
   return (
     <>
       <header data-nav-theme="dark" className="relative overflow-hidden bg-primary">
-        <Nav />
+        <SiteNav />
         <div className="relative mx-auto max-w-[1920px] pt-[max(96*var(--m),140*var(--u))]">
           {/* Devices strip (1920×544 in Figma). Phones show its middle 800px; md+ shows it all. */}
           <div className="relative aspect-[800/544] md:aspect-[1920/544]">
