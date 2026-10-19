@@ -216,7 +216,7 @@ export function OnboardingScreen({ state, actions }) {
         <div className="flex items-center justify-end gap-2.5 pb-[30px]">
           <button
             type="button"
-            onClick={actions.launch}
+            onClick={() => navigate(ROUTES.demoAdmin)}
             className="rounded-full px-5 py-4 text-base font-semibold text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
           >
             Skip for now
