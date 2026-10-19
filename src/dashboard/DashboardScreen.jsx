@@ -45,7 +45,7 @@ const NAV_ITEMS = [
 ]
 
 /** `className` sizes the screen: the full viewport by default, `h-full` inside a demo frame. */
-export function DashboardScreen({ state, actions, onEdit, onStartOver, className = 'h-screen' }) {
+export function DashboardScreen({ state, actions, onEdit, onStartOver, className = 'h-screen', sidebarLogo }) {
   const [activeNav, setActiveNav] = useState('overview')
   const [activeTimeRange, setActiveTimeRange] = useState('7d')
   const [showUserMenu, setShowUserMenu] = useState(false)
@@ -121,23 +121,27 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
       <aside className="flex w-[230px] lg:w-[260px] min-w-[230px] lg:min-w-[260px] flex-col justify-between border-r border-[#f0ece9] bg-white px-3.5 lg:px-5 py-5 lg:py-8 shrink-0">
         <div className="flex flex-col gap-6 lg:gap-10">
           {/* Shop branding */}
-          <div className="flex w-full items-center gap-2.5">
-            <div className="flex size-10 lg:size-[46px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-on-brand shadow-sm">
-              {state.shop?.logo ? (
-                <img src={state.shop.logo} alt="" className="size-full object-contain p-1.5" />
-              ) : (
-                <HugeiconsIcon icon={CroissantIcon} size={28} color="currentColor" />
-              )}
+          {sidebarLogo ? (
+            <img src={sidebarLogo} alt="Bake My App" className="w-36 object-contain" />
+          ) : (
+            <div className="flex w-full items-center gap-2.5">
+              <div className="flex size-10 lg:size-[46px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-on-brand shadow-sm">
+                {state.shop?.logo ? (
+                  <img src={state.shop.logo} alt="" className="size-full object-contain p-1.5" />
+                ) : (
+                  <HugeiconsIcon icon={CroissantIcon} size={28} color="currentColor" />
+                )}
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col">
+                <p className="truncate text-base font-semibold leading-tight text-ink" title={shopName}>
+                  {shopName}
+                </p>
+                <p className="truncate text-xs text-muted" title={shopTagline}>
+                  {shopTagline}
+                </p>
+              </div>
             </div>
-            <div className="flex min-w-0 flex-1 flex-col">
-              <p className="truncate text-base font-semibold leading-tight text-ink" title={shopName}>
-                {shopName}
-              </p>
-              <p className="truncate text-xs text-muted" title={shopTagline}>
-                {shopTagline}
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Navigation */}
           <nav className="flex flex-col gap-2">

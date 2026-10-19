@@ -3,21 +3,11 @@ import { readableTextOn } from '../../lib/color'
 import { INITIAL_STATE, useOnboardingState } from '../../onboarding/useOnboardingState'
 import { ROUTES, navigate } from '../../router'
 import { DemoPage, DemoWindow } from './DemoShell'
-import logoUrl from '/landing/demo/logo-mark.svg'
+import logoUrl from '../../assets/logo.svg'
 
 // A launched sample store in Bake my App purple; the demo never reads or writes the visitor's own
 // onboarding progress.
-const DEMO_STATE = {
-  ...INITIAL_STATE,
-  brandColor: '#554cf1',
-  launched: true,
-  shop: {
-    ...INITIAL_STATE.shop,
-    name: 'Bake My App',
-    tagline: 'Your bakery, online in 48h',
-    logo: logoUrl,
-  },
-}
+const DEMO_STATE = { ...INITIAL_STATE, brandColor: '#554cf1', launched: true }
 
 const BRAND_VARS = {
   '--brand': DEMO_STATE.brandColor,
@@ -42,6 +32,7 @@ export function AdminDemo() {
             onEdit={() => navigate(ROUTES.app)}
             onStartOver={actions.reset}
             className="h-full"
+            sidebarLogo={logoUrl}
           />
         </div>
       </DemoWindow>
