@@ -174,6 +174,9 @@ export function BusinessTools() {
                     src={asset(tab.filledIcon)}
                     alt=""
                     aria-hidden="true"
+                    width={32}
+                    height={32}
+                    loading="lazy"
                     className="size-5 shrink-0 lg:size-[max(24*var(--m),32*var(--u))]"
                   />
                 ) : (

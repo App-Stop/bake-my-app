@@ -141,8 +141,8 @@ function PromoModal({ onClose, closing, onClosed }) {
         src={asset('promo/mascot.webp')}
         alt=""
         aria-hidden="true"
-        width={217}
-        height={218}
+        width={490}
+        height={492}
         loading="lazy"
         className="pointer-events-none absolute top-[-56px] left-1/2 h-[120px] w-[120px] -translate-x-1/2 object-contain select-none sm:top-[calc(-106*var(--px))] sm:left-[calc(50%-0.5*var(--px))] sm:h-[calc(218*var(--px))] sm:w-[calc(217*var(--px))] sm:max-w-none"
       />

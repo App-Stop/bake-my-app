@@ -250,8 +250,8 @@ export function ContactPage() {
 
   return (
     <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
-      <header data-nav-theme="dark" className="relative h-[max(390px,calc(520*var(--u)))] overflow-hidden bg-white">
-        <div className="absolute inset-x-0 top-0 h-[max(270px,calc(347*var(--u)))] bg-primary" />
+      <header data-nav-theme="dark" className="relative h-[max(390*var(--m),520*var(--u))] overflow-hidden bg-white">
+        <div className="absolute inset-x-0 top-0 h-[max(270*var(--m),347*var(--u))] bg-primary" />
         <img
           src={asset('contact/hero-wave.svg')}
           alt=""
@@ -260,12 +260,12 @@ export function ContactPage() {
           height="327"
           loading="eager"
           fetchPriority="high"
-          className="absolute top-[max(115px,calc(192*var(--u)))] left-1/2 h-auto w-[max(1400px,100%)] max-w-none -translate-x-1/2 select-none"
+          className="absolute top-[max(115*var(--m),192*var(--u))] left-1/2 h-auto w-[max(1400*var(--m),100%)] max-w-none -translate-x-1/2 select-none"
         />
         <SiteNav forceDark />
-        <div className="relative z-10 mx-auto flex max-w-[1920px] flex-col items-center gap-[max(16px,calc(30*var(--u)))] px-5 pt-[max(118px,calc(140*var(--u)))] text-center text-white">
-          <h1 className="font-malibu text-[length:max(52px,96*var(--u))] leading-[1.1042]">let&apos;s talk shop.</h1>
-          <p className="max-w-[760px] text-[length:max(16px,24*var(--u))] leading-normal font-medium">
+        <div className="relative z-10 mx-auto flex max-w-[1920px] flex-col items-center gap-[max(16*var(--m),30*var(--u))] px-5 pt-[max(118*var(--m),140*var(--u))] text-center text-white">
+          <h1 className="font-malibu text-[length:max(52*var(--m),96*var(--u))] leading-[1.1042]">let&apos;s talk shop.</h1>
+          <p className="max-w-[calc(760*var(--px))] text-[length:max(16*var(--m),24*var(--u))] leading-normal font-medium">
             A question, a big idea, or a little help with the techy part?<br className="hidden sm:block" /> Tell us what&apos;s cooking. We&apos;re here for your business.
           </p>
         </div>
@@ -306,7 +306,7 @@ export function ContactPage() {
         </section>
       </main>
 
-      <div className="relative h-[max(180px,calc(371*var(--u)))] overflow-hidden">
+      <div className="relative h-[max(180*var(--m),371*var(--u))] overflow-hidden">
         <img
           src={asset('contact/footer-wave.svg')}
           alt=""
@@ -314,7 +314,7 @@ export function ContactPage() {
           width="1920"
           height="371"
           loading="lazy"
-          className="absolute bottom-0 left-1/2 h-auto w-[max(1000px,100%)] max-w-none select-none [transform:translateX(-50%)_scaleY(-1)]"
+          className="absolute bottom-0 left-1/2 h-auto w-[max(1000*var(--m),100%)] max-w-none select-none [transform:translateX(-50%)_scaleY(-1)]"
         />
       </div>
       <div className="-mt-px"><Footer /></div>

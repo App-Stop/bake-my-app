@@ -227,6 +227,7 @@ function ContactExpert() {
           aria-hidden="true"
           width={151.2}
           height={151.2}
+          loading="lazy"
           className="size-[max(112*var(--m),151.2*var(--u))] shrink-0 select-none"
         />
         <div className="flex min-w-px flex-1 flex-col gap-2.5 text-ink">
