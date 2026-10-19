@@ -31,33 +31,31 @@ function FaqItem({ faq, open, onToggle }) {
   const id = useId()
   return (
     <div
-      className={`flex w-full gap-5 overflow-clip rounded-[calc(40*var(--px))] bg-primary-light p-[max(20*var(--m),30*var(--u))] ${open ? 'items-start' : 'items-center'}`}
+      role="button"
+      tabIndex={0}
+      aria-expanded={open}
+      aria-controls={id}
+      onClick={onToggle}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onToggle()
+        }
+      }}
+      className={`flex w-full gap-5 overflow-clip rounded-[calc(40*var(--px))] bg-primary-light p-[max(20*var(--m),30*var(--u))] text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${open ? 'items-start' : 'items-center'}`}
     >
       <div className="flex min-w-px flex-1 flex-col gap-2.5 text-base text-ink">
-        <h3>
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-controls={id}
-            onClick={onToggle}
-            className="w-full text-left leading-normal font-semibold focus-visible:underline focus-visible:outline-none"
-          >
-            {faq.q}
-          </button>
-        </h3>
+        <h3 className="leading-normal font-semibold">{faq.q}</h3>
         <p id={id} hidden={!open} className="leading-6 opacity-80">
           {faq.a}
         </p>
       </div>
-      <button
-        type="button"
-        tabIndex={-1}
+      <span
         aria-hidden="true"
-        onClick={onToggle}
         className={`flex shrink-0 items-center rounded-full p-1.5 transition-colors ${open ? 'bg-primary' : 'hover:bg-white'}`}
       >
         <Icon icon={open ? Cancel01Icon : PlusSignIcon} className={`size-5 ${open ? 'text-white' : 'text-ink'}`} />
-      </button>
+      </span>
     </div>
   )
 }

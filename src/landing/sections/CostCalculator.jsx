@@ -58,7 +58,7 @@ function CalculatorSlider({ config, value, onChange }) {
   const progress = ((value - config.min) / (config.max - config.min)) * 100
 
   return (
-    <div className="flex min-h-[calc(134*var(--px))] w-full flex-col justify-center gap-5 overflow-hidden rounded-[calc(40*var(--px))] bg-primary-light p-[max(20*var(--m),30*var(--u))]">
+    <div className="flex min-h-[calc(134*var(--px))] w-full flex-1 flex-col justify-center gap-5 overflow-hidden rounded-[calc(40*var(--px))] bg-primary-light p-[max(20*var(--m),30*var(--u))]">
       <div className="flex w-full items-center gap-5">
         <label
           htmlFor={`cost-${config.id}`}

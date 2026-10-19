@@ -88,11 +88,11 @@ function KitchenStation() {
         <div
           className={`relative ${CONTAINER} pt-[max(72*var(--m),233*var(--u))] pb-[max(56*var(--m),180*var(--u))]`}
         >
-          <div className={`flex flex-col text-white drop-shadow-[0_0_40px_rgba(0,0,0,0.8)] lg:max-w-[59.7%] ${GAP[30]}`}>
-            <h2 id="kitchen-title" className={TYPE.h2}>
+          <div className={`flex flex-col text-white lg:max-w-[59.7%] ${GAP[30]}`}>
+            <h2 id="kitchen-title" className={`${TYPE.h2} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
               one screen, zero lost tickets
             </h2>
-            <p className={TYPE.body}>
+            <p className={`${TYPE.body} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
               Orders from your app, website and counter all show up on one screen your bakers and baristas can read
               at a glance. It runs on any iPad, Android tablet or touchscreen you already have.
             </p>
@@ -100,7 +100,7 @@ function KitchenStation() {
               label="End the ticket chaos"
               demoLabel="Try a live kitchen station"
               tone="photo"
-              demoClassName="backdrop-blur-[calc(10*var(--px))]"
+              demoClassName="!border !border-white/20 !bg-white/20 !shadow-none backdrop-blur-[10px]"
             />
           </div>
 

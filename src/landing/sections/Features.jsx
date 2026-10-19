@@ -25,7 +25,7 @@ const FEATURES = [
 
 function Card({ image, alt, className = '', children }) {
   return (
-    <div className={`flex flex-col gap-3 rounded-[calc(30*var(--px))] bg-white px-1 pt-1 pb-5 ${className}`}>
+    <div className={`flex h-full flex-col gap-3 rounded-[calc(30*var(--px))] bg-white px-1 pt-1 pb-5 ${className}`}>
       <img src={asset(image)} alt={alt} loading="lazy" className="h-auto w-full rounded-[calc(26*var(--px))]" />
       {children}
     </div>
@@ -51,7 +51,7 @@ export function Features() {
           <h2 className={`lg:whitespace-nowrap ${TYPE.h2}`}>built for the regulars you already have</h2>
         </div>
 
-        <div className="grid w-full grid-cols-1 items-center gap-5 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full grid-cols-1 items-stretch gap-5 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature) => (
             <Card key={feature.title} image={feature.image} alt={feature.alt}>
               <div className="p-4">

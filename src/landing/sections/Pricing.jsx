@@ -30,8 +30,9 @@ const PLANS = [
   {
     name: 'Growth',
     description: 'For cafes ready for their own app and repeat customers.',
-    rates: { yearly: 249, monthly: 349 },
+    rates: { yearly: 299, monthly: 349 },
     alternateRate: 299,
+    limited: true,
     cta: 'Start for Free',
     features: [
       'Everything in Starter plus',
@@ -87,7 +88,7 @@ function BillingToggle({ billing, onChange }) {
     <div
       role="radiogroup"
       aria-label="Billing period"
-      className="flex w-[min(calc(460*var(--px)),100%)] items-center rounded-full bg-surface p-1"
+      className="flex w-full max-w-[calc(460*var(--px))] items-center rounded-full bg-surface p-1"
     >
       {BILLING.map(({ key, label, badge }) => {
         const active = billing === key
@@ -98,14 +99,14 @@ function BillingToggle({ billing, onChange }) {
             role="radio"
             aria-checked={active}
             onClick={() => onChange(key)}
-            className={`flex min-w-px flex-1 items-center justify-center gap-1.5 rounded-[calc(60*var(--px))] px-3 py-4 text-[length:max(18*var(--m),20*var(--u))] leading-normal whitespace-nowrap transition ${
+            className={`flex min-w-px flex-1 flex-wrap items-center justify-center gap-1.5 rounded-[calc(60*var(--px))] px-3 py-4 text-[length:max(18*var(--m),20*var(--u))] leading-normal transition ${
               active ? 'bg-primary font-semibold text-white' : 'font-medium text-body hover:text-ink'
             }`}
           >
             {label}
             {badge && (
               <span
-                className={`rounded-[calc(20*var(--px))] px-3 py-1 font-malibu text-xs tracking-[calc(0.24*var(--px))] ${
+                className={`whitespace-nowrap rounded-[calc(20*var(--px))] px-3 py-1 font-sans text-xs tracking-[calc(0.24*var(--px))] ${
                   active ? 'bg-white text-primary' : 'bg-primary text-white'
                 }`}
               >
@@ -189,11 +190,12 @@ function PlanCard({ plan, billing }) {
       <ul className="relative flex flex-col gap-5">
         {plan.features.map((feature, i) => {
           const included = i < plan.included
+          const isGroupLabel = feature.startsWith('Everything in ')
           return (
             <li key={feature} className="flex items-center gap-2">
-              {included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />}
+              {!isGroupLabel && (included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />)}
               <span className={`text-base leading-normal font-medium ${included ? 'text-ink' : 'text-subtle'}`}>
-                <span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>
+                {!isGroupLabel && <span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>}
                 {feature}
               </span>
             </li>
@@ -244,7 +246,7 @@ function ContactExpert() {
 /** "baked to grow", with the last letters growing (64 → 82px in Figma, all on a 74px line). */
 function Title() {
   return (
-    <h2 className={TYPE.h2}>
+    <h2 className="font-malibu text-[length:max(36*var(--m),64*var(--u))] leading-[1.1563] font-normal">
       baked to g<span className="text-[1.09375em]">r</span>
       <span className="text-[1.1875em]">o</span>
       <span className="text-[1.28125em]">w</span>, priced to stay fair

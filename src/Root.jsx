@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import App from './App.jsx'
+import { SiteLoader } from './components/SiteLoader.jsx'
 import { ComingSoonPage } from './landing/ComingSoonPage.jsx'
 import { LandingPage } from './landing/LandingPage.jsx'
 import { AdminDemo } from './landing/demo/AdminDemo.jsx'
@@ -33,6 +34,7 @@ export function Root() {
 
   return (
     <ModalsProvider>
+      <SiteLoader />
       <route.Page />
     </ModalsProvider>
   )

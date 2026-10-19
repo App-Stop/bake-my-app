@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   ChartColumnBigIcon,
@@ -95,9 +95,20 @@ const TAB_CONTENT = {
   },
 }
 
+const TAB_CHANGE_INTERVAL = 4000
+
 export function BusinessTools() {
   const [active, setActive] = useState(TABS[0].id)
   const content = TAB_CONTENT[active]
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      const currentIndex = TABS.findIndex((tab) => tab.id === active)
+      setActive(TABS[(currentIndex + 1) % TABS.length].id)
+    }, TAB_CHANGE_INTERVAL)
+
+    return () => window.clearTimeout(timeout)
+  }, [active])
 
   const handleTabKeyDown = (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
@@ -132,7 +143,7 @@ export function BusinessTools() {
           </p>
         </div>
 
-        <div role="tablist" aria-label="Business tools" className="flex w-full gap-2 overflow-x-auto">
+        <div role="tablist" aria-label="Business tools" className="grid w-full grid-cols-2 gap-2 lg:flex">
           {TABS.map((tab) => {
             const selected = tab.id === active
             return (
@@ -146,7 +157,7 @@ export function BusinessTools() {
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab.id)}
                 onKeyDown={handleTabKeyDown}
-                className={`relative flex min-w-max flex-1 items-center justify-center gap-3 overflow-clip rounded-[calc(60*var(--px))] px-3 py-5 text-[length:max(16*var(--m),20*var(--u))] leading-normal whitespace-nowrap transition-colors ${
+                className={`relative flex min-w-0 flex-col items-center justify-center gap-1.5 overflow-clip rounded-[calc(24*var(--px))] px-2 py-3 text-center text-[length:clamp(12px,3.5vw,16px)] leading-tight transition-colors lg:flex-1 lg:flex-row lg:gap-3 lg:rounded-[calc(60*var(--px))] lg:px-3 lg:py-5 lg:text-[length:max(16*var(--m),20*var(--u))] lg:leading-normal lg:whitespace-nowrap ${
                   selected ? 'bg-primary-light font-semibold text-primary' : 'font-medium text-body hover:bg-primary-light/50'
                 }`}
               >
@@ -155,19 +166,19 @@ export function BusinessTools() {
                     src={asset(tab.filledIcon)}
                     alt=""
                     aria-hidden="true"
-                    className="size-[max(24*var(--m),32*var(--u))] shrink-0"
+                    className="size-5 shrink-0 lg:size-[max(24*var(--m),32*var(--u))]"
                   />
                 ) : (
                   <HugeiconsIcon
                     icon={tab.icon}
                     size={32}
                     color="currentColor"
-                    className="size-[max(24*var(--m),32*var(--u))] shrink-0"
+                    className="size-5 shrink-0 lg:size-[max(24*var(--m),32*var(--u))]"
                   />
                 )}
                 {tab.label}
                 {selected && (
-                  <span className="absolute top-[calc(50%+35*var(--px))] left-0 h-0.5 w-[67.82%] -translate-y-1/2 bg-primary" />
+                  <span className="absolute bottom-0 left-1/2 h-0.5 w-[67.82%] -translate-x-1/2 bg-primary" />
                 )}
               </button>
             )

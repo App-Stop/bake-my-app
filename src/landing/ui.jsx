@@ -90,12 +90,13 @@ export function CtaPair({
   size = 'md',
   align = 'start',
   demoClassName = '',
+  buttonRowClassName = '',
 }) {
   const onPurple = tone === 'purple'
   const centered = align === 'center'
   return (
     <div className={`flex flex-col gap-2.5 ${centered ? 'items-center' : 'items-start'}`}>
-      <div className={`flex flex-wrap items-center ${centered ? 'justify-center' : ''} ${GAP[30]}`}>
+      <div className={`flex flex-wrap items-center ${centered ? 'justify-center' : ''} ${GAP[30]} ${buttonRowClassName}`}>
         <Pill to={ROUTES.app} variant={onPurple ? 'white' : 'primary'} size={size}>
           {label}
         </Pill>

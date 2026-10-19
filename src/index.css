@@ -137,6 +137,31 @@
   }
 }
 
+@keyframes site-loader-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes site-loader-progress {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(210%); }
+}
+
+.site-loader-logo {
+  animation: site-loader-float 1.1s ease-in-out infinite;
+}
+
+.site-loader-progress {
+  animation: site-loader-progress 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-loader-logo,
+  .site-loader-progress {
+    animation: none;
+  }
+}
+
 /* Landing savings calculator: native range behavior with the Figma track and thumb treatment. */
 .cost-calculator-range {
   width: 100%;

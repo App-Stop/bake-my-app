@@ -22,7 +22,12 @@ export function Ready() {
               <p className={TYPE.lead}>
                 Give your regulars the convenience of ordering ahead on mobile while keeping 100% of your earnings.
               </p>
-              <CtaPair tone="purple" size="lg" note="No card needed. Cancel anytime." />
+              <CtaPair
+                tone="purple"
+                size="lg"
+                note="No card needed. Cancel anytime."
+                buttonRowClassName="sm:flex-nowrap"
+              />
             </div>
           </div>
           {/* Export is 647px tall and starts 43px above the 736×567 box; its right edge runs off-screen. */}

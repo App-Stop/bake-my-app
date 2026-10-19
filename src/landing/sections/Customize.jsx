@@ -190,27 +190,29 @@ export function Customize() {
 
         {/* Live preview; the gray panel bleeds to the right edge on wide screens. */}
         <div className="brand-scope flex flex-col items-center bg-surface pt-[max(48*var(--m),236*var(--u))] pb-16 lg:min-h-[calc(1331*var(--u))] lg:w-[49.48%] lg:pb-0 lg:shadow-[0_0_0_100vmax_var(--color-surface)] lg:[clip-path:inset(0_-100vmax_0_0)]" style={brandVars}>
-          <div
-            ref={stageRef}
-            className="relative w-[min(626.84px,calc(100%-32px))] lg:w-[calc(626.84*var(--u))]"
-            style={{ aspectRatio: `${stage.width} / ${stage.height}` }}
-          >
-            {device === 'mobile' ? (
-              <div
-                className="landing-unscaled absolute top-0 left-0 flex origin-top-left items-start gap-10"
-                style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
-              >
-                <HomeScreen summary={SUMMARY} logo={null} />
-                <CartScreen summary={SUMMARY} />
-              </div>
-            ) : (
-              <div
-                className="landing-unscaled absolute top-0 left-0 origin-top-left"
-                style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
-              >
-                <DesktopScreen summary={SUMMARY} />
-              </div>
-            )}
+          <div className="relative w-[min(626.84px,calc(100%-32px))] lg:w-[calc(626.84*var(--u))]" style={{ aspectRatio: `${STAGES.mobile.width} / ${STAGES.mobile.height}` }}>
+            <div
+              ref={stageRef}
+              className="absolute top-1/2 left-0 w-full -translate-y-1/2"
+              style={{ aspectRatio: `${stage.width} / ${stage.height}` }}
+            >
+              {device === 'mobile' ? (
+                <div
+                  className="landing-unscaled absolute top-0 left-0 flex origin-top-left items-start gap-10"
+                  style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
+                >
+                  <HomeScreen summary={SUMMARY} logo={null} />
+                  <CartScreen summary={SUMMARY} />
+                </div>
+              ) : (
+                <div
+                  className="landing-unscaled absolute top-0 left-0 origin-top-left"
+                  style={{ width: stage.width, height: stage.height, transform: `scale(${scale})` }}
+                >
+                  <DesktopScreen summary={SUMMARY} />
+                </div>
+              )}
+            </div>
           </div>
           <div className="mt-[max(32*var(--m),58.12*var(--u))] flex items-center gap-5">
             <p className="text-xl leading-normal font-medium text-ink">Preview</p>

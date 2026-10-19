@@ -49,14 +49,14 @@ export function SiteNav({ forceDark = false }) {
       <Link
         to={ROUTES.home}
         aria-label="Bake my App home"
-        className="relative h-[calc(51*var(--px))] w-[calc(69.0639*var(--px))] shrink-0 lg:w-[calc(289*var(--px))]"
+        className="flex h-[calc(51*var(--px))] w-[calc(69.0639*var(--px))] shrink-0 items-center lg:w-[calc(289*var(--px))] lg:pl-[calc(20.4*var(--px))]"
       >
         <img
           src={asset('site-nav-logo.svg')}
           alt="Bake my App"
           width={69.0639}
           height={49.8798}
-          className={`absolute top-[2.41%] left-0 lg:left-[7.06%] ${darkTheme ? 'brightness-0 invert' : 'brightness-0'}`}
+          className={`block h-auto w-[calc(69.0639*var(--px))] shrink-0 ${darkTheme ? 'brightness-0 invert' : 'brightness-0'}`}
         />
       </Link>
 
