@@ -5,7 +5,7 @@ import logo from '../assets/logo.svg'
 import { PrimaryButton } from '../components/buttons'
 import { SectionLabel, TextField, UploadBox } from '../components/form'
 import { extractPalette, normalizeHex } from '../lib/color'
-import { navigate, ROUTES } from '../router'
+import { useModals } from '../landing/useModals'
 
 const PRESETS = [
   { name: 'Pink', hex: '#ff1fad' },
@@ -141,6 +141,7 @@ function BrandColorPicker({ state, actions }) {
 
 export function OnboardingScreen({ state, actions }) {
   const { shop } = state
+  const { openExitOffer } = useModals()
   const setShopField = (field) => (event) => actions.updateShop({ [field]: event.target.value })
 
   return (
@@ -149,7 +150,7 @@ export function OnboardingScreen({ state, actions }) {
         <img src={logo} alt="Bake My App" width={84} height={61.2} className="h-[61.2px] w-[84px]" />
         <button
           type="button"
-          onClick={() => navigate(ROUTES.home)}
+          onClick={openExitOffer}
           className="rounded-full px-5 py-4 text-base text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
         >
           Back to Home

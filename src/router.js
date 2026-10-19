@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 export const ROUTES = {
   home: '/',
+  contact: '/contact',
   app: '/app',
   comingSoon: '/coming-soon',
   demoMobile: '/demo/mobile-app',

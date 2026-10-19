@@ -75,14 +75,14 @@ export function SiteNav({ forceDark = false }) {
       </ul>
 
       <div className="flex shrink-0 items-center gap-[calc(10*var(--px))]">
-        <a
-          href={sectionHref('#faq')}
+        <Link
+          to={ROUTES.contact}
           className={`hidden rounded-full px-5 py-2.5 text-base leading-normal font-semibold whitespace-nowrap transition-colors lg:block ${
             darkTheme ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-primary/10 text-primary hover:bg-primary/15'
           }`}
         >
           Contact Us
-        </a>
+        </Link>
         <Link
           to={ROUTES.app}
           className={`rounded-full px-5 py-2.5 text-base leading-normal font-bold whitespace-nowrap transition-all duration-300 ${

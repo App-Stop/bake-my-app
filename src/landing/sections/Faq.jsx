@@ -79,7 +79,7 @@ export function Faq() {
             <p className="text-[length:max(16*var(--m),20*var(--u))] leading-[1.6] font-medium text-ink">
               Need to know something else?
             </p>
-            <Pill to={ROUTES.comingSoon} variant="soft" arrow>
+            <Pill to={ROUTES.contact} variant="soft" arrow>
               Contact Us
             </Pill>
           </div>

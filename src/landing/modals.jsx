@@ -7,7 +7,12 @@ export function ModalsProvider({ children }) {
   const [open, setOpen] = useState(null)
   const close = useCallback(() => setOpen(null), [])
   const value = useMemo(
-    () => ({ openPromo: () => setOpen('promo'), openDemo: () => setOpen('demo'), close }),
+    () => ({
+      openPromo: () => setOpen('promo'),
+      openDemo: () => setOpen('demo'),
+      openExitOffer: () => setOpen('exit-offer'),
+      close,
+    }),
     [close],
   )
 
@@ -16,6 +21,7 @@ export function ModalsProvider({ children }) {
       {children}
       {open === 'promo' && <PromoModal onClose={close} />}
       {open === 'demo' && <DemoModal onClose={close} />}
+      {open === 'exit-offer' && <ExitOfferModal onClose={close} />}
     </ModalsContext.Provider>
   )
 }
@@ -128,6 +134,60 @@ function PromoModal({ onClose }) {
           Claim Offer
         </button>
       </form>
+    </Modal>
+  )
+}
+
+/** Exit confirmation shown when a user leaves the store setup flow. */
+function ExitOfferModal({ onClose }) {
+  const titleId = useId()
+
+  const leaveSetup = () => {
+    onClose()
+    navigate(ROUTES.home)
+  }
+
+  return (
+    <Modal
+      label="First month free before you go"
+      onClose={onClose}
+      className="flex w-[min(500px,calc(100vw-32px))] flex-col items-center gap-10 px-6 pt-[120px] pb-10 sm:px-10"
+    >
+      <CloseButton onClose={onClose} className="top-[30px] right-[30px]" />
+      <img
+        src={asset('contact/message-sent.svg')}
+        alt=""
+        aria-hidden="true"
+        width={217}
+        height={218}
+        className="pointer-events-none absolute top-[-106px] left-1/2 h-[218px] w-[217px] max-w-none -translate-x-1/2 scale-x-[-1] select-none"
+      />
+
+      <div className="flex w-full flex-col items-center gap-5 text-center">
+        <h2 id={titleId} className="w-full font-malibu text-[length:clamp(30px,7vw,36px)] leading-[44px] text-primary">
+          Before you go, your first month&apos;s on us.
+        </h2>
+        <p className="w-full text-base leading-normal text-ink/80">
+          Get your bakery managed and live with all the tools and perks you need—plus your first month free.
+        </p>
+      </div>
+
+      <div aria-labelledby={titleId} className="flex w-full flex-col items-center gap-[30px]">
+        <button
+          type="button"
+          onClick={onClose}
+          className="w-full rounded-full bg-primary px-10 py-5 text-base leading-normal font-semibold text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          Claim Offer
+        </button>
+        <button
+          type="button"
+          onClick={leaveSetup}
+          className="text-base leading-normal font-medium text-muted transition hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+        >
+          No thanks
+        </button>
+      </div>
     </Modal>
   )
 }

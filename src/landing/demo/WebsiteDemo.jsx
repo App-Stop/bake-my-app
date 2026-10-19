@@ -3,7 +3,6 @@ import { INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { DESKTOP_WIDTH, DesktopScreen } from '../../preview/DesktopScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { DemoBar } from './DemoShell'
-import { DEMO_UNIT } from './demoScale'
 
 const SUMMARY = getStoreSummary(INITIAL_STATE)
 
@@ -29,10 +28,15 @@ export function WebsiteDemo() {
   }, [])
 
   return (
-    <div ref={ref} className={`fixed inset-0 overflow-hidden bg-white font-sans text-ink ${DEMO_UNIT}`}>
+    <div className="fixed inset-0 overflow-hidden bg-white font-sans text-ink [--d:min(1px,calc(100vw/1920),calc(100dvh/1174))]">
       <h1 className="sr-only">Bakery customer website demo</h1>
-      <div className="absolute top-0 left-0 origin-top-left" style={{ transform: `scale(${size.scale})` }}>
-        {size.height > 0 && <DesktopScreen summary={SUMMARY} height={size.height} framed={false} />}
+      <div
+        ref={ref}
+        className="absolute top-[calc(100*var(--d))] left-1/2 h-[calc(850*var(--d))] w-[calc(1382*var(--d))] -translate-x-1/2 overflow-hidden rounded-[calc(32*var(--d))] bg-white shadow-[0_calc(3.2*var(--d))_calc(24*var(--d))_rgba(0,0,0,0.1)]"
+      >
+        <div className="absolute top-0 left-0 origin-top-left" style={{ transform: `scale(${size.scale})` }}>
+          {size.height > 0 && <DesktopScreen summary={SUMMARY} height={size.height} framed={false} />}
+        </div>
       </div>
       <div className="pointer-events-none absolute inset-x-4 bottom-[calc(40*var(--d))] flex justify-center">
         <div className="pointer-events-auto">

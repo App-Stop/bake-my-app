@@ -177,7 +177,7 @@ function PlanCard({ plan, billing }) {
       </div>
       <PlanPrice plan={plan} billing={billing} />
       <Link
-        to={plan.rates ? ROUTES.app : ROUTES.comingSoon}
+        to={plan.rates ? ROUTES.app : ROUTES.contact}
         className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'
@@ -234,7 +234,7 @@ function ContactExpert() {
         </div>
       </div>
       <Link
-        to={ROUTES.comingSoon}
+        to={ROUTES.contact}
         className="shrink-0 rounded-full bg-primary px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))] text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap text-white transition hover:brightness-110"
       >
         Help me pick a plan

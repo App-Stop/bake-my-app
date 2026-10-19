@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import App from './App.jsx'
 import { SiteLoader } from './components/SiteLoader.jsx'
 import { ComingSoonPage } from './landing/ComingSoonPage.jsx'
+import { ContactPage } from './landing/ContactPage.jsx'
 import { LandingPage } from './landing/LandingPage.jsx'
 import { AdminDemo } from './landing/demo/AdminDemo.jsx'
 import { MobileAppDemo } from './landing/demo/MobileAppDemo.jsx'
@@ -11,6 +12,7 @@ import { ModalsProvider } from './landing/modals.jsx'
 import { ROUTES, usePathname } from './router'
 
 const PAGES = {
+  [ROUTES.contact]: { Page: ContactPage, title: 'Contact Bake My App' },
   [ROUTES.home]: { Page: LandingPage, title: 'Bake My App — Your café, beautifully baked' },
   [ROUTES.app]: { Page: App, title: 'Bake My App — Set up your store' },
   [ROUTES.comingSoon]: { Page: ComingSoonPage, title: 'Bake My App — Coming soon' },

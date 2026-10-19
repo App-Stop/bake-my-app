@@ -71,7 +71,7 @@ const FOOTER_COLUMNS = [
       { label: 'Pricing', href: '#pricing' },
       { label: 'Blog', to: ROUTES.comingSoon },
       { label: 'Careers', to: ROUTES.comingSoon },
-      { label: 'Contact Us', to: ROUTES.comingSoon },
+      { label: 'Contact Us', to: ROUTES.contact },
     ],
   },
 ]
@@ -84,12 +84,13 @@ const SOCIALS = [
 ]
 
 function FooterLink({ link, className }) {
+  const href = link.href && window.location.pathname !== '/' ? `/${link.href}` : link.href
   return link.to ? (
     <Link to={link.to} className={className}>
       {link.label}
     </Link>
   ) : (
-    <a href={link.href} className={className}>
+    <a href={href} className={className}>
       {link.label}
     </a>
   )
