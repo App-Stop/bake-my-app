@@ -6,6 +6,7 @@ import { PrimaryButton } from '../components/buttons'
 import { SectionLabel, TextField, UploadBox } from '../components/form'
 import { extractPalette, normalizeHex } from '../lib/color'
 import { useModals } from '../landing/useModals'
+import { navigate, ROUTES } from '../router'
 
 const PRESETS = [
   { name: 'Pink', hex: '#ff1fad' },
@@ -220,7 +221,11 @@ export function OnboardingScreen({ state, actions }) {
           >
             Skip for now
           </button>
-          <PrimaryButton className="py-4" onClick={actions.launch} disabled={!shop.name.trim()}>
+          <PrimaryButton
+            className="py-4"
+            onClick={() => navigate(ROUTES.demoAdmin)}
+            disabled={!shop.name.trim()}
+          >
             Launch my Store
           </PrimaryButton>
         </div>
