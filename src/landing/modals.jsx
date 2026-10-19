@@ -1,27 +1,37 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import gsap from 'gsap'
 import { ROUTES, navigate } from '../router'
 import { asset } from './styles'
 import { ModalsContext } from './useModals'
 
 export function ModalsProvider({ children }) {
   const [open, setOpen] = useState(null)
-  const close = useCallback(() => setOpen(null), [])
+  const [closing, setClosing] = useState(false)
+  const show = useCallback((modal) => {
+    setClosing(false)
+    setOpen(modal)
+  }, [])
+  const close = useCallback(() => setClosing(true), [])
+  const finishClose = useCallback(() => {
+    setOpen(null)
+    setClosing(false)
+  }, [])
   const value = useMemo(
     () => ({
-      openPromo: () => setOpen('promo'),
-      openDemo: () => setOpen('demo'),
-      openExitOffer: () => setOpen('exit-offer'),
+      openPromo: () => show('promo'),
+      openDemo: () => show('demo'),
+      openExitOffer: () => show('exit-offer'),
       close,
     }),
-    [close],
+    [close, show],
   )
 
   return (
     <ModalsContext.Provider value={value}>
       {children}
-      {open === 'promo' && <PromoModal onClose={close} />}
-      {open === 'demo' && <DemoModal onClose={close} />}
-      {open === 'exit-offer' && <ExitOfferModal onClose={close} />}
+      {open === 'promo' && <PromoModal onClose={close} closing={closing} onClosed={finishClose} />}
+      {open === 'demo' && <DemoModal onClose={close} closing={closing} onClosed={finishClose} />}
+      {open === 'exit-offer' && <ExitOfferModal onClose={close} closing={closing} onClosed={finishClose} />}
     </ModalsContext.Provider>
   )
 }
@@ -30,7 +40,8 @@ export function ModalsProvider({ children }) {
  * Centered dialog over a dimmed page. Sizes use `--px` (inside `.landing-page`), so the Figma
  * 1920 sizes scale down with the viewport on desktop and stay 1× below it.
  */
-function Modal({ label, onClose, className = '', children }) {
+function Modal({ label, onClose, onClosed, closing, className = '', children }) {
+  const overlayRef = useRef(null)
   const panelRef = useRef(null)
 
   useEffect(() => {
@@ -47,8 +58,32 @@ function Modal({ label, onClose, className = '', children }) {
     }
   }, [onClose])
 
+  useLayoutEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      if (closing) onClosed()
+      return undefined
+    }
+
+    const context = gsap.context(() => {
+      if (closing) {
+        gsap.timeline({ onComplete: onClosed })
+          .to(panelRef.current, { autoAlpha: 0, scale: 0.95, y: 18, duration: 0.22, ease: 'power2.in' })
+          .to(overlayRef.current, { autoAlpha: 0, duration: 0.2, ease: 'power1.out' }, '<')
+      } else {
+        gsap.set(overlayRef.current, { autoAlpha: 0 })
+        gsap.set(panelRef.current, { autoAlpha: 0, scale: 0.94, y: 22 })
+        gsap.timeline()
+          .to(overlayRef.current, { autoAlpha: 1, duration: 0.25, ease: 'power1.out' })
+          .to(panelRef.current, { autoAlpha: 1, scale: 1, y: 0, duration: 0.42, ease: 'back.out(1.35)' }, 0.04)
+      }
+    }, overlayRef)
+
+    return () => context.revert()
+  }, [closing, onClosed])
+
   return (
-    <div className="landing-page fixed inset-0 z-[100] overflow-y-auto bg-black/60 font-sans text-ink backdrop-blur-sm">
+    <div ref={overlayRef} className="landing-page fixed inset-0 z-[100] overflow-y-auto bg-black/60 font-sans text-ink backdrop-blur-sm">
       <div
         className="flex min-h-full items-center justify-center px-4 pt-16 pb-6 sm:pt-32 lg:py-[calc(140*var(--px))]"
         onMouseDown={(e) => e.target === e.currentTarget && onClose()}
@@ -82,7 +117,7 @@ function CloseButton({ onClose, className }) {
 }
 
 /** "first month, completely free!" popup (Figma "Popup"). */
-function PromoModal({ onClose }) {
+function PromoModal({ onClose, closing, onClosed }) {
   const titleId = useId()
   const [email, setEmail] = useState('')
 
@@ -96,6 +131,8 @@ function PromoModal({ onClose }) {
     <Modal
       label="First month free offer"
       onClose={onClose}
+      closing={closing}
+      onClosed={onClosed}
       className="flex w-[min(calc(500*var(--px)),calc(100vw-32px))] max-w-[340px] flex-col gap-5 px-6 pt-16 pb-6 sm:max-w-none sm:gap-10 sm:px-10 sm:pt-[calc(120*var(--px))] sm:pb-10"
     >
       <CloseButton onClose={onClose} className="top-3 right-3 sm:top-[calc(30*var(--px))] sm:right-[calc(30*var(--px))]" />
@@ -139,7 +176,7 @@ function PromoModal({ onClose }) {
 }
 
 /** Exit confirmation shown when a user leaves the store setup flow. */
-function ExitOfferModal({ onClose }) {
+function ExitOfferModal({ onClose, closing, onClosed }) {
   const titleId = useId()
 
   const leaveSetup = () => {
@@ -151,6 +188,8 @@ function ExitOfferModal({ onClose }) {
     <Modal
       label="First month free before you go"
       onClose={onClose}
+      closing={closing}
+      onClosed={onClosed}
       className="flex w-[min(500px,calc(100vw-32px))] flex-col items-center gap-10 px-6 pt-[120px] pb-10 sm:px-10"
     >
       <CloseButton onClose={onClose} className="top-[30px] right-[30px]" />
@@ -254,7 +293,7 @@ const DEMOS = [
 ]
 
 /** "preview a demo" picker (Figma "Demo"). */
-function DemoModal({ onClose }) {
+function DemoModal({ onClose, closing, onClosed }) {
   const open = (demo) => {
     onClose()
     navigate(demo.to)
@@ -264,6 +303,8 @@ function DemoModal({ onClose }) {
     <Modal
       label="Preview a demo"
       onClose={onClose}
+      closing={closing}
+      onClosed={onClosed}
       className="flex w-[min(calc(900*var(--px)),100%)] flex-col items-center gap-10 p-4 sm:p-10"
     >
       <CloseButton onClose={onClose} className="top-4 right-4 sm:top-10 sm:right-10" />

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
 import { ArrowDown01Icon, ArrowRight02Icon } from '@hugeicons/core-free-icons'
 import { Link } from '../components/Link'
 import { ROUTES } from '../router'
@@ -7,6 +8,7 @@ import { SiteNav } from './SiteNav'
 import { Icon } from './ui'
 import { asset } from './styles'
 import { useModals } from './useModals'
+import { useLandingMotion } from './useLandingMotion'
 
 const TOPICS = [
   'Apps and online ordering',
@@ -63,7 +65,10 @@ function Field({ label, required, children }) {
 }
 
 function MessageSentModal({ email, onClose }) {
+  const overlayRef = useRef(null)
   const dialogRef = useRef(null)
+  const [closing, setClosing] = useState(false)
+  const requestClose = useCallback(() => setClosing(true), [])
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -71,7 +76,7 @@ function MessageSentModal({ email, onClose }) {
     dialogRef.current?.focus()
 
     const closeOnEscape = (event) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') requestClose()
     }
     window.addEventListener('keydown', closeOnEscape)
 
@@ -79,13 +84,38 @@ function MessageSentModal({ email, onClose }) {
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', closeOnEscape)
     }
-  }, [onClose])
+  }, [requestClose])
+
+  useLayoutEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      if (closing) onClose()
+      return undefined
+    }
+
+    const context = gsap.context(() => {
+      if (closing) {
+        gsap.timeline({ onComplete: onClose })
+          .to(dialogRef.current, { autoAlpha: 0, scale: 0.95, y: 18, duration: 0.22, ease: 'power2.in' })
+          .to(overlayRef.current, { autoAlpha: 0, duration: 0.2, ease: 'power1.out' }, '<')
+      } else {
+        gsap.set(overlayRef.current, { autoAlpha: 0 })
+        gsap.set(dialogRef.current, { autoAlpha: 0, scale: 0.94, y: 22 })
+        gsap.timeline()
+          .to(overlayRef.current, { autoAlpha: 1, duration: 0.25, ease: 'power1.out' })
+          .to(dialogRef.current, { autoAlpha: 1, scale: 1, y: 0, duration: 0.42, ease: 'back.out(1.35)' }, 0.04)
+      }
+    }, overlayRef)
+
+    return () => context.revert()
+  }, [closing, onClose])
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-[#111]/85 px-4 pt-[106px]"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose()
+        if (event.target === event.currentTarget) requestClose()
       }}
     >
       <div
@@ -215,9 +245,11 @@ function EnquiryForm() {
 
 export function ContactPage() {
   const { openDemo } = useModals()
+  const pageRef = useRef(null)
+  useLandingMotion(pageRef)
 
   return (
-    <div className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       <header data-nav-theme="dark" className="relative h-[max(390px,calc(520*var(--u)))] overflow-hidden bg-white">
         <div className="absolute inset-x-0 top-0 h-[max(270px,calc(347*var(--u)))] bg-primary" />
         <img

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { BusinessTools } from './sections/BusinessTools'
 import { Footer, Ready } from './sections/Closing'
 import { CostCalculator } from './sections/CostCalculator'
@@ -11,6 +11,7 @@ import { Pricing } from './sections/Pricing'
 import { Solutions } from './sections/Solutions'
 import { Values } from './sections/Values'
 import { useModals } from './useModals'
+import { useLandingMotion } from './useLandingMotion'
 
 const PROMO_SEEN_KEY = 'bma-promo-seen'
 const SCROLL_THRESHOLD = 300
@@ -54,8 +55,10 @@ function usePromoOnScroll() {
 /** Marketing landing page at "/" — built from the Figma "Landing" frame (1920 wide). */
 export function LandingPage() {
   usePromoOnScroll()
+  const pageRef = useRef(null)
+  useLandingMotion(pageRef)
   return (
-    <div className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       <Hero />
       <main>
         <Solutions />
