@@ -22,7 +22,7 @@ function CustomerApp() {
         <CtaPair label="Put my cafe in the App Store" />
       </div>
       <Composite
-        src={asset('mobile-app.png')}
+        src={asset('mobile-app.webp')}
         alt="Customer ordering app with product cards"
         box={{ w: 672.44, h: 700 }}
         art={{ x: 0, y: -120, w: 672, h: 960 }}
@@ -36,7 +36,7 @@ function CustomerWebsite() {
   return (
     <div className="flex flex-col-reverse lg:flex-row lg:items-start">
       <Composite
-        src={asset('website.png')}
+        src={asset('website.webp')}
         alt="Customer ordering website on your own domain"
         box={{ w: 664, h: 607.67 }}
         art={{ x: -120, y: -44, w: 904, h: 702 }}
@@ -74,15 +74,21 @@ function KitchenStation() {
     >
       {/* Photo export already includes the 20% brand-purple overlay from Figma. */}
       <img
-        src={asset('kitchen-bg.jpg')}
+        src={asset('kitchen-bg.webp')}
         alt=""
         aria-hidden="true"
+        width={3840}
+        height={2688}
+        loading="lazy"
         className="absolute inset-0 size-full object-cover object-bottom"
       />
       <div className="relative mx-auto max-w-[1920px]">
         <img
-          src={asset('kitchen-staff.png')}
+          src={asset('kitchen-staff.webp')}
           alt="Barista using the kitchen order station"
+          width={722}
+          height={538}
+          loading="lazy"
           className="absolute top-[calc(97*var(--u))] left-[55.104%] hidden h-auto w-[37.604%] lg:block"
         />
         <div
@@ -106,14 +112,18 @@ function KitchenStation() {
 
           <div className="relative mt-[max(32*var(--m),60*var(--u))] flex flex-col gap-5 drop-shadow-[0_10px_60px_rgba(85,76,241,0.1)] md:flex-row">
             <img
-              src={asset('kitchen-orders.png')}
+              src={asset('kitchen-orders.webp')}
               alt="Order station: live order queue with order details"
+              width={1624}
+              height={1214}
               loading="lazy"
               className="h-auto w-full min-w-0 md:flex-1"
             />
             <img
-              src={asset('kitchen-menu.png')}
+              src={asset('kitchen-menu.webp')}
               alt="Order station: menu stock toggles"
+              width={1624}
+              height={1214}
               loading="lazy"
               className="h-auto w-full min-w-0 md:flex-1"
             />
@@ -121,12 +131,18 @@ function KitchenStation() {
               src={asset('kitchen-note-stock.svg')}
               alt=""
               aria-hidden="true"
+              width={280}
+              height={113}
+              loading="lazy"
               className="absolute top-[73.11%] left-[78.23%] hidden h-auto w-[17.01%] lg:block"
             />
             <img
               src={asset('kitchen-note-orders.svg')}
               alt=""
               aria-hidden="true"
+              width={366}
+              height={134}
+              loading="lazy"
               className="absolute top-[95.17%] left-[29.19%] hidden h-auto w-[22.32%] lg:block"
             />
           </div>

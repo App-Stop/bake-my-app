@@ -7,7 +7,7 @@ import { CONTAINER, GAP, TYPE, asset } from '../styles'
 export function Ready() {
   return (
     <section aria-labelledby="ready-title" className="relative mt-[max(80*var(--m),131*var(--u))]">
-      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
+      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className="relative block h-auto w-full select-none" />
       <div data-nav-theme="dark" className="-mt-px overflow-hidden bg-primary">
         <div
           className={`flex flex-col items-center py-[max(64*var(--m),120*var(--u))] lg:flex-row ${GAP[80]} ${CONTAINER}`}
@@ -32,7 +32,7 @@ export function Ready() {
           </div>
           {/* Export is 647px tall and starts 43px above the 736×567 box; its right edge runs off-screen. */}
           <Composite
-            src={asset('ready-devices.png')}
+            src={asset('ready-devices.webp')}
             alt="Customer app on a phone and the business dashboard on a tablet"
             box={{ w: 736, h: 567 }}
             art={{ x: 0, y: -43, h: 647 }}
@@ -102,7 +102,7 @@ export function Footer() {
       <div
         className={`flex flex-col items-center gap-[max(40*var(--m),60*var(--u))] pt-[max(56*var(--m),80*var(--u))] pb-[max(40*var(--m),60*var(--u))] ${CONTAINER}`}
       >
-        <img src={asset('logo-footer.svg')} alt="Bake my App" width={210} height={153} className="h-auto w-[max(150*var(--m),210*var(--u))]" />
+        <img src={asset('logo-footer.svg')} alt="Bake my App" width={210} height={153} loading="lazy" className="h-auto w-[max(150*var(--m),210*var(--u))]" />
         <div className="flex w-full flex-col items-center gap-[max(40*var(--m),60*var(--u))]">
           <nav
             aria-label="Footer"

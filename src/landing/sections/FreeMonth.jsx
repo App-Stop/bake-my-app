@@ -28,7 +28,7 @@ function Waves({ src, x, flip }) {
     >
       <div className="relative h-[calc(546*var(--u))] w-[calc(472*var(--u))] flex-none" style={{ transform: `rotate(-90deg)${flip ? ' scaleY(-1)' : ''}` }}>
         <div className="absolute inset-[-134.98%_-126.91%_-89.38%_-127.12%]">
-          <img src={asset(`promo/${src}`)} alt="" className="block size-full max-w-none" />
+          <img src={asset(`promo/${src}`)} alt="" loading="lazy" className="block size-full max-w-none" />
         </div>
       </div>
     </div>
@@ -60,6 +60,7 @@ export function FreeMonth() {
               alt=""
               width={size}
               height={size}
+              loading="lazy"
               className="max-w-none shrink-0 select-none"
               style={{ width: `calc(${size} * var(--u))`, height: `calc(${size} * var(--u))`, transform }}
             />

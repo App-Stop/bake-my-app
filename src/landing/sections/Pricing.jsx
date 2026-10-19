@@ -165,9 +165,12 @@ function PlanCard({ plan, billing }) {
       {featured && (
         // Soft "waves" glow at the top of the featured card (export overflows the card, clipped here).
         <img
-          src={asset('pricing-glow.png')}
+          src={asset('pricing-glow.webp')}
           alt=""
           aria-hidden="true"
+          width={1067}
+          height={1078}
+          loading="lazy"
           className="pointer-events-none absolute top-[calc(-122*var(--u))] left-[-27.43%] h-auto w-[154.69%] max-w-none select-none"
         />
       )}

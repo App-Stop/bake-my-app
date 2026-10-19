@@ -18,11 +18,11 @@ import {
   SmartPhone01Icon,
 } from '@hugeicons/core-free-icons'
 
-import userAvatarImg from '../assets/dashboard/user-avatar.png'
-import croissantImg from '../assets/dashboard/croissant.png'
-import macchiatoImg from '../assets/dashboard/macchiato.png'
-import almondCroissantImg from '../assets/products/almond-croissant.png'
-import chocolateCroissantImg from '../assets/products/chocolate-croissant.png'
+import userAvatarImg from '../assets/dashboard/user-avatar.webp'
+import croissantImg from '../assets/dashboard/croissant.webp'
+import macchiatoImg from '../assets/dashboard/macchiato.webp'
+import almondCroissantImg from '../assets/products/almond-croissant.webp'
+import chocolateCroissantImg from '../assets/products/chocolate-croissant.webp'
 import { BranchesView } from './branches/BranchesView'
 import { MenuView } from './menu/MenuView'
 import { CustomersView } from './customers/CustomersView'

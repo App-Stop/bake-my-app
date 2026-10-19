@@ -3,19 +3,19 @@ import { GAP, TYPE, asset } from '../styles'
 
 const VALUES = [
   {
-    image: 'value-no-commission.png',
+    image: 'value-no-commission.webp',
     size: 303,
     title: 'we do the setup',
     text: 'Send your menu, logo and photos. We build your apps and website and handle the App Store and Google Play submissions.',
   },
   {
-    image: 'value-live-48h.png',
+    image: 'value-live-48h.webp',
     size: 300,
     title: 'keep every dollar',
     text: 'Delivery apps can take up to 30% of every order. With your own app, customers order straight from you, and the full amount is yours.',
   },
   {
-    image: 'value-easy-setup.png',
+    image: 'value-easy-setup.webp',
     size: 300,
     title: 'no new hardware',
     text: 'Send us your menu, logo, and photos. We set up your mobile apps, configure your web storefront, and submit to Apple and Google for you.',
@@ -26,7 +26,7 @@ export function Values() {
   return (
     // The top wave overlaps the bottom of the customize panel by 102px, as in Figma.
     <section aria-label="Why Bake my App" className="relative -mt-[calc(102*var(--u))]">
-      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" className="relative block h-auto w-full select-none" />
+      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className="relative block h-auto w-full select-none" />
       <div data-nav-theme="dark" className="-mt-px bg-primary">
         <div
           className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(64*var(--m),160*var(--u))] ${GAP[80]}`}
@@ -37,6 +37,8 @@ export function Values() {
                 <img
                   src={asset(value.image)}
                   alt=""
+                  width={value.size}
+                  height={value.size}
                   loading="lazy"
                   className="h-auto"
                   style={{ width: `max(calc(200 * var(--m)), calc(${value.size} * var(--u)))` }}
@@ -53,6 +55,9 @@ export function Values() {
         src={asset('wave-bottom.svg')}
         alt=""
         aria-hidden="true"
+        width={1920}
+        height={243}
+        loading="lazy"
         className="relative -mt-[calc(2*var(--u))] block h-auto w-full select-none"
       />
     </section>

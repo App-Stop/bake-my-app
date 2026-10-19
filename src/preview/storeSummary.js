@@ -1,8 +1,8 @@
-import almondCroissant from '../assets/products/almond-croissant.png'
-import chocolateCroissant from '../assets/products/chocolate-croissant.png'
-import lotusCroissant from '../assets/products/lotus-croissant.png'
-import matchaCroissant from '../assets/products/matcha-croissant.png'
-import signatureCroissant from '../assets/products/signature-croissant.png'
+import almondCroissant from '../assets/products/almond-croissant.webp'
+import chocolateCroissant from '../assets/products/chocolate-croissant.webp'
+import lotusCroissant from '../assets/products/lotus-croissant.webp'
+import matchaCroissant from '../assets/products/matcha-croissant.webp'
+import signatureCroissant from '../assets/products/signature-croissant.webp'
 import { formatMoney, parseAmount } from '../onboarding/useOnboardingState'
 
 // Fallbacks mirror the sample content in the Figma preview.

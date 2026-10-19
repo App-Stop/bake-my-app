@@ -53,6 +53,20 @@
   --m: 1px;
 }
 
+/* Mobile landing pages use a compact 0.85x rhythm while desktop keeps the Figma scale. */
+@media (max-width: 63.999rem) {
+  .landing-page {
+    --px: 0.85px;
+    --m: 0.85px;
+    --spacing: 0.2125rem;
+    --text-xs: 0.6375rem;
+    --text-sm: 0.74375rem;
+    --text-base: 0.85rem;
+    --text-lg: 0.95625rem;
+    --text-xl: 1.0625rem;
+  }
+}
+
 /*
  * Landing, desktop layout (lg+): the page is the 1920 Figma frame scaled to the viewport, so every
  * length — arbitrary values (--px), Tailwind's spacing scale and named text sizes — follows --u.

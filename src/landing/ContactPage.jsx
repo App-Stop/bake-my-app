@@ -258,6 +258,8 @@ export function ContactPage() {
           aria-hidden="true"
           width="1920"
           height="327"
+          loading="eager"
+          fetchPriority="high"
           className="absolute top-[max(115px,calc(192*var(--u)))] left-1/2 h-auto w-[max(1400px,100%)] max-w-none -translate-x-1/2 select-none"
         />
         <SiteNav forceDark />
@@ -311,6 +313,7 @@ export function ContactPage() {
           aria-hidden="true"
           width="1920"
           height="371"
+          loading="lazy"
           className="absolute bottom-0 left-1/2 h-auto w-[max(1000px,100%)] max-w-none select-none [transform:translateX(-50%)_scaleY(-1)]"
         />
       </div>

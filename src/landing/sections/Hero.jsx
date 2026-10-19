@@ -11,8 +11,12 @@ export function Hero() {
           {/* Devices strip (1920×544 in Figma). Phones show its middle 800px; md+ shows it all. */}
           <div className="relative aspect-[800/544] md:aspect-[1920/544]">
             <img
-              src={asset('hero-devices.png')}
+              src={asset('hero-devices.webp')}
               alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
+              width={3840}
+              height={1197}
+              loading="eager"
+              fetchPriority="high"
               className="absolute top-[-0.735%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%]"
             />
           </div>
@@ -49,6 +53,10 @@ export function Hero() {
         src={asset('hero-wave.svg')}
         alt=""
         aria-hidden="true"
+        width={1920}
+        height={311}
+        loading="eager"
+        fetchPriority="high"
         className="relative -mt-[calc(2*var(--u))] block h-auto w-full select-none"
       />
     </>

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Cancel01Icon, Image01Icon } from '@hugeicons/core-free-icons'
-import avoid1 from '../../assets/guidelines/avoid-1.png'
-import avoid2 from '../../assets/guidelines/avoid-2.png'
-import avoid3 from '../../assets/guidelines/avoid-3.png'
+import avoid1 from '../../assets/guidelines/avoid-1.webp'
+import avoid2 from '../../assets/guidelines/avoid-2.webp'
+import avoid3 from '../../assets/guidelines/avoid-3.webp'
 import { ToggleSwitch } from '../branches/ToggleSwitch'
 
 const AVOID_EXAMPLES = [

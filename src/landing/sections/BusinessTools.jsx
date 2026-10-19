@@ -48,7 +48,9 @@ const TAB_CONTENT = {
     ],
     label: 'See my sales live',
     demoLabel: 'Try admin portal',
-    image: 'manage-dashboard.png',
+    image: 'manage-dashboard.webp',
+    width: 1620,
+    height: 1084,
     alt: 'Business dashboard showing live revenue, orders and branch health',
   },
   branches: {
@@ -63,6 +65,8 @@ const TAB_CONTENT = {
     label: 'Get for your Business',
     demoLabel: 'Launch Demo',
     image: 'business-tools-branches.svg',
+    width: 810,
+    height: 542,
     alt: 'Multi-branch dashboard showing location status, sales, active orders and performance',
   },
   orders: {
@@ -77,6 +81,8 @@ const TAB_CONTENT = {
     label: 'Get for your Business',
     demoLabel: 'Launch Demo',
     image: 'business-tools-orders.svg',
+    width: 810,
+    height: 542,
     alt: 'Order management dashboard showing revenue, branch totals and customer orders',
   },
   customization: {
@@ -91,6 +97,8 @@ const TAB_CONTENT = {
     label: 'Get for your Business',
     demoLabel: 'Launch Demo',
     image: 'business-tools-customization.svg',
+    width: 810,
+    height: 542,
     alt: 'Bakery customization dashboard showing store details, hours and order settings',
   },
 }
@@ -212,6 +220,8 @@ export function BusinessTools() {
             key={content.image}
             src={asset(content.image)}
             alt={content.alt}
+            width={content.width}
+            height={content.height}
             loading="lazy"
             className="h-auto w-full lg:w-[49.39%]"
           />

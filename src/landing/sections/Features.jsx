@@ -4,19 +4,19 @@ import { GAP, TYPE, asset } from '../styles'
 
 const FEATURES = [
   {
-    image: 'feature-points.png',
+    image: 'feature-points.webp',
     alt: 'Loyalty wallet with earned points and milestones',
     title: 'Points that pull them back.',
     text: 'Rewards, personal deals and member-only perks.',
   },
   {
-    image: 'feature-ordering.png',
+    image: 'feature-ordering.webp',
     alt: 'Product page and delivered order confirmation',
     title: 'Ordering in a few taps.',
     text: 'Browse, pick and pay, from anywhere, anytime.',
   },
   {
-    image: 'feature-alerts.png',
+    image: 'feature-alerts.webp',
     alt: 'Promotional push notifications on a lock screen',
     title: 'Texts that fill tables.',
     text: 'Send a quick SMS about a slow-afternoon deal or a fresh batch.',
@@ -24,9 +24,10 @@ const FEATURES = [
 ]
 
 function Card({ image, alt, className = '', children }) {
+  const imageSize = image === 'feature-web.webp' ? { width: 1998, height: 852 } : { width: 971, height: 852 }
   return (
     <div className={`flex h-full flex-col gap-3 rounded-[calc(30*var(--px))] bg-white px-1 pt-1 pb-5 ${className}`}>
-      <img src={asset(image)} alt={alt} loading="lazy" className="h-auto w-full rounded-[calc(26*var(--px))]" />
+      <img {...imageSize} src={asset(image)} alt={alt} loading="lazy" className="h-auto w-full rounded-[calc(26*var(--px))]" />
       {children}
     </div>
   )
@@ -61,7 +62,7 @@ export function Features() {
           ))}
 
           <Card
-            image="feature-web.png"
+            image="feature-web.webp"
             alt="Web storefront with product page and cart"
             className="md:col-span-2"
           >
@@ -77,7 +78,7 @@ export function Features() {
             </div>
           </Card>
 
-          <Card image="feature-upsells.png" alt="Cart with suggested add-ons">
+          <Card image="feature-upsells.webp" alt="Cart with suggested add-ons">
             <div className="p-4">
               <CardText title="Upsells that feel helpful">
                 Extra shot? Caramel drizzle? Added with one tap at checkout.

@@ -1,8 +1,8 @@
 import { ArrowRight02Icon, Delete02Icon, DiscountIcon, PlusSignIcon } from '@hugeicons/core-free-icons'
-import caramelSauce from '../assets/addons/caramel-sauce.png'
-import chocolateSyrup from '../assets/addons/chocolate-syrup.png'
-import whippedCream from '../assets/addons/whipped-cream.png'
-import deliveryRider from '../assets/delivery-rider.png'
+import caramelSauce from '../assets/addons/caramel-sauce.webp'
+import chocolateSyrup from '../assets/addons/chocolate-syrup.webp'
+import whippedCream from '../assets/addons/whipped-cream.webp'
+import deliveryRider from '../assets/delivery-rider.webp'
 import { formatMoney } from '../onboarding/useOnboardingState'
 import { Icon, PhoneFrame, TabBar, glass } from './phone'
 

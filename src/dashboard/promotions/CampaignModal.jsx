@@ -13,13 +13,13 @@ import {
   Cupcake02Icon,
 } from '@hugeicons/core-free-icons'
 
-import flakyButterCroissantImg from '../../assets/menu/flaky-butter-croissant.png'
-import almondFrangipaneCroissantImg from '../../assets/menu/almond-frangipane-croissant.png'
-import doubleChocolateCroissantImg from '../../assets/menu/double-chocolate-croissant.png'
-import matchaCreamCruffinImg from '../../assets/menu/matcha-cream-cruffin.png'
-import savoryHamCheeseCroissantImg from '../../assets/menu/savory-ham-cheese-croissant.png'
-import donutImg from '../../assets/menu/donut.png'
-import macchiatoImg from '../../assets/dashboard/macchiato.png'
+import flakyButterCroissantImg from '../../assets/menu/flaky-butter-croissant.webp'
+import almondFrangipaneCroissantImg from '../../assets/menu/almond-frangipane-croissant.webp'
+import doubleChocolateCroissantImg from '../../assets/menu/double-chocolate-croissant.webp'
+import matchaCreamCruffinImg from '../../assets/menu/matcha-cream-cruffin.webp'
+import savoryHamCheeseCroissantImg from '../../assets/menu/savory-ham-cheese-croissant.webp'
+import donutImg from '../../assets/menu/donut.webp'
+import macchiatoImg from '../../assets/dashboard/macchiato.webp'
 
 const CATEGORIES = [
   { id: 'croissants', name: 'Croissants', icon: CroissantIcon },

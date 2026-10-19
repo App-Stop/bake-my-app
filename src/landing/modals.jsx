@@ -138,11 +138,12 @@ function PromoModal({ onClose, closing, onClosed }) {
       <CloseButton onClose={onClose} className="top-3 right-3 sm:top-[calc(30*var(--px))] sm:right-[calc(30*var(--px))]" />
       {/* Waving mascot pokes out above the card (217×218 in Figma). */}
       <img
-        src={asset('promo/mascot.png')}
+        src={asset('promo/mascot.webp')}
         alt=""
         aria-hidden="true"
         width={217}
         height={218}
+        loading="lazy"
         className="pointer-events-none absolute top-[-56px] left-1/2 h-[120px] w-[120px] -translate-x-1/2 object-contain select-none sm:top-[calc(-106*var(--px))] sm:left-[calc(50%-0.5*var(--px))] sm:h-[calc(218*var(--px))] sm:w-[calc(217*var(--px))] sm:max-w-none"
       />
       <div className="flex w-full flex-col items-center gap-2 sm:gap-5 text-center leading-normal">
@@ -199,6 +200,7 @@ function ExitOfferModal({ onClose, closing, onClosed }) {
         aria-hidden="true"
         width={217}
         height={218}
+        loading="lazy"
         className="pointer-events-none absolute top-[-106px] left-1/2 h-[218px] w-[217px] max-w-none -translate-x-1/2 scale-x-[-1] select-none"
       />
 
@@ -235,7 +237,7 @@ function ExitOfferModal({ onClose, closing, onClosed }) {
 const WAVES = (
   <div className="pointer-events-none absolute top-0 left-[calc(50%+0.33*var(--px))] h-[213.28%] w-[179.08%] -translate-x-1/2">
     <div className="absolute inset-[0_-43.3%_-56.41%_-43.45%]">
-      <img src={asset('demo/card-waves.svg')} alt="" className="block size-full max-w-none" />
+      <img src={asset('demo/card-waves.svg')} alt="" loading="lazy" className="block size-full max-w-none" />
     </div>
   </div>
 )
@@ -248,12 +250,15 @@ const DEMOS = [
     art: (
       <>
         <div className="absolute inset-[9.37%_29.85%_-37.24%_29.73%]">
-          <img src={asset('demo/card-iphone-frame.png')} alt="" className="absolute inset-0 size-full max-w-none" />
+          <img src={asset('demo/card-iphone-frame.webp')} alt="" width={1370} height={2831} loading="lazy" className="absolute inset-0 size-full max-w-none" />
         </div>
         <div className="absolute inset-[11.36%_31.47%_-35.17%_31.32%]">
           <img
-            src={asset('demo/card-iphone-screen.png')}
+            src={asset('demo/card-iphone-screen.webp')}
             alt=""
+            width={804}
+            height={1748}
+            loading="lazy"
             className="absolute inset-0 size-full max-w-none rounded-[calc(23.178*var(--px))] object-cover"
           />
         </div>
@@ -266,7 +271,7 @@ const DEMOS = [
     to: ROUTES.demoWebsite,
     art: (
       <div className="absolute top-[calc(50%+46.48%)] left-1/2 h-[174.22%] w-[82.14%] -translate-1/2 overflow-hidden rounded-[calc(10*var(--px))] shadow-[0_calc(6*var(--px))_calc(60*var(--px))_rgba(85,76,241,0.4)]">
-        <img src={asset('demo/card-website.png')} alt="" className="absolute top-[0.07%] left-0 h-[171.38%] w-full max-w-none" />
+        <img src={asset('demo/card-website.webp')} alt="" width={1723} height={4096} loading="lazy" className="absolute top-[0.07%] left-0 h-[171.38%] w-full max-w-none" />
       </div>
     ),
   },
@@ -276,7 +281,7 @@ const DEMOS = [
     to: ROUTES.demoAdmin,
     art: (
       <div className="absolute top-1/2 left-[calc(50%-0.5*var(--px))] h-[87.5%] w-[82.4%] -translate-1/2 shadow-[0_calc(4*var(--px))_calc(30*var(--px))_rgba(0,0,0,0.1)]">
-        <img src={asset('demo/card-admin.png')} alt="" className="absolute inset-0 size-full max-w-none object-cover" />
+        <img src={asset('demo/card-admin.webp')} alt="" width={3004} height={2088} loading="lazy" className="absolute inset-0 size-full max-w-none object-cover" />
       </div>
     ),
   },
@@ -286,7 +291,7 @@ const DEMOS = [
     to: ROUTES.demoStaff,
     art: (
       <div className="absolute top-1/2 left-[calc(50%-0.5*var(--px))] h-[87.5%] w-[82.4%] -translate-1/2 overflow-hidden rounded-[calc(4*var(--px))] shadow-[0_calc(4*var(--px))_calc(30*var(--px))_rgba(0,0,0,0.1)]">
-        <img src={asset('demo/card-employee.png')} alt="" className="absolute top-[-5.1%] left-0 h-[107.62%] w-full max-w-none" />
+        <img src={asset('demo/card-employee.webp')} alt="" width={3004} height={2242} loading="lazy" className="absolute top-[-5.1%] left-0 h-[107.62%] w-full max-w-none" />
       </div>
     ),
   },

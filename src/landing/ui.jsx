@@ -154,6 +154,7 @@ export function Deco({ src, x, y, size = 84, rotate = 0 }) {
         alt=""
         width={84}
         height={84}
+        loading="lazy"
         className="max-w-none shrink-0 select-none"
         style={{ width: 'calc(84 * var(--u))', height: 'calc(84 * var(--u))', rotate: `${rotate}deg` }}
       />
