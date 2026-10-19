@@ -122,7 +122,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
         <div className="flex flex-col gap-6 lg:gap-10">
           {/* Shop branding */}
           {sidebarLogo ? (
-            <img src={sidebarLogo} alt="Bake My App" className="w-36 object-contain" />
+            <img src={sidebarLogo} alt="Bake My App" className="w-20 object-contain" />
           ) : (
             <div className="flex w-full items-center gap-2.5">
               <div className="flex size-10 lg:size-[46px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-on-brand shadow-sm">
