@@ -29,7 +29,7 @@ export function Values() {
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className={WAVE} />
       <div data-nav-theme="dark" className="relative -mt-[2px] bg-primary">
         <div
-          className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(32*var(--m),64*var(--u))] ${GAP[80]}`}
+          className={`mx-auto flex max-w-[calc(1920*var(--u))] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(32*var(--m),64*var(--u))] ${GAP[80]}`}
         >
           <div className="grid w-full grid-cols-1 gap-[max(48*var(--m),60*var(--u))] text-white md:grid-cols-3">
             {VALUES.map((value) => (

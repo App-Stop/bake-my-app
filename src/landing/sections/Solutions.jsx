@@ -82,7 +82,7 @@ export function KitchenStation() {
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-bottom"
       />
-      <div className="relative mx-auto max-w-[1920px]">
+      <div className="relative mx-auto max-w-[calc(1920*var(--u))]">
         <img
           src={asset('kitchen-staff.webp')}
           alt="Barista using the kitchen order station"
@@ -92,7 +92,7 @@ export function KitchenStation() {
           className="absolute top-[calc(97*var(--u))] left-[55.104%] hidden h-auto w-[37.604%] lg:block"
         />
         <div
-          className={`relative ${CONTAINER} pt-[max(72*var(--m),233*var(--u))] pb-[max(56*var(--m),180*var(--u))]`}
+          className={`relative ${CONTAINER} pt-[max(72*var(--m),130*var(--u))] pb-[max(56*var(--m),110*var(--u))]`}
         >
           <div className={`flex flex-col text-white lg:max-w-[59.7%] ${GAP[30]}`}>
             <h2 id="kitchen-title" className={`${TYPE.kitchenTitle} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
@@ -110,7 +110,7 @@ export function KitchenStation() {
             />
           </div>
 
-          <div className="relative mt-[max(32*var(--m),60*var(--u))] flex flex-col gap-5 drop-shadow-[0_10px_60px_rgba(85,76,241,0.1)] md:flex-row">
+          <div className="relative mx-auto mt-[max(32*var(--m),60*var(--u))] flex w-full flex-col gap-5 lg:max-w-[calc(1260*var(--u))] drop-shadow-[0_10px_60px_rgba(85,76,241,0.1)] md:flex-row">
             <img
               src={asset('kitchen-orders.webp')}
               alt="Order station: live order queue with order details"

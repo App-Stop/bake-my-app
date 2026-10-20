@@ -40,7 +40,7 @@ export function FreeMonth() {
   const { openPromo } = useModals()
   return (
     <section aria-labelledby="free-month-title" data-nav-theme="dark" className="relative z-10 overflow-hidden bg-[#232050]">
-      <div className="relative mx-auto flex max-w-[1920px] flex-col items-center justify-center gap-[max(24*var(--m),80*var(--u))] px-5 py-[max(56*var(--m),100*var(--u))] md:flex-row md:px-[calc(200*var(--u))]">
+      <div className="relative mx-auto flex max-w-[calc(1920*var(--u))] flex-col items-center justify-center gap-[max(24*var(--m),80*var(--u))] px-5 py-[max(56*var(--m),100*var(--u))] md:flex-row md:px-[calc(200*var(--u))]">
         <Waves src="waves-left.svg" x={-89} flip />
         <Waves src="waves-right.svg" x={1407} />
         {ICONS.map(({ src, x, y, box, size, transform }) => (

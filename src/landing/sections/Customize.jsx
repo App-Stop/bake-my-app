@@ -105,10 +105,10 @@ export function Customize() {
   return (
     <section id="customize" className="relative scroll-mt-10">
       <Deco src="deco-donut-2.svg" x={101.34} y={57} size={114.89} rotate={30.26} />
-      <Deco src="deco-coffee.svg" x={789} y={1102.09} size={105.93} rotate={-18.09} />
-      <div className="relative mx-auto flex max-w-[1920px] flex-col lg:flex-row">
+      <Deco src="deco-coffee.svg" x={789} y={880} size={105.93} rotate={-18.09} />
+      <div className="relative mx-auto flex max-w-[calc(1920*var(--u))] flex-col lg:flex-row">
         <div
-          className={`flex flex-col px-[max(20*var(--m),140*var(--u))] pt-[max(80*var(--m),205*var(--u))]  lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
+          className={`flex flex-col px-[max(20*var(--m),140*var(--u))] pt-[max(80*var(--m),130*var(--u))]  lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[60]}`}
         >
           <div className={`flex flex-col ${GAP[40]}`}>
             <div className={`flex flex-col text-ink ${GAP[30]}`}>
@@ -189,7 +189,7 @@ export function Customize() {
         </div>
 
         {/* Live preview; the gray panel bleeds to the right edge on wide screens. */}
-        <div className="brand-scope flex flex-col items-center bg-surface pt-[max(48*var(--m),236*var(--u))] pb-16 lg:min-h-[calc(1331*var(--u))] lg:w-[49.48%] lg:pb-0 lg:shadow-[0_0_0_100vmax_var(--color-surface)] lg:[clip-path:inset(0_-100vmax_0_0)]" style={brandVars}>
+        <div className="brand-scope flex flex-col items-center bg-surface pt-[max(48*var(--m),150*var(--u))] pb-16 lg:w-[49.48%] lg:pb-0 lg:shadow-[0_0_0_100vmax_var(--color-surface)] lg:[clip-path:inset(0_-100vmax_0_0)]" style={brandVars}>
           <div className="relative w-[min(626.84px,calc(100%-32px))] lg:w-[calc(626.84*var(--u))]" style={{ aspectRatio: `${STAGES.mobile.width} / ${STAGES.mobile.height}` }}>
             <div
               ref={stageRef}

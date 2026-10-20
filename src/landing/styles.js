@@ -8,7 +8,7 @@ export const asset = (name) => `${import.meta.env.BASE_URL}landing/${name}`
  * `n * var(--px)`. Kept as literal strings so Tailwind can see them.
  */
 export const PAGE_X = 'px-[max(20*var(--m),140*var(--u))]'
-export const CONTAINER = `mx-auto w-full max-w-[1920px] ${PAGE_X}`
+export const CONTAINER = `mx-auto w-full max-w-[calc(1920*var(--u))] ${PAGE_X}`
 
 export const TYPE = {
   display: 'font-malibu text-[length:max(44*var(--m),96*var(--u))] leading-[1.1042] font-normal',

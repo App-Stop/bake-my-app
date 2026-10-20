@@ -65,7 +65,7 @@ export function Faq() {
 
   return (
     <section id="faq" aria-labelledby="faq-title" className="mt-[max(80*var(--m),130*var(--u))]">
-      <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-[max(20*var(--m),160*var(--u))] lg:flex-row lg:gap-[calc(70*var(--u))]">
+      <div className="mx-auto flex max-w-[calc(1920*var(--u))] flex-col gap-10 px-[max(20*var(--m),160*var(--u))] lg:flex-row lg:gap-[calc(70*var(--u))]">
         <div className="flex min-w-px flex-1 flex-col gap-[max(32*var(--m),60*var(--u))]">
           <div className="flex flex-col gap-2.5 text-ink">
             <h2 id="faq-title" className="font-malibu text-[length:max(28*var(--m),36*var(--u))] leading-[1.389]">

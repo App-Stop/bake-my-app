@@ -46,7 +46,7 @@ export function Features() {
   return (
     <section id="features" className="scroll-mt-10 bg-primary-light">
       <div
-        className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
+        className={`mx-auto flex max-w-[calc(1920*var(--u))] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
       >
         <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-primary ${GAP[30]}`}>
           <h2 className={` ${TYPE.featureTitle}`}>built for the regulars you already have</h2>

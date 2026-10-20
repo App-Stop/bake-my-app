@@ -142,7 +142,7 @@ export function BusinessTools() {
     >
       <Deco src="deco-cupcake.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <Deco src="deco-cake.svg" x={1685.79} y={87} size={113.3} rotate={27.5} />
-      <div className={`relative flex flex-col items-center ${GAP[60]} ${CONTAINER}`}>
+      <div className={`relative flex flex-col items-center ${GAP[40]} ${CONTAINER}`}>
         <div className={`flex max-w-[calc(976*var(--px))] flex-col items-center text-center ${GAP[30]}`}>
           <h2 className={`text-primary ${TYPE.h2}`}>manage, operate and grow your business</h2>
           <p className={`max-w-[calc(824*var(--px))] text-ink ${TYPE.body}`}>
@@ -200,7 +200,7 @@ export function BusinessTools() {
           id="business-tools-panel"
           role="tabpanel"
           aria-labelledby={`business-tab-${active}`}
-          className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-[4.024%]"
+          className="flex w-full flex-col items-center gap-10 lg:flex-row lg:justify-between lg:gap-[4.024%]"
         >
           <div className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
             <div className="flex flex-col gap-4 leading-normal text-ink lg:min-h-[calc(226*var(--u))]">
@@ -226,7 +226,7 @@ export function BusinessTools() {
             width={content.width}
             height={content.height}
             loading="lazy"
-            className="h-auto w-full lg:w-[49.39%]"
+            className="h-auto w-full lg:w-[44%]"
           />
         </div>
       </div>

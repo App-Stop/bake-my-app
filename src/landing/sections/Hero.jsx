@@ -7,11 +7,10 @@ export function Hero() {
     <>
       <header data-nav-theme="dark" className="relative overflow-hidden bg-primary">
         <SiteNav />
-        {/* hero-fit (index.css) also scales the hero by viewport height on desktop. */}
-        <div className="hero-fit relative mx-auto max-w-[1920px] pt-[max(92*var(--m),136*var(--u))]">
+        <div className="relative mx-auto max-w-[calc(1920*var(--u))] pt-[max(92*var(--m),136*var(--u))]">
           {/*
             The reduced desktop design clips the device collage into a 1920×400 strip. On desktop it is
-            sized in --u (not %), so when the hero is height-limited the collage shrinks and stays centred.
+            sized in --u (not %), so when the page is height-limited the collage shrinks and stays centred.
           */}
           <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386] lg:aspect-auto lg:h-[calc(400*var(--u))]">
             <img

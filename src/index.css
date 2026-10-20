@@ -70,28 +70,16 @@
 /*
  * Landing, desktop layout (lg+): the page is the 1920 Figma frame scaled to the viewport, so every
  * length — arbitrary values (--px), Tailwind's spacing scale and named text sizes — follows --u.
+ * The frame is sized by height as well as width: the design was laid out for a 1920×980 screen, so
+ * on screens shorter than that ratio (laptops) the whole frame shrinks until the same content fits
+ * above the fold, and centres (containers cap at 1920 * --u). It never drops below 70% of the width scale.
  */
 @media (min-width: 64rem) {
   .landing-page {
-    --px: var(--u);
-    --m: 0px;
-    --spacing: calc(4 * var(--u));
-    --text-xs: calc(12 * var(--u));
-    --text-sm: calc(14 * var(--u));
-    --text-base: calc(16 * var(--u));
-    --text-lg: calc(18 * var(--u));
-    --text-xl: calc(20 * var(--u));
-  }
-
-  /*
-   * Hero: also scale by viewport height so the whole hero (to the CTA note, ~980 Figma px tall)
-   * fits above the fold on wide, short screens (laptops), but never below 70% of the width scale.
-   * Everything derived from --u is redeclared here, since custom props resolve where declared.
-   */
-  .landing-page .hero-fit {
     --u: min(1px, calc(100vw / 1920), max(calc(100vh / 980), calc(0.7 * 100vw / 1920)));
     --u: min(1px, calc(100vw / 1920), max(calc(100svh / 980), calc(0.7 * 100vw / 1920)));
     --px: var(--u);
+    --m: 0px;
     --spacing: calc(4 * var(--u));
     --text-xs: calc(12 * var(--u));
     --text-sm: calc(14 * var(--u));

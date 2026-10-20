@@ -264,7 +264,7 @@ export function ContactPage() {
           className="absolute top-[max(115*var(--m),192*var(--u))] left-1/2 h-auto w-[max(1400*var(--m),calc(100%+2px))] max-w-none -translate-x-1/2 select-none"
         />
         <SiteNav forceDark />
-        <div className="relative z-10 mx-auto flex max-w-[1920px] flex-col items-center gap-[max(16*var(--m),30*var(--u))] px-5 pt-[max(118*var(--m),140*var(--u))] text-center text-white">
+        <div className="relative z-10 mx-auto flex max-w-[calc(1920*var(--u))] flex-col items-center gap-[max(16*var(--m),30*var(--u))] px-5 pt-[max(118*var(--m),140*var(--u))] text-center text-white">
           <h1 className="font-malibu text-[length:max(52*var(--m),96*var(--u))] leading-[1.1042]">let&apos;s talk shop.</h1>
           <p className="max-w-[calc(760*var(--px))] text-[length:max(16*var(--m),24*var(--u))] leading-normal font-medium">
             A question, a big idea, or a little help with the techy part?<br className="hidden sm:block" /> Tell us what&apos;s cooking. We&apos;re here for your business.
@@ -275,7 +275,7 @@ export function ContactPage() {
       <main>
         <section
           aria-labelledby="contact-intro-title"
-          className="mx-auto flex max-w-[1920px] flex-col gap-12 px-[max(20*var(--m),160*var(--u))] py-[max(56*var(--m),80*var(--u))] lg:flex-row lg:items-start lg:gap-[calc(200*var(--u))]"
+          className="mx-auto flex max-w-[calc(1920*var(--u))] flex-col gap-12 px-[max(20*var(--m),160*var(--u))] py-[max(56*var(--m),80*var(--u))] lg:flex-row lg:items-start lg:gap-[calc(200*var(--u))]"
         >
           <div className="flex w-full shrink-0 flex-col gap-[max(24*var(--m),30*var(--u))] lg:w-[calc(500*var(--u))]">
             <div className="flex flex-col gap-4">
