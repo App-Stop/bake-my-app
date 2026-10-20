@@ -3,6 +3,8 @@ import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { useModals } from '../useModals'
 import { DEMO_UNIT, useScaleTo } from './demoScale'
+import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
+import { readableTextOn } from '../../lib/color'
 
 const DEMO_TABS = [
   { label: 'Customer Mobile App', to: ROUTES.demoMobile },
@@ -77,7 +79,7 @@ export function DemoBar({ active }) {
           onClick={openPromo}
           className={`shrink-0 rounded-full bg-primary px-[calc(32*var(--d))] py-[calc(16*var(--d))] font-bold whitespace-nowrap text-white transition hover:brightness-110 ${BAR_TEXT}`}
         >
-          Claim Offer
+            Continue to Checkout
         </button>
       </div>
     </div>
@@ -110,8 +112,19 @@ export function DemoWindow({ width, height, contentWidth = width, children }) {
  * tall, with the demo bar at its Figma position below.
  */
 export function DemoPage({ title, active, top, height, children }) {
+  const [brandColor, setBrandColor] = useState('#554cf1')
+  const theme = {
+    '--brand': brandColor,
+    '--brand-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
+    '--on-brand': readableTextOn(brandColor),
+    '--color-primary': brandColor,
+    '--color-primary-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
+  }
+
   return (
-    <div className={`flex min-h-dvh flex-col items-center bg-white px-4 font-sans text-ink ${DEMO_UNIT}`}>
+    <div className={`brand-scope relative flex min-h-dvh flex-col items-center overflow-hidden bg-primary-light px-4 font-sans text-ink ${DEMO_UNIT}`} style={theme}>
+      <BakeryDecorations />
+      <CustomizationRail color={brandColor} onChange={setBrandColor} />
       <main className="flex flex-1 flex-col items-center" style={{ marginTop: `calc(${top} * var(--d))` }}>
         <h1 className="sr-only">{title}</h1>
         {children}

@@ -130,7 +130,7 @@ export function CostCalculator() {
     <section
       id="cost-calculator"
       aria-labelledby="cost-calculator-title"
-      className="relative mt-[max(80*var(--m),140*var(--u))] scroll-mt-10"
+      className="relative mt-[max(110*var(--m),160*var(--u))] mb-[max(96*var(--m),144*var(--u))] scroll-mt-10"
     >
       <Deco src="deco-croissant.svg" x={1796} y={-49.5} />
       <div className={CONTAINER}>

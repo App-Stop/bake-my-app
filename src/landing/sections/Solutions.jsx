@@ -4,7 +4,7 @@ import { CONTAINER, GAP, TYPE, asset } from '../styles'
 function CustomerApp() {
   return (
     <div className="flex flex-col lg:flex-row lg:items-start">
-      <div className={`flex flex-col lg:mt-[calc(57*var(--u))] lg:w-[49.39%] ${GAP[40]}`}>
+      <div className={`flex flex-col  lg:w-[49.39%] ${GAP[40]}`}>
         <div className={`flex flex-col text-ink ${GAP[30]}`}>
           <h2 className={TYPE.h2}>your cafe, right on their home screen</h2>
           <p className={TYPE.body}>
@@ -65,12 +65,12 @@ function CustomerWebsite() {
   )
 }
 
-function KitchenStation() {
+export function KitchenStation() {
   return (
     <section
       aria-labelledby="kitchen-title"
       data-nav-theme="dark"
-      className="relative mt-[max(64*var(--m),153*var(--u))] overflow-hidden"
+      className="relative -mt-[calc(32*var(--m))] overflow-hidden pt-30 lg:-mt-[calc(153*var(--u))]"
     >
       {/* Photo export already includes the 20% brand-purple overlay from Figma. */}
       <img
@@ -95,7 +95,7 @@ function KitchenStation() {
           className={`relative ${CONTAINER} pt-[max(72*var(--m),233*var(--u))] pb-[max(56*var(--m),180*var(--u))]`}
         >
           <div className={`flex flex-col text-white lg:max-w-[59.7%] ${GAP[30]}`}>
-            <h2 id="kitchen-title" className={`${TYPE.h2} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
+            <h2 id="kitchen-title" className={`${TYPE.kitchenTitle} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
               one screen, zero lost tickets
             </h2>
             <p className={`${TYPE.body} drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]`}>
@@ -165,7 +165,6 @@ export function Solutions() {
           <CustomerWebsite />
         </div>
       </section>
-      <KitchenStation />
     </>
   )
 }

@@ -1,78 +1,83 @@
-import { useEffect, useRef } from 'react'
-import { BusinessTools } from './sections/BusinessTools'
-import { Footer, Ready } from './sections/Closing'
-import { CostCalculator } from './sections/CostCalculator'
-import { Customize } from './sections/Customize'
-import { Faq } from './sections/Faq'
-import { Features } from './sections/Features'
-import { FreeMonth } from './sections/FreeMonth'
-import { Hero } from './sections/Hero'
-import { Pricing } from './sections/Pricing'
-import { Solutions } from './sections/Solutions'
-import { Values } from './sections/Values'
-import { useModals } from './useModals'
-import { useLandingMotion } from './useLandingMotion'
+import { useEffect, useRef } from "react";
+import { BusinessTools } from "./sections/BusinessTools";
+import { Footer, Ready } from "./sections/Closing";
+import { CostCalculator } from "./sections/CostCalculator";
+import { Customize } from "./sections/Customize";
+import { Faq } from "./sections/Faq";
+import { Features } from "./sections/Features";
+import { FreeMonth } from "./sections/FreeMonth";
+import { Hero } from "./sections/Hero";
+import { Pricing } from "./sections/Pricing";
+import { KitchenStation, Solutions } from "./sections/Solutions";
+import { Values } from "./sections/Values";
+import { useModals } from "./useModals";
+import { useLandingMotion } from "./useLandingMotion";
 
-const PROMO_SEEN_KEY = 'bma-promo-seen'
-const SCROLL_THRESHOLD = 300
+const PROMO_SEEN_KEY = "bma-promo-seen";
+const SCROLL_THRESHOLD = 300;
 
 /** Shows the first-month-free popup once per browser session after some scrolling has been done. */
 function usePromoOnScroll() {
-  const { openPromo } = useModals()
+  const { openPromo } = useModals();
   useEffect(() => {
     try {
-      if (sessionStorage.getItem(PROMO_SEEN_KEY)) return
+      if (sessionStorage.getItem(PROMO_SEEN_KEY)) return;
     } catch {
       // Storage unavailable (private mode): proceed with in-memory check.
     }
 
-    let triggered = false
+    let triggered = false;
 
     const handleScroll = () => {
-      if (triggered) return
+      if (triggered) return;
       if (window.scrollY > SCROLL_THRESHOLD) {
-        triggered = true
+        triggered = true;
         try {
-          sessionStorage.setItem(PROMO_SEEN_KEY, '1')
+          sessionStorage.setItem(PROMO_SEEN_KEY, "1");
         } catch {
           // ignore
         }
-        window.removeEventListener('scroll', handleScroll)
-        openPromo()
+        window.removeEventListener("scroll", handleScroll);
+        openPromo();
       }
-    }
+    };
 
     if (window.scrollY > SCROLL_THRESHOLD) {
-      handleScroll()
-      return
+      handleScroll();
+      return;
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [openPromo])
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [openPromo]);
 }
 
 /** Marketing landing page at "/" — built from the Figma "Landing" frame (1920 wide). */
 export function LandingPage() {
-  usePromoOnScroll()
-  const pageRef = useRef(null)
-  useLandingMotion(pageRef)
+  usePromoOnScroll();
+  const pageRef = useRef(null);
+  useLandingMotion(pageRef);
   return (
-    <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div
+      ref={pageRef}
+      className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink"
+    >
       <Hero />
       <main>
         <Solutions />
-        <BusinessTools />
-        <Features />
+        <CostCalculator />
         <FreeMonth />
         <Customize />
+        <Features />
+        <BusinessTools />
         <Values />
-        <CostCalculator />
+        <KitchenStation />
+
         <Pricing />
         <Faq />
         <Ready />
       </main>
       <Footer />
     </div>
-  )
+  );
 }

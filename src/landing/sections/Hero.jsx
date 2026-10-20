@@ -7,22 +7,22 @@ export function Hero() {
     <>
       <header data-nav-theme="dark" className="relative overflow-hidden bg-primary">
         <SiteNav />
-        <div className="relative mx-auto max-w-[1920px] pt-[max(96*var(--m),140*var(--u))]">
-          {/* Devices strip (1920×544 in Figma). Phones show its middle 800px; md+ shows it all. */}
-          <div className="relative aspect-[800/544] md:aspect-[1920/544]">
+        <div className="relative mx-auto max-w-[1920px] pt-[max(92*var(--m),136*var(--u))]">
+          {/* The reduced desktop design clips the device collage into a 1920×386 strip. */}
+          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386]">
             <img
-              src={asset('hero-devices.webp')}
+              src={asset('hero-devices.png')}
               alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
               width={3840}
-              height={1197}
+              height={1250}
               loading="eager"
               fetchPriority="high"
-              className="absolute top-[-0.735%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%]"
+              className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%]"
             />
           </div>
 
           <div className={`relative z-10 mt-[calc(10*var(--u))] flex flex-col items-center px-5 text-center text-white ${GAP[30]}`}>
-            <h1 className={`relative w-full max-w-[calc(1368*var(--px))] ${TYPE.display}`}>
+            <h1 className={`relative w-full max-w-[calc(906*var(--px))] ${TYPE.hero}`}>
               <span className="block md:whitespace-nowrap">everything to run your</span>
               <span className="block md:whitespace-nowrap">cafe, baked into one</span>
               <img
@@ -39,7 +39,7 @@ export function Hero() {
               />
             </h1>
             <div className={`flex max-w-[calc(966*var(--px))] flex-col items-center ${GAP[40]}`}>
-              <p className={TYPE.lead}>
+              <p className={TYPE.heroLead}>
                 Your own branded app, ordering website, kitchen screen and sales dashboard. Live in 48 hours, with
                 0% commission on every order.
               </p>

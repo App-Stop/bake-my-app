@@ -44,12 +44,12 @@ function CardText({ title, children, align = 'center' }) {
 
 export function Features() {
   return (
-    <section id="features" className="mt-[max(80*var(--m),160*var(--u))] scroll-mt-10 bg-primary-light">
+    <section id="features" className="scroll-mt-10 bg-primary-light">
       <div
         className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
       >
         <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-primary ${GAP[30]}`}>
-          <h2 className={`lg:whitespace-nowrap ${TYPE.h2}`}>built for the regulars you already have</h2>
+          <h2 className={` ${TYPE.featureTitle}`}>built for the regulars you already have</h2>
         </div>
 
         <div className="grid w-full grid-cols-1 items-stretch gap-5 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">

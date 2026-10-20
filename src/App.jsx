@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { readableTextOn } from './lib/color'
 import { OnboardingScreen } from './onboarding/OnboardingScreen'
 import { useOnboardingState } from './onboarding/useOnboardingState'
-import { PreviewPanel } from './preview/PreviewPanel'
 import { DashboardScreen } from './dashboard/DashboardScreen'
+import { BakeryDecorations } from './components/BakeryBackdrop'
 
 function App() {
   const [state, actions] = useOnboardingState()
@@ -34,11 +34,11 @@ function App() {
   }
 
   return (
-    <div className="brand-scope flex h-full min-w-[1024px]" style={brandVars}>
-      <main className="h-full min-w-0 flex-1 overflow-y-auto">
+    <div className="brand-scope relative min-h-full min-w-[1024px] overflow-hidden bg-primary-light" style={brandVars}>
+      <BakeryDecorations setup />
+      <main className="relative z-10 h-full min-w-0 overflow-y-auto">
         <OnboardingScreen state={state} actions={actions} />
       </main>
-      <PreviewPanel state={state} />
     </div>
   )
 }

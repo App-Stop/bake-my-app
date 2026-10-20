@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { MinusSignIcon } from '@hugeicons/core-free-icons'
-import { ArrowIcon, CheckCircle, Icon } from '../ui'
+import { ArrowIcon, CheckCircle, Deco, Icon } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
 const PLANS = [
@@ -30,7 +30,7 @@ const PLANS = [
   {
     name: 'Growth',
     description: 'For cafes ready for their own app and repeat customers.',
-    rates: { yearly: 299, monthly: 349 },
+    rates: { yearly: 249, monthly: 349 },
     alternateRate: 299,
     limited: true,
     cta: 'Start for Free',
@@ -250,7 +250,7 @@ function ContactExpert() {
 /** "baked to grow", with the last letters growing (64 → 82px in Figma, all on a 74px line). */
 function Title() {
   return (
-    <h2 className="font-malibu text-[length:max(36*var(--m),64*var(--u))] leading-[1.1563] font-normal">
+    <h2 className="font-malibu text-[length:max(36*var(--m),64*var(--u))] leading-[1.1563] font-normal lg:whitespace-nowrap">
       baked to g<span className="text-[1.09375em]">r</span>
       <span className="text-[1.1875em]">o</span>
       <span className="text-[1.28125em]">w</span>, priced to stay fair
@@ -261,9 +261,10 @@ function Title() {
 export function Pricing() {
   const [billing, setBilling] = useState('yearly')
   return (
-    <section id="pricing" className="mt-[max(80*var(--m),180*var(--u))] scroll-mt-10">
+    <section id="pricing" className="relative mt-[max(80*var(--m),180*var(--u))] scroll-mt-10">
+      <Deco src="deco-biscuit.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <div className={`flex flex-col items-center ${GAP[80]} ${CONTAINER}`}>
-        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink ${GAP[30]}`}>
+        <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink lg:max-w-none ${GAP[30]}`}>
           <Title />
           <p className={TYPE.body}>
             Free setup. Flat monthly fee. 0% commission. Cancel anytime.

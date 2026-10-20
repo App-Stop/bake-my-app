@@ -108,7 +108,7 @@ export function Customize() {
       <Deco src="deco-coffee.svg" x={789} y={1102.09} size={105.93} rotate={-18.09} />
       <div className="relative mx-auto flex max-w-[1920px] flex-col lg:flex-row">
         <div
-          className={`flex flex-col px-[max(20*var(--m),140*var(--u))] pt-[max(80*var(--m),205*var(--u))] pb-16 lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
+          className={`flex flex-col px-[max(20*var(--m),140*var(--u))] pt-[max(80*var(--m),205*var(--u))]  lg:w-[50.52%] lg:pr-[calc(20*var(--u))] lg:pb-0 ${GAP[80]}`}
         >
           <div className={`flex flex-col ${GAP[40]}`}>
             <div className={`flex flex-col text-ink ${GAP[30]}`}>

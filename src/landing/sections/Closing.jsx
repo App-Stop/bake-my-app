@@ -13,7 +13,7 @@ export function Ready() {
           className={`flex flex-col items-center py-[max(64*var(--m),120*var(--u))] lg:flex-row ${GAP[80]} ${CONTAINER}`}
         >
           <div className={`flex w-full min-w-px flex-col text-white lg:flex-1 ${GAP[30]}`}>
-            <h2 id="ready-title" className={TYPE.display}>
+            <h2 id="ready-title" className={TYPE.ready}>
               ready to bake
               <br />
               your app?

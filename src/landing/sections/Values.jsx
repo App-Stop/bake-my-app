@@ -25,11 +25,11 @@ const VALUES = [
 export function Values() {
   return (
     // The top wave overlaps the bottom of the customize panel by 102px, as in Figma.
-    <section aria-label="Why Bake my App" className="relative -mt-[calc(102*var(--u))]">
+    <section aria-label="Why Bake my App" className="relative mt-20">
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className="relative block h-auto w-full select-none" />
       <div data-nav-theme="dark" className="-mt-px bg-primary">
         <div
-          className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(64*var(--m),160*var(--u))] ${GAP[80]}`}
+          className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(32*var(--m),64*var(--u))] ${GAP[80]}`}
         >
           <div className="grid w-full grid-cols-1 gap-[max(48*var(--m),60*var(--u))] text-white md:grid-cols-3">
             {VALUES.map((value) => (
@@ -58,7 +58,7 @@ export function Values() {
         width={1920}
         height={243}
         loading="lazy"
-        className="relative -mt-[calc(2*var(--u))] block h-auto w-full select-none"
+        className="relative z-10 -mt-[calc(2*var(--u))] block h-auto w-full select-none"
       />
     </section>
   )

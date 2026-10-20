@@ -146,19 +146,19 @@ export function OnboardingScreen({ state, actions }) {
   const setShopField = (field) => (event) => actions.updateShop({ [field]: event.target.value })
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-[700px] flex-col px-6 py-[30px] min-[1200px]:px-[30px]">
-      <header className="flex items-center justify-between">
-        <img src={logo} alt="Bake My App" width={84} height={61.2} className="h-[61.2px] w-[84px]" />
+    <div className="relative mx-auto min-h-[1024px] w-full max-w-[1440px] px-6">
+      <header>
+        <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="absolute left-1/2 top-12 h-[73.04px] w-[100.25px] -translate-x-1/2" />
         <button
           type="button"
           onClick={openExitOffer}
-          className="rounded-full px-5 py-4 text-base text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
+          className="absolute left-1/2 top-14 -translate-x-[410px] rounded-full px-5 py-4 text-base text-ink/50 transition-colors hover:bg-white/50 hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
         >
           Back to Home
         </button>
       </header>
 
-      <section className="mt-[60px] flex flex-col gap-10" aria-labelledby="onboarding-title">
+      <section className="absolute left-1/2 top-[162px] flex w-[min(820px,calc(100%-48px))] -translate-x-1/2 flex-col gap-10 rounded-[40px] bg-white p-10" aria-labelledby="onboarding-title">
         <div className="flex flex-col gap-2.5">
           <h1 id="onboarding-title" className="text-[32px] leading-normal font-semibold text-ink min-[1200px]:text-4xl">
             Tell us about your shop
@@ -213,7 +213,7 @@ export function OnboardingScreen({ state, actions }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2.5 pb-[30px]">
+        <div className="flex items-center justify-end gap-2.5">
           <button
             type="button"
             onClick={() => navigate(ROUTES.demoAdmin)}
