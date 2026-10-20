@@ -104,7 +104,7 @@ export function Customize() {
 
   return (
     <section id="customize" className="relative scroll-mt-10">
-      <Deco src="deco-donut-2.svg" x={101.34} y={57} size={114.89} rotate={30.26} />
+      <Deco src="deco-donut-2.svg" x={101.34} y={0} size={114.89} rotate={30.26} />
       <Deco src="deco-coffee.svg" x={789} y={880} size={105.93} rotate={-18.09} />
       <div className="relative mx-auto flex max-w-[calc(1920*var(--u))] flex-col lg:flex-row">
         <div

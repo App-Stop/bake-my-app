@@ -102,7 +102,7 @@ export function CtaPair({
         </Pill>
         <DemoPill label={demoLabel} variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />
       </div>
-      <p className={`text-base leading-normal italic opacity-80 ${tone === 'light' ? 'text-ink' : 'text-white'}`}>
+      <p className={`text-base leading-normal mb-10 italic opacity-80 ${tone === 'light' ? 'text-ink' : 'text-white'}`}>
         {note}
       </p>
     </div>
