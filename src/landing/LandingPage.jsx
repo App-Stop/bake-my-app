@@ -12,6 +12,7 @@ import { KitchenStation, Solutions } from "./sections/Solutions";
 import { Values } from "./sections/Values";
 import { useModals } from "./useModals";
 import { useLandingMotion } from "./useLandingMotion";
+import { useCenteredHashScroll } from "./useCenteredHashScroll";
 
 const PROMO_SEEN_KEY = "bma-promo-seen";
 const SCROLL_THRESHOLD = 300;
@@ -57,6 +58,7 @@ export function LandingPage() {
   usePromoOnScroll();
   const pageRef = useRef(null);
   useLandingMotion(pageRef);
+  useCenteredHashScroll();
   return (
     <div
       ref={pageRef}
