@@ -9,7 +9,7 @@ export function Hero() {
         <SiteNav />
         <div className="relative mx-auto max-w-[1920px] pt-[max(92*var(--m),136*var(--u))]">
           {/* The reduced desktop design clips the device collage into a 1920×386 strip. */}
-          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386]">
+          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386] lg:aspect-[1920/400]">
             <img
               src={asset('hero-devices.png')}
               alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
@@ -43,7 +43,7 @@ export function Hero() {
                 Your own branded app, ordering website, kitchen screen and sales dashboard. Live in 48 hours, with
                 0% commission on every order.
               </p>
-              <CtaPair tone="purple" size="lg" align="center" note="Free setup. No contracts. We do the techy part." />
+              <CtaPair tone="purple" size="md" align="center" note="Free setup. No contracts. We do the techy part." />
             </div>
           </div>
         </div>

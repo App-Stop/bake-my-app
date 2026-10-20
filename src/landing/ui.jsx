@@ -40,7 +40,7 @@ const VARIANTS = {
 
 const SIZES = {
   lg: 'text-[length:max(18*var(--m),24*var(--u))] px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))]',
-  md: 'text-[length:max(16*var(--m),20*var(--u))] px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))]',
+  md: 'text-[length:max(12*var(--m),18*var(--u))] px-[max(16*var(--m),32*var(--u))] py-[max(12*var(--m),18*var(--u))]',
   sm: 'text-[length:calc(16*var(--px))] px-[max(24*var(--m),40*var(--u))] py-[max(12*var(--m),16*var(--u))]',
 }
 
