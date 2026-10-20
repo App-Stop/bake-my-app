@@ -23,6 +23,12 @@ export const TYPE = {
   body: 'text-[length:max(16*var(--m),20*var(--u))] leading-normal font-medium',
 }
 
+/*
+ * Full-bleed wave strips (SVGs with preserveAspectRatio="none"). 1px of overscan on each side hides
+ * anti-aliased edges; neighbouring purple blocks overlap them by a fixed 2px so no seam shows.
+ */
+export const WAVE = 'relative -mx-px block h-auto w-[calc(100%+2px)] max-w-none select-none'
+
 export const GAP = {
   30: 'gap-[max(20*var(--m),30*var(--u))]',
   40: 'gap-[max(24*var(--m),40*var(--u))]',

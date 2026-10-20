@@ -83,6 +83,23 @@
     --text-xl: calc(20 * var(--u));
   }
 
+  /*
+   * Hero: also scale by viewport height so the whole hero (to the CTA note, ~980 Figma px tall)
+   * fits above the fold on wide, short screens (laptops), but never below 70% of the width scale.
+   * Everything derived from --u is redeclared here, since custom props resolve where declared.
+   */
+  .landing-page .hero-fit {
+    --u: min(1px, calc(100vw / 1920), max(calc(100vh / 980), calc(0.7 * 100vw / 1920)));
+    --u: min(1px, calc(100vw / 1920), max(calc(100svh / 980), calc(0.7 * 100vw / 1920)));
+    --px: var(--u);
+    --spacing: calc(4 * var(--u));
+    --text-xs: calc(12 * var(--u));
+    --text-sm: calc(14 * var(--u));
+    --text-base: calc(16 * var(--u));
+    --text-lg: calc(18 * var(--u));
+    --text-xl: calc(20 * var(--u));
+  }
+
   /* Embedded app UI (the storefront phones) keeps its own 1× sizes; it is scaled as a whole. */
   .landing-page .landing-unscaled {
     --px: 1px;

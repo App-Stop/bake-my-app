@@ -1,5 +1,5 @@
 import { CtaPair } from '../ui'
-import { GAP, TYPE, asset } from '../styles'
+import { GAP, TYPE, WAVE, asset } from '../styles'
 
 const VALUES = [
   {
@@ -26,8 +26,8 @@ export function Values() {
   return (
     // The top wave overlaps the bottom of the customize panel by 102px, as in Figma.
     <section aria-label="Why Bake my App" className="relative mt-20">
-      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className="relative block h-auto w-full select-none" />
-      <div data-nav-theme="dark" className="-mt-px bg-primary">
+      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className={WAVE} />
+      <div data-nav-theme="dark" className="relative -mt-[2px] bg-primary">
         <div
           className={`mx-auto flex max-w-[1920px] flex-col items-center px-[max(20*var(--m),52*var(--u))] py-[max(32*var(--m),64*var(--u))] ${GAP[80]}`}
         >
@@ -58,7 +58,7 @@ export function Values() {
         width={1920}
         height={243}
         loading="lazy"
-        className="relative z-10 -mt-[calc(2*var(--u))] block h-auto w-full select-none"
+        className={`z-10 -mt-[2px] ${WAVE}`}
       />
     </section>
   )

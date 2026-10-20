@@ -250,7 +250,8 @@ export function ContactPage() {
 
   return (
     <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
-      <header data-nav-theme="dark" className="relative h-[max(390*var(--m),520*var(--u))] overflow-hidden bg-white">
+      {/* The last term keeps the whole wave inside the header above 1920px, where --u stops growing but the wave doesn't. */}
+      <header data-nav-theme="dark" className="relative h-[max(390*var(--m),520*var(--u),calc(192*var(--u)+100vw*327/1920+2px))] overflow-hidden bg-white">
         <div className="absolute inset-x-0 top-0 h-[max(270*var(--m),347*var(--u))] bg-primary" />
         <img
           src={asset('contact/hero-wave.svg')}
@@ -260,7 +261,7 @@ export function ContactPage() {
           height="327"
           loading="eager"
           fetchPriority="high"
-          className="absolute top-[max(115*var(--m),192*var(--u))] left-1/2 h-auto w-[max(1400*var(--m),100%)] max-w-none -translate-x-1/2 select-none"
+          className="absolute top-[max(115*var(--m),192*var(--u))] left-1/2 h-auto w-[max(1400*var(--m),calc(100%+2px))] max-w-none -translate-x-1/2 select-none"
         />
         <SiteNav forceDark />
         <div className="relative z-10 mx-auto flex max-w-[1920px] flex-col items-center gap-[max(16*var(--m),30*var(--u))] px-5 pt-[max(118*var(--m),140*var(--u))] text-center text-white">
@@ -306,7 +307,8 @@ export function ContactPage() {
         </section>
       </main>
 
-      <div className="relative h-[max(180*var(--m),371*var(--u))] overflow-hidden">
+      {/* In flow (not a fixed-height box) so the strip's height always follows the wave's width. */}
+      <div className="overflow-hidden">
         <img
           src={asset('contact/footer-wave.svg')}
           alt=""
@@ -314,10 +316,10 @@ export function ContactPage() {
           width="1920"
           height="371"
           loading="lazy"
-          className="absolute bottom-0 left-1/2 h-auto w-[max(1000*var(--m),100%)] max-w-none select-none [transform:translateX(-50%)_scaleY(-1)]"
+          className="relative left-1/2 block h-auto w-[max(1000*var(--m),calc(100%+2px))] max-w-none select-none [transform:translateX(-50%)_scaleY(-1)]"
         />
       </div>
-      <div className="-mt-px"><Footer /></div>
+      <div className="relative -mt-[2px]"><Footer /></div>
     </div>
   )
 }

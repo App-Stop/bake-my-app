@@ -1,5 +1,5 @@
 import { CtaPair } from '../ui'
-import { GAP, TYPE, asset } from '../styles'
+import { GAP, TYPE, WAVE, asset } from '../styles'
 import { SiteNav } from '../SiteNav'
 
 export function Hero() {
@@ -7,9 +7,13 @@ export function Hero() {
     <>
       <header data-nav-theme="dark" className="relative overflow-hidden bg-primary">
         <SiteNav />
-        <div className="relative mx-auto max-w-[1920px] pt-[max(92*var(--m),136*var(--u))]">
-          {/* The reduced desktop design clips the device collage into a 1920×386 strip. */}
-          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386] lg:aspect-[1920/400]">
+        {/* hero-fit (index.css) also scales the hero by viewport height on desktop. */}
+        <div className="hero-fit relative mx-auto max-w-[1920px] pt-[max(92*var(--m),136*var(--u))]">
+          {/*
+            The reduced desktop design clips the device collage into a 1920×400 strip. On desktop it is
+            sized in --u (not %), so when the hero is height-limited the collage shrinks and stays centred.
+          */}
+          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386] lg:aspect-auto lg:h-[calc(400*var(--u))]">
             <img
               src={asset('hero-devices.png')}
               alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
@@ -17,7 +21,7 @@ export function Hero() {
               height={1250}
               loading="eager"
               fetchPriority="high"
-              className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%]"
+              className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%] lg:left-[calc(50%-988.8*var(--u))] lg:w-[calc(2033*var(--u))]"
             />
           </div>
 
@@ -57,7 +61,7 @@ export function Hero() {
         height={311}
         loading="eager"
         fetchPriority="high"
-        className="relative -mt-[calc(2*var(--u))] block h-auto w-full select-none"
+        className={`-mt-[2px] ${WAVE}`}
       />
     </>
   )

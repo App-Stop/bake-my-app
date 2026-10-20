@@ -2,13 +2,13 @@ import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { Facebook01Icon, InstagramIcon, Linkedin01Icon, TwitterIcon } from '@hugeicons/core-free-icons'
 import { Composite, CtaPair, Icon } from '../ui'
-import { CONTAINER, GAP, TYPE, asset } from '../styles'
+import { CONTAINER, GAP, TYPE, WAVE, asset } from '../styles'
 
 export function Ready() {
   return (
     <section aria-labelledby="ready-title" className="relative mt-[max(80*var(--m),131*var(--u))]">
-      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className="relative block h-auto w-full select-none" />
-      <div data-nav-theme="dark" className="-mt-px overflow-hidden bg-primary">
+      <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className={WAVE} />
+      <div data-nav-theme="dark" className="relative -mt-[2px] overflow-hidden bg-primary">
         <div
           className={`flex flex-col items-center py-[max(64*var(--m),120*var(--u))] lg:flex-row ${GAP[80]} ${CONTAINER}`}
         >
