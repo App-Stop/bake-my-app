@@ -174,7 +174,7 @@ function EnquiryForm() {
       <form
         onSubmit={submit}
         aria-labelledby="contact-form-title"
-        className="flex min-w-0 flex-1 flex-col gap-6 rounded-[calc(32*var(--px))] bg-primary-light p-[max(24*var(--m),40*var(--u))]"
+        className="flex min-w-0 flex-1 flex-col gap-10 rounded-[calc(32*var(--px))] bg-primary-light p-[max(24*var(--m),40*var(--u))]"
       >
       <div className="flex flex-col gap-2">
         <h2 id="contact-form-title" className="font-malibu text-[length:max(32*var(--m),36*var(--u))] leading-[1.22] text-primary">
@@ -258,7 +258,7 @@ export function ContactPage() {
   useLandingMotion(pageRef)
 
   return (
-    <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div ref={pageRef} className="landing-page contact-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       {/* The last term keeps the whole wave inside the header above 1920px, where --u stops growing but the wave doesn't. */}
       <header data-nav-theme="dark" className="relative h-[max(390*var(--m),520*var(--u),calc(192*var(--u)+100vw*327/1920+2px))] overflow-hidden bg-white">
         <div className="absolute inset-x-0 top-0 h-[max(270*var(--m),347*var(--u))] bg-primary" />

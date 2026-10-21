@@ -45,7 +45,7 @@ export function useLandingMotion(rootRef) {
 
         section.querySelectorAll('.grid, ul').forEach((group) => {
           const children = [...group.children].filter((child) => !child.closest('[data-motion-skip]'))
-          if (children.length < 2 || children.length > 12) return
+          if (children.length < 2 || children.length > 16) return
           gsap.fromTo(
             children,
             { autoAlpha: 0, y: 24 },

@@ -119,7 +119,11 @@ function Navbar({ logo }) {
         {logo ? (
           <img src={logo} alt="" className="h-[14.694px] max-w-[48px] object-contain" />
         ) : (
-          <img src={logoNav} alt="" width={31.981} height={14.694} className="h-[14.694px] w-[31.981px]" />
+          // Masked so the default logo follows --on-brand (white, or dark on light brand colors).
+          <span
+            className="block h-[14.694px] w-[31.981px] bg-current"
+            style={{ WebkitMask: `url("${logoNav}") center / contain no-repeat`, mask: `url("${logoNav}") center / contain no-repeat` }}
+          />
         )}
         <div className="flex items-center gap-[3.34px]">
           <Divider />
@@ -137,7 +141,7 @@ function Navbar({ logo }) {
           </div>
         </div>
       </div>
-      <div className="flex h-[16.698px] w-[120.225px] items-center justify-between rounded-full border-[0.334px] border-white bg-white/10 px-[3.34px] backdrop-blur-[3.34px]">
+      <div className="flex h-[16.698px] w-[120.225px] items-center justify-between rounded-full border-[0.334px] border-current bg-white/10 px-[3.34px] backdrop-blur-[3.34px]">
         <div className="flex items-center gap-[3.34px]">
           <Icon icon={Search01Icon} size={8.015} />
           <span className="text-[4.675px] leading-normal whitespace-nowrap">Search croissant, cakes, fresh items</span>

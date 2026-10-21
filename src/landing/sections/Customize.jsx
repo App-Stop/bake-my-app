@@ -15,14 +15,13 @@ const PRESETS = [
   { name: 'Pink', hex: '#ff1fad' },
   { name: 'Violet', hex: '#903bff' },
   { name: 'Green', hex: '#00c064' },
-  { name: 'Cyan', hex: '#00c9c6' },
+  { name: 'Cyan', hex: '#00B4B2' },
   { name: 'Red', hex: '#f30000' },
   { name: 'Orange', hex: '#f96c00' },
   { name: 'Blue', hex: '#0095ff' },
-  { name: 'Yellow', hex: '#edba00' },
 ]
 
-const SUGGESTED = ['#efbb00', '#a7921b', '#8fa200']
+const SUGGESTED = ['#C68100', '#a7921b', '#8fa200']
 
 // The two storefront phones render at 1× as 522.4 × 524.4; Figma shows them at 1.2× (626.84 wide).
 // The desktop (website) preview is fitted to the same stage width.

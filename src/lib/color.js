@@ -26,12 +26,15 @@ function relativeLuminance(hex) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-/** Picks white or near-black text, whichever reads better on the given background. */
+/** Luminance above which a brand color counts as a light shade (yellows, pastels, near-white). */
+const LIGHT_SHADE = 0.5
+
+/**
+ * Text/icon color on a brand-colored background: always the default white, switching to near-black
+ * only when the brand color is a light shade that white can't sit on.
+ */
 export function readableTextOn(hex) {
-  const l = relativeLuminance(hex)
-  const contrastWhite = 1.05 / (l + 0.05)
-  const contrastInk = (l + 0.05) / (relativeLuminance('#111111') + 0.05)
-  return contrastWhite >= contrastInk ? '#ffffff' : '#111111'
+  return relativeLuminance(hex) > LIGHT_SHADE ? '#111111' : '#ffffff'
 }
 
 /**

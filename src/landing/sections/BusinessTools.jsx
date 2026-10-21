@@ -105,6 +105,8 @@ const TAB_CONTENT = {
 
 const TAB_CHANGE_INTERVAL = 4000
 
+const revealDelay = (step) => ({ animationDelay: `${step * 70}ms` })
+
 export function BusinessTools() {
   const [active, setActive] = useState(TABS[0].id)
   const content = TAB_CONTENT[active]
@@ -189,7 +191,12 @@ export function BusinessTools() {
                 )}
                 {tab.label}
                 {selected && (
-                  <span className="absolute bottom-0 left-1/2 h-0.5 w-[67.82%] -translate-x-1/2 bg-primary" />
+                  <span aria-hidden="true" className="absolute bottom-0 left-1/2 h-0.5 w-[67.82%] -translate-x-1/2 bg-primary/20">
+                    <span
+                      className="animate-tab-progress block size-full bg-primary"
+                      style={{ animationDuration: `${TAB_CHANGE_INTERVAL}ms` }}
+                    />
+                  </span>
                 )}
               </button>
             )
@@ -202,22 +209,25 @@ export function BusinessTools() {
           aria-labelledby={`business-tab-${active}`}
           className="flex w-full flex-col items-center gap-10 lg:flex-row lg:justify-between lg:gap-[4.024%]"
         >
-          <div className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
+          {/* Keyed by tab so each switch remounts the copy and replays the staggered reveal. */}
+          <div key={active} className={`flex w-full flex-col lg:w-[46.59%] ${GAP[40]}`}>
             <div className="flex flex-col gap-4 leading-normal text-ink lg:min-h-[calc(226*var(--u))]">
-              <h3 className="text-[length:max(28*var(--m),40*var(--u))] font-bold">{content.title}</h3>
-              <p className="text-[length:max(16*var(--m),20*var(--u))] font-medium">
+              <h3 className="animate-tab-reveal text-[length:max(28*var(--m),40*var(--u))] font-bold">{content.title}</h3>
+              <p className="animate-tab-reveal text-[length:max(16*var(--m),20*var(--u))] font-medium" style={revealDelay(1)}>
                 {content.description}
               </p>
             </div>
             <ul className="flex flex-col gap-4">
-              {content.highlights.map((text) => (
-                <li key={text} className="flex items-center gap-2.5">
+              {content.highlights.map((text, i) => (
+                <li key={text} className="animate-tab-reveal flex items-center gap-2.5" style={revealDelay(i + 2)}>
                   <CheckCircle className="size-[max(24*var(--m),32*var(--u))]" />
                   <span className="text-[length:max(16*var(--m),20*var(--u))] leading-normal font-semibold text-ink">{text}</span>
                 </li>
               ))}
             </ul>
-            <CtaPair label={content.label} demoLabel={content.demoLabel} />
+            <div className="animate-tab-reveal" style={revealDelay(content.highlights.length + 2)}>
+              <CtaPair label={content.label} demoLabel={content.demoLabel} />
+            </div>
           </div>
           <img
             key={content.image}
@@ -226,7 +236,8 @@ export function BusinessTools() {
             width={content.width}
             height={content.height}
             loading="lazy"
-            className="h-auto w-full lg:w-[44%]"
+            className="animate-tab-reveal h-auto w-full lg:w-[44%]"
+            style={revealDelay(1)}
           />
         </div>
       </div>

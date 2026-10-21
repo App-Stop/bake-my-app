@@ -74,7 +74,7 @@ function BrandColorPicker({ state, actions }) {
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 min-[1200px]:grid-cols-2 min-[1200px]:gap-[30px]">
+      <div className="mt-8 grid grid-cols-1 gap-5 min-[1200px]:grid-cols-2 min-[1200px]:gap-[calc(30*var(--px))]">
         <div className="min-w-0">
           <SectionLabel>Based from your logo</SectionLabel>
           <div role="radiogroup" aria-label="Colors from your logo" className="mt-2.5 flex flex-wrap gap-2.5">
@@ -102,7 +102,7 @@ function BrandColorPicker({ state, actions }) {
                   'conic-gradient(#ff00a6, #6600ff, #006fff, #00e78b, #99db00, #ff7b00, #ff0000, #ff00a6)',
               }}
             >
-              <HugeiconsIcon icon={Pen01Icon} size={20} color="white" />
+              <HugeiconsIcon icon={Pen01Icon} size={20} color="white" className="size-5" />
               <input
                 ref={colorInputRef}
                 type="color"
@@ -112,7 +112,7 @@ function BrandColorPicker({ state, actions }) {
                 className="pointer-events-none absolute inset-0 opacity-0"
               />
             </button>
-            <label className="flex h-10 min-w-0 items-center rounded-[10px] border border-line bg-white px-3 focus-within:border-primary">
+            <label className="flex h-10 min-w-0 items-center rounded-[calc(10*var(--px))] border border-line bg-white px-3 focus-within:border-primary">
               <span className="sr-only">Custom brand color</span>
               <input
                 value={`#${hexDraft.replace(/^#/, '')}`}
@@ -130,7 +130,7 @@ function BrandColorPicker({ state, actions }) {
                   if (normalized) actions.setBrandColor(normalized)
                   setDraft(null)
                 }}
-                className="w-full min-w-[72px] bg-transparent text-base text-ink uppercase outline-none"
+                className="w-full min-w-[calc(72*var(--px))] bg-transparent text-base text-ink uppercase outline-none"
               />
             </label>
           </div>
@@ -146,21 +146,21 @@ export function OnboardingScreen({ state, actions }) {
   const setShopField = (field) => (event) => actions.updateShop({ [field]: event.target.value })
 
   return (
-    <div className="relative mx-auto min-h-[1024px] w-full max-w-[1440px] px-6">
+    <div className="onboarding-page relative mx-auto min-h-[calc(1024*var(--px))] w-full max-w-[1440px] px-6">
       <header>
-        <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="absolute left-1/2 top-12 h-[73.04px] w-[100.25px] -translate-x-1/2" />
+        <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="absolute left-1/2 top-12 h-[calc(73.04*var(--px))] w-[calc(100.25*var(--px))] -translate-x-1/2" />
         <button
           type="button"
           onClick={openExitOffer}
-          className="absolute left-1/2 top-14 -translate-x-[410px] rounded-full px-5 py-4 text-base text-ink/50 transition-colors hover:bg-white/50 hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
+          className="absolute left-1/2 top-14 -translate-x-[calc(410*var(--px))] rounded-full px-5 py-4 text-base text-ink/50 transition-colors hover:bg-white/50 hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
         >
           Back to Home
         </button>
       </header>
 
-      <section className="absolute left-1/2 top-[162px] flex w-[min(820px,calc(100%-48px))] -translate-x-1/2 flex-col gap-10 rounded-[40px] bg-white p-10" aria-labelledby="onboarding-title">
+      <section className="absolute left-1/2 top-[calc(162*var(--px))] flex w-[min(calc(820*var(--px)),calc(100%-48px))] -translate-x-1/2 flex-col gap-10 rounded-[calc(40*var(--px))] bg-white p-10" aria-labelledby="onboarding-title">
         <div className="flex flex-col gap-2.5">
-          <h1 id="onboarding-title" className="text-[32px] leading-normal font-semibold text-ink min-[1200px]:text-4xl">
+          <h1 id="onboarding-title" className="text-[length:calc(32*var(--px))] leading-normal font-semibold text-ink min-[1200px]:text-4xl">
             Tell us about your shop
           </h1>
           <p className="text-base leading-normal text-muted">
@@ -169,10 +169,10 @@ export function OnboardingScreen({ state, actions }) {
         </div>
 
         <div className="flex items-start gap-6 min-[1200px]:gap-10">
-          <div className="w-[140px] shrink-0 min-[1200px]:w-40">
+          <div className="w-[calc(140*var(--px))] shrink-0 min-[1200px]:w-40">
             <SectionLabel>Company Logo</SectionLabel>
             <UploadBox
-              className="mt-2.5 h-[140px] w-[140px] bg-surface min-[1200px]:h-40 min-[1200px]:w-40"
+              className="mt-2.5 h-[calc(140*var(--px))] w-[calc(140*var(--px))] bg-surface min-[1200px]:h-40 min-[1200px]:w-40"
               value={shop.logo}
               onChange={(logoValue) => actions.updateShop({ logo: logoValue })}
               accept="image/png,image/jpeg,image/svg+xml"

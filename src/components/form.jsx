@@ -3,7 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowDown01Icon, Cancel01Icon, Image01Icon } from '@hugeicons/core-free-icons'
 
 const fieldShell =
-  'relative flex flex-col justify-center gap-1 rounded-[10px] border border-line bg-white px-3 pt-2.5 pb-3 transition-colors focus-within:border-primary'
+  'relative flex flex-col justify-center gap-1 rounded-[calc(10*var(--px))] border border-line bg-white px-3 pt-2.5 pb-3 transition-colors focus-within:border-primary'
 
 const fieldLabel = 'text-xs leading-normal font-medium text-muted'
 
@@ -128,7 +128,7 @@ export function UploadBox({ value, onChange, title, hint, accept, className = ''
         setDragging(false)
         handleFiles(e.dataTransfer.files)
       }}
-      className={`group relative flex cursor-pointer flex-col items-center justify-center gap-5 overflow-clip rounded-[20px] border border-dashed px-5 py-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+      className={`group relative flex cursor-pointer flex-col items-center justify-center gap-5 overflow-clip rounded-[calc(20*var(--px))] border border-dashed px-5 py-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
         dragging ? 'border-primary bg-primary-light' : 'border-dash hover:border-subtle'
       } ${className}`}
     >
@@ -145,7 +145,7 @@ export function UploadBox({ value, onChange, title, hint, accept, className = ''
 
       {value ? (
         <>
-          <img src={value} alt="" className="max-h-[calc(100%-16px)] max-w-full object-contain" />
+          <img src={value} alt="" className="max-h-[calc(100%-16*var(--px))] max-w-full object-contain" />
           <button
             type="button"
             aria-label="Remove image"
@@ -155,12 +155,12 @@ export function UploadBox({ value, onChange, title, hint, accept, className = ''
             }}
             className="absolute top-2.5 right-2.5 flex size-7 items-center justify-center rounded-full bg-white text-ink shadow-[0_1px_4px_rgba(0,0,0,0.12)] hover:bg-surface"
           >
-            <HugeiconsIcon icon={Cancel01Icon} size={16} color="currentColor" />
+            <HugeiconsIcon icon={Cancel01Icon} size={16} color="currentColor" className="size-4" />
           </button>
         </>
       ) : (
         <>
-          <HugeiconsIcon icon={Image01Icon} size={30} color="currentColor" className="text-subtle" />
+          <HugeiconsIcon icon={Image01Icon} size={30} color="currentColor" className="size-7.5 text-subtle" />
           <div className="flex w-full flex-col gap-1.5 text-center leading-normal">
             <p className="text-sm text-body">{title}</p>
             <p className="text-xs text-muted">{hint}</p>

@@ -100,6 +100,28 @@
   }
 }
 
+/*
+ * Setup form: laid out on a 1440×1024 frame. Like the landing hero, it shrinks with the viewport
+ * height on shorter laptop screens so the whole card fits above the fold, never below 62% scale.
+ */
+.onboarding-page {
+  --u: min(1px, max(calc(100vh / 1024), 0.62px));
+  --u: min(1px, max(calc(100svh / 1024), 0.62px));
+  --px: var(--u);
+  --spacing: calc(4 * var(--u));
+  --text-xs: calc(12 * var(--u));
+  --text-sm: calc(14 * var(--u));
+  --text-base: calc(16 * var(--u));
+  --text-4xl: calc(36 * var(--u));
+}
+
+/* Contact page: the form's small print stays readable when the landing scale shrinks (12px minimum). */
+.landing-page.contact-page {
+  --text-xs: max(12px, calc(12 * var(--u)));
+  --text-sm: max(13px, calc(14 * var(--u)));
+  --text-base: max(14px, calc(16 * var(--u)));
+}
+
 /* Re-derive the tint wherever --brand is overridden (custom props resolve where declared). */
 :root,
 .brand-scope {
@@ -169,6 +191,34 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-icon-roll {
+    animation: none;
+  }
+}
+
+/* Business tools: the active tab's underline fills over the auto-advance interval, then the panel reveals. */
+@keyframes tab-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.animate-tab-progress {
+  transform-origin: left;
+  animation: tab-progress linear forwards;
+}
+
+/* `backwards` fill only holds the start frame during the delay, so it never fights the scroll reveal. */
+@keyframes tab-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.animate-tab-reveal {
+  animation: tab-reveal 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tab-progress,
+  .animate-tab-reveal {
     animation: none;
   }
 }

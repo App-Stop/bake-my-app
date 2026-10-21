@@ -78,6 +78,9 @@ const PLANS = [
   },
 ]
 
+// Rendered as list titles (no check/minus icon) rather than features.
+const isListTitle = (feature) => feature.startsWith('Everything in ') || feature === 'Addons'
+
 const BILLING = [
   { key: 'monthly', label: 'Monthly' },
   { key: 'yearly', label: 'Yearly', badge: 'save 2 months' },
@@ -159,7 +162,7 @@ function PlanPrice({ plan, billing }) {
   )
 }
 
-function PlanCard({ plan, billing }) {
+function PlanCard({ plan, billing, showMore }) {
   const { featured } = plan
   return (
     <div
@@ -197,25 +200,29 @@ function PlanCard({ plan, billing }) {
       <ul className="relative flex flex-col gap-5">
         {plan.features.map((feature, i) => {
           const included = i < plan.included
-          const isGroupLabel = feature.startsWith('Everything in ')
+          const isTitle = isListTitle(feature)
           return (
             <li key={feature} className="flex items-center gap-2">
-              {!isGroupLabel && (included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />)}
-              <span className={`text-base leading-normal font-medium ${included ? 'text-ink' : 'text-subtle'}`}>
-                {!isGroupLabel && <span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>}
+              {!isTitle && (included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />)}
+              <span
+                className={`text-base leading-normal ${feature === 'Addons' ? 'font-semibold' : 'font-medium'} ${included ? 'text-ink' : 'text-subtle'}`}
+              >
+                {!isTitle &&<span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>}
                 {feature}
               </span>
             </li>
           )
         })}
       </ul>
-      <Link
-        to={ROUTES.comingSoon}
-        className={`relative flex items-center gap-2.5 self-start py-2.5 text-base leading-normal font-semibold transition-opacity hover:opacity-75 ${plan.more.tone}`}
-      >
-        {plan.more.label}
-        <ArrowIcon className="size-6" />
-      </Link>
+      {showMore && (
+        <Link
+          to={ROUTES.pricing}
+          className={`relative flex items-center gap-2.5 self-start py-2.5 text-base leading-normal font-semibold transition-opacity hover:opacity-75 ${plan.more.tone}`}
+        >
+          {plan.more.label}
+          <ArrowIcon className="size-6" />
+        </Link>
+      )}
     </div>
   )
 }
@@ -284,7 +291,7 @@ export function Pricing({ standalone = false, showExpert = true }) {
                     MOST POPULAR
                   </p>
                 )}
-                <PlanCard plan={plan} billing={billing} />
+                <PlanCard plan={plan} billing={billing} showMore={!standalone} />
               </div>
             ))}
           </div>

@@ -9,18 +9,20 @@ export function Hero() {
         <SiteNav />
         <div className="relative mx-auto max-w-[calc(1920*var(--u))] pt-[max(92*var(--m),136*var(--u))]">
           {/*
-            The reduced desktop design clips the device collage into a 1920×400 strip. On desktop it is
-            sized in --u (not %), so when the page is height-limited the collage shrinks and stays centred.
+            The device collage is exported on the 1920 frame (1920×464). From md up it is shown at that
+            width in a 1920×440 strip, tall enough for the lowest hand (y=439), so no device is clipped.
+            On desktop the container is always 1920 * --u wide, so the same % sizing follows --u and the
+            collage shrinks and stays centred when the page is height-limited. Mobile frames just the phone.
           */}
-          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/386] lg:aspect-auto lg:h-[calc(400*var(--u))]">
+          <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/440]">
             <img
               src={asset('hero-devices.png')}
               alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
-              width={3840}
-              height={1250}
+              width={1920}
+              height={464}
               loading="eager"
               fetchPriority="high"
-              className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:left-[-1.5%] md:w-[105.885%] lg:left-[calc(50%-988.8*var(--u))] lg:w-[calc(2033*var(--u))]"
+              className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:top-0 md:left-0 md:w-full"
             />
           </div>
 

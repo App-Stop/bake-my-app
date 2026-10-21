@@ -89,7 +89,7 @@ export function SiteNav({ forceDark = false, forceLight = false }) {
         <Link
           to={ROUTES.app}
           className={`rounded-full px-5 py-2.5 text-base leading-normal font-bold whitespace-nowrap transition-all duration-300 ${
-            darkTheme ? 'bg-white text-primary hover:bg-white/90' : 'bg-white text-primary hover:bg-primary-light'
+            darkTheme ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white hover:brightness-110'
           }`}
         >
           Start for Free

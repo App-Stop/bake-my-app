@@ -40,7 +40,7 @@ export function ModalsProvider({ children }) {
  * Centered dialog over a dimmed page. Sizes use `--px` (inside `.landing-page`), so the Figma
  * 1920 sizes scale down with the viewport on desktop and stay 1× below it.
  */
-function Modal({ label, onClose, onClosed, closing, className = '', children }) {
+function Modal({ label, onClose, onClosed, closing, fit = false, className = '', children }) {
   const overlayRef = useRef(null)
   const panelRef = useRef(null)
 
@@ -83,9 +83,13 @@ function Modal({ label, onClose, onClosed, closing, className = '', children }) 
   }, [closing, onClosed])
 
   return (
-    <div ref={overlayRef} className="landing-page fixed inset-0 z-[100] overflow-y-auto bg-black/60 font-sans text-ink backdrop-blur-sm">
+    <div
+      ref={overlayRef}
+      className={`landing-page fixed inset-0 z-[100] overflow-y-auto bg-black/60 font-sans text-ink backdrop-blur-sm ${fit ? 'lg:overflow-hidden' : ''}`}
+    >
+      {/* `fit` panels have no mascot overhang, so on desktop they sit centred with a slim margin and never scroll. */}
       <div
-        className="flex min-h-full items-center justify-center px-4 pt-16 pb-6 sm:pt-32 lg:py-[calc(140*var(--px))]"
+        className={`flex min-h-full items-center justify-center px-4 pt-16 pb-6 sm:pt-32 ${fit ? 'lg:py-6' : 'lg:py-[calc(140*var(--px))]'}`}
         onMouseDown={(e) => e.target === e.currentTarget && onClose()}
       >
         <div
@@ -310,7 +314,10 @@ function DemoModal({ onClose, closing, onClosed }) {
       onClose={onClose}
       closing={closing}
       onClosed={onClosed}
-      className="flex w-[min(calc(900*var(--px)),100%)] flex-col items-center gap-10 p-4 sm:p-10"
+      fit
+      // Desktop height is ~245 + 0.653 × width (in --px), so the width is also capped to keep the panel
+      // within the viewport height minus the 48px margin.
+      className="flex w-[min(calc(900*var(--px)),100%)] flex-col items-center gap-10 p-4 sm:p-10 lg:w-[min(calc(900*var(--px)),100%,calc((100svh-48px)*1.53-375*var(--px)))]"
     >
       <CloseButton onClose={onClose} className="top-4 right-4 sm:top-10 sm:right-10" />
       <h2 className="px-10 font-malibu text-[length:min(calc(40*var(--px)),8vw)] leading-normal font-normal whitespace-nowrap text-primary">
