@@ -3,7 +3,7 @@ import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { DEMO_UNIT, useScaleTo } from './demoScale'
 import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
-import { readableTextOn } from '../../lib/color'
+import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
 
 const DEMO_TABS = [
   { label: 'Customer Mobile App', to: ROUTES.demoMobile },
@@ -109,22 +109,15 @@ export function DemoWindow({ width, height, contentWidth = width, children }) {
  * tall, with the demo bar at its Figma position below.
  */
 export function DemoPage({ title, active, top, height, children }) {
-  const [brandColor, setBrandColor] = useState('#554cf1')
-  const theme = {
-    '--brand': brandColor,
-    '--brand-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
-    '--on-brand': readableTextOn(brandColor),
-    '--color-primary': brandColor,
-    '--color-primary-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
-  }
+  const { color } = useDemoBrand()
 
   return (
     <div className={`relative flex min-h-dvh flex-col items-center overflow-hidden bg-primary-light px-4 font-sans text-ink ${DEMO_UNIT}`}>
       <BakeryDecorations />
-      <CustomizationRail color={brandColor} onChange={setBrandColor} />
+      <CustomizationRail color={color} onChange={setDemoBrandColor} />
       <main className="flex flex-1 flex-col items-center" style={{ marginTop: `calc(${top} * var(--d))` }}>
         <h1 className="sr-only">{title}</h1>
-        <div className="brand-scope" style={theme}>
+        <div className="brand-scope" style={brandTheme(color)}>
           {children}
         </div>
       </main>

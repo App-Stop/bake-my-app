@@ -258,7 +258,7 @@ export function ContactPage() {
   useLandingMotion(pageRef)
 
   return (
-    <div ref={pageRef} className="landing-page contact-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div ref={pageRef} className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       {/* The last term keeps the whole wave inside the header above 1920px, where --u stops growing but the wave doesn't. */}
       <header data-nav-theme="dark" className="relative h-[max(390*var(--m),520*var(--u),calc(192*var(--u)+100vw*327/1920+2px))] overflow-hidden bg-white">
         <div className="absolute inset-x-0 top-0 h-[max(270*var(--m),347*var(--u))] bg-primary" />
@@ -281,7 +281,8 @@ export function ContactPage() {
         </div>
       </header>
 
-      <main>
+      {/* Text-size floors apply to the page content only; the nav and footer keep the landing scale. */}
+      <main className="contact-page">
         <section
           aria-labelledby="contact-intro-title"
           className="mx-auto flex max-w-[calc(1920*var(--u))] flex-col gap-12 px-[max(20*var(--m),160*var(--u))] py-[max(56*var(--m),80*var(--u))] lg:flex-row lg:items-start lg:gap-[calc(200*var(--u))]"

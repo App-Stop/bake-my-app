@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const STORAGE_KEY = 'bake-my-app:onboarding:v1'
+export const STORAGE_KEY = 'bake-my-app:onboarding:v1'
 
 export const DEFAULT_BRAND_COLOR = '#c15400'
 

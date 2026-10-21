@@ -3,6 +3,7 @@ import { INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { HomeScreen } from '../../preview/HomeScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { asset } from '../styles'
+import { useDemoBrand } from './demoBrand'
 import { DemoPage } from './DemoShell'
 import { useScaleTo } from './demoScale'
 
@@ -15,6 +16,7 @@ const PHONE_WIDTH = 241.2
 function DemoPhone() {
   const ref = useRef(null)
   const scale = useScaleTo(ref, PHONE_WIDTH)
+  const { logo } = useDemoBrand()
 
   return (
     <div
@@ -22,7 +24,7 @@ function DemoPhone() {
       className="brand-scope relative h-[calc(874*var(--d))] w-[calc(402*var(--d))] shrink-0 overflow-clip rounded-[calc(60*var(--d))] border-[calc(10*var(--d))] border-primary-light bg-white"
     >
       <div className="absolute top-0 left-0 origin-top-left" style={{ transform: `scale(${scale})` }}>
-        <HomeScreen summary={SUMMARY} mark={asset('demo/logo-mark.svg')} address="742 Evergreen Terrace, Texas" />
+        <HomeScreen summary={SUMMARY} logo={logo} mark={asset('demo/logo-mark.svg')} address="742 Evergreen Terrace, Texas" />
       </div>
     </div>
   )

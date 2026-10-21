@@ -115,8 +115,27 @@
   --text-4xl: calc(36 * var(--u));
 }
 
-/* Contact page: the form's small print stays readable when the landing scale shrinks (12px minimum). */
-.landing-page.contact-page {
+/*
+ * Checkout: laid out for a 980px-tall screen. On desktop it shrinks with the viewport height on
+ * shorter laptops (never below 75%); text sizes keep a 12px floor in the markup.
+ */
+.checkout-page {
+  --u: 1px;
+  --spacing: calc(4 * var(--u));
+}
+
+@media (min-width: 64rem) {
+  .checkout-page {
+    --u: min(1px, max(calc(100vh / 980), 0.75px));
+    --u: min(1px, max(calc(100svh / 980), 0.75px));
+  }
+}
+
+/*
+ * Contact page content: the form's small print stays readable when the landing scale shrinks (12px
+ * minimum). Scoped to <main> so the fixed nav, whose widths follow --u, keeps text that fits it.
+ */
+.landing-page .contact-page {
   --text-xs: max(12px, calc(12 * var(--u)));
   --text-sm: max(13px, calc(14 * var(--u)));
   --text-base: max(14px, calc(16 * var(--u)));
