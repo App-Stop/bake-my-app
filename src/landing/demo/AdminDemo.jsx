@@ -1,8 +1,8 @@
 import { DashboardScreen } from '../../dashboard/DashboardScreen'
 import { INITIAL_STATE, useOnboardingState } from '../../onboarding/useOnboardingState'
 import { ROUTES, navigate } from '../../router'
+import { DemoLogo } from './DemoLogo'
 import { DemoPage, DemoWindow } from './DemoShell'
-import logoUrl from '../../assets/logo.svg'
 
 // A launched sample store in Bake my App purple; the demo never reads or writes the visitor's own
 // onboarding progress.
@@ -25,7 +25,7 @@ export function AdminDemo() {
             onEdit={() => navigate(ROUTES.app)}
             onStartOver={actions.reset}
             className="h-full"
-            sidebarLogo={logoUrl}
+            sidebarLogo={<DemoLogo className="h-[59px] w-[81px]" />}
           />
         </div>
       </DemoWindow>

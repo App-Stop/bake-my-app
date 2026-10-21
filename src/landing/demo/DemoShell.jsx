@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
-import { useModals } from '../useModals'
 import { DEMO_UNIT, useScaleTo } from './demoScale'
 import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
 import { readableTextOn } from '../../lib/color'
@@ -39,7 +38,6 @@ const BAR_TEXT = 'text-[length:calc(16*var(--d))] leading-normal'
 
 /** Demo switcher + offer bar along the bottom of the demo screens. */
 export function DemoBar({ active }) {
-  const { openPromo } = useModals()
   const timeLeft = useMidnightCountdown()
 
   return (
@@ -74,13 +72,12 @@ export function DemoBar({ active }) {
           <span className="font-bold tracking-[calc(0.24*var(--d))] text-primary">{timeLeft}</span>
         </p>
         <p className={`font-medium whitespace-nowrap text-ink ${BAR_TEXT}`}>1st MONTH FREE</p>
-        <button
-          type="button"
-          onClick={openPromo}
+        <Link
+          to={ROUTES.checkout}
           className={`shrink-0 rounded-full bg-primary px-[calc(32*var(--d))] py-[calc(16*var(--d))] font-bold whitespace-nowrap text-white transition hover:brightness-110 ${BAR_TEXT}`}
         >
-            Continue to Checkout
-        </button>
+          Continue to Checkout
+        </Link>
       </div>
     </div>
   )
@@ -122,12 +119,14 @@ export function DemoPage({ title, active, top, height, children }) {
   }
 
   return (
-    <div className={`brand-scope relative flex min-h-dvh flex-col items-center overflow-hidden bg-primary-light px-4 font-sans text-ink ${DEMO_UNIT}`} style={theme}>
+    <div className={`relative flex min-h-dvh flex-col items-center overflow-hidden bg-primary-light px-4 font-sans text-ink ${DEMO_UNIT}`}>
       <BakeryDecorations />
       <CustomizationRail color={brandColor} onChange={setBrandColor} />
       <main className="flex flex-1 flex-col items-center" style={{ marginTop: `calc(${top} * var(--d))` }}>
         <h1 className="sr-only">{title}</h1>
-        {children}
+        <div className="brand-scope" style={theme}>
+          {children}
+        </div>
       </main>
       <div
         className="mb-[calc(40*var(--d))] flex max-w-full justify-center"

@@ -9,7 +9,7 @@ const PLANS = [
   {
     name: 'Startup',
     description: 'For a neighborhood bakery that wants to start taking direct orders.',
-    rates: { yearly: 99, monthly: 199 },
+    rates: { yearly: 99, monthly: 129 },
     alternateRate: 129,
     limited: true,
     cta: 'Start for Free',
@@ -30,7 +30,7 @@ const PLANS = [
   {
     name: 'Growth',
     description: 'For cafes ready for their own app and repeat customers.',
-    rates: { yearly: 249, monthly: 349 },
+    rates: { yearly: 249, monthly: 299 },
     alternateRate: 299,
     limited: true,
     cta: 'Start for Free',
@@ -121,15 +121,16 @@ function BillingToggle({ billing, onChange }) {
 }
 
 const PRICE = 'font-malibu text-[length:max(48*var(--m),64*var(--u))] whitespace-nowrap'
+const PRICE_SUFFIX = 'font-malibu text-[length:max(24*var(--m),32*var(--u))] whitespace-nowrap'
 
 function PlanPrice({ plan, billing }) {
   const { featured, rates } = plan
   if (!rates) {
     return (
       <div className="relative flex flex-col leading-normal">
-        <div className="flex items-baseline gap-1">
-          <p className={`${PRICE} text-ink`}>{plan.price[billing]}</p>
-          <span className="text-base text-ink">{plan.priceSuffix}</span>
+        <div className="flex items-baseline text-ink">
+          <p className={PRICE}>{plan.price[billing]}</p>
+          <span className={PRICE_SUFFIX}>{plan.priceSuffix}</span>
         </div>
         <p className="text-base text-ink opacity-80">{plan.priceNote}</p>
       </div>
@@ -139,8 +140,10 @@ function PlanPrice({ plan, billing }) {
   return (
     <div className="relative flex flex-col leading-normal">
       <div className="flex items-center gap-2">
-        <p className={`${PRICE} ${featured ? 'text-primary' : 'text-ink'}`}>{price}</p>
-        <span className="text-base text-ink">/mo</span>
+        <div className={`flex items-baseline ${featured ? 'text-primary' : 'text-ink'}`}>
+          <p className={PRICE}>{price}</p>
+          <span className={PRICE_SUFFIX}>/mo</span>
+        </div>
         {plan.limited && (
           <span className="shrink-0 rounded-[calc(4*var(--px))] bg-[#ea0101] px-1 py-0.5 text-[length:calc(10*var(--px))] leading-normal font-bold tracking-[calc(0.6*var(--px))] whitespace-nowrap text-white">
             LIMITED TIME!
@@ -163,16 +166,17 @@ function PlanCard({ plan, billing }) {
       className={`relative flex h-full flex-col gap-9 overflow-hidden rounded-[calc(40*var(--px))] bg-white p-[calc(30*var(--px))] shadow-[inset_0_0_0_1px_var(--color-line)]`}
     >
       {featured && (
-        // Soft "waves" glow at the top of the featured card (export overflows the card, clipped here).
-        <img
-          src={asset('pricing-glow.webp')}
-          alt=""
-          aria-hidden="true"
-          width={1067}
-          height={1078}
-          loading="lazy"
-          className="pointer-events-none absolute top-[calc(-122*var(--u))] left-[-27.43%] h-auto w-[154.69%] max-w-none select-none"
-        />
+        <div className="pointer-events-none absolute top-[calc(-64*var(--u))] left-1/2 h-[calc(603*var(--u))] w-[calc(658*var(--u))] -translate-x-1/2 rotate-180 select-none">
+          <img
+            src={asset('pricing-page/featured-waves.svg')}
+            alt=""
+            aria-hidden="true"
+            width={825}
+            height={660}
+            loading="lazy"
+            className="absolute top-0 left-[calc(-83*var(--u))] h-[calc(660*var(--u))] w-[calc(825*var(--u))] max-w-none"
+          />
+        </div>
       )}
       <div className="relative flex flex-col gap-2.5 leading-normal text-ink">
         <h3 className="text-[length:max(20*var(--m),24*var(--u))] font-semibold">{plan.name}</h3>
@@ -217,12 +221,12 @@ function PlanCard({ plan, billing }) {
 }
 
 /** "Not sure what to choose?" banner under the plans. */
-function ContactExpert() {
+export function ContactExpert({ mascot = 'pricing/expert-mascot.svg' }) {
   return (
     <div className="flex w-full flex-col items-center gap-8 overflow-clip rounded-[calc(40*var(--px))] bg-primary-light p-[calc(30*var(--px))] md:flex-row md:gap-[max(32*var(--m),120*var(--u))]">
       <div className="flex min-w-px flex-1 flex-col items-center gap-[max(20*var(--m),40*var(--u))] sm:flex-row">
         <img
-          src={asset('pricing/expert-mascot.svg')}
+          src={asset(mascot)}
           alt=""
           aria-hidden="true"
           width={151.2}
@@ -241,7 +245,7 @@ function ContactExpert() {
         to={ROUTES.contact}
         className="shrink-0 rounded-full bg-primary px-[max(24*var(--m),40*var(--u))] py-[max(14*var(--m),20*var(--u))] text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap text-white transition hover:brightness-110"
       >
-        Help me pick a plan
+        Contact an expert
       </Link>
     </div>
   )
@@ -258,10 +262,10 @@ function Title() {
   )
 }
 
-export function Pricing() {
+export function Pricing({ standalone = false, showExpert = true }) {
   const [billing, setBilling] = useState('yearly')
   return (
-    <section id="pricing" className="relative mt-[max(80*var(--m),180*var(--u))] scroll-mt-10">
+    <section id="pricing" className={`relative scroll-mt-10 ${standalone ? '' : 'mt-[max(80*var(--m),180*var(--u))]'}`}>
       <Deco src="deco-biscuit.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <div className={`flex flex-col items-center ${GAP[80]} ${CONTAINER}`}>
         <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink lg:max-w-none ${GAP[30]}`}>
@@ -284,7 +288,7 @@ export function Pricing() {
               </div>
             ))}
           </div>
-          <ContactExpert />
+          {showExpert && <ContactExpert />}
         </div>
       </div>
     </section>

@@ -11,7 +11,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
-import { asset } from '../styles'
+import { DemoLogo } from './DemoLogo'
 
 /*
  * Staff portal order console (Figma "branch-main", 1308 × 819.2 at 1×). Sample orders move through
@@ -103,7 +103,7 @@ function TopBar() {
   return (
     <header className="flex w-full items-center gap-8 border-[0.8px] border-[#f0ece9] bg-white p-4">
       <div className="flex min-w-px flex-1">
-        <img src={asset('demo/staff-logo.svg')} alt="Bake my App" width={53.04} height={38.307} className="h-[38.307px] w-[53.04px]" />
+        <DemoLogo className="h-[38.307px] w-[53.04px]" />
       </div>
       <nav className="flex w-[480px] items-center justify-center gap-[6.4px] text-[11.2px] leading-normal">
         <span className="flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] bg-primary-light p-[9.6px] font-medium text-primary">

@@ -39,6 +39,15 @@ function RouteCard({ title, children, soft = false, links }) {
               {link.label}
               <Icon icon={ArrowRight02Icon} className="size-6 transition-transform group-hover:translate-x-1" />
             </button>
+          ) : link.to ? (
+            <Link
+              key={link.label}
+              to={link.to}
+              className="group flex items-center gap-3 text-sm leading-normal font-bold text-primary"
+            >
+              {link.label}
+              <Icon icon={ArrowRight02Icon} className="size-6 transition-transform group-hover:translate-x-1" />
+            </Link>
           ) : (
             <a
               key={link.label}
@@ -290,7 +299,7 @@ export function ContactPage() {
               title="New to Bake my App?"
               soft
               links={[
-                { label: 'Explore pricing', href: '/#pricing' },
+                { label: 'Explore pricing', to: ROUTES.pricing },
                 { label: 'Try a live bakery app', onClick: openDemo },
               ]}
             >

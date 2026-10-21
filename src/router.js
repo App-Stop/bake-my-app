@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 export const ROUTES = {
   home: '/',
+  pricing: '/pricing',
+  checkout: '/checkout',
   contact: '/contact',
   app: '/app',
   comingSoon: '/coming-soon',

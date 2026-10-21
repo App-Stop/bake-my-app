@@ -17,6 +17,13 @@ export function WebsiteDemo() {
   const ref = useRef(null)
   const [size, setSize] = useState({ scale: 1, height: 0 })
   const [brandColor, setBrandColor] = useState('#554cf1')
+  const previewTheme = {
+    '--brand': brandColor,
+    '--brand-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
+    '--on-brand': readableTextOn(brandColor),
+    '--color-primary': brandColor,
+    '--color-primary-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
+  }
 
   useLayoutEffect(() => {
     const el = ref.current
@@ -31,22 +38,14 @@ export function WebsiteDemo() {
   }, [])
 
   return (
-    <div
-      className="brand-scope fixed inset-0 overflow-hidden bg-primary-light font-sans text-ink [--d:min(1px,calc(100vw/1920),calc(100dvh/1174))]"
-      style={{
-        '--brand': brandColor,
-        '--brand-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
-        '--on-brand': readableTextOn(brandColor),
-        '--color-primary': brandColor,
-        '--color-primary-light': `color-mix(in oklab, ${brandColor} 8%, white)`,
-      }}
-    >
+    <div className="fixed inset-0 overflow-hidden bg-primary-light font-sans text-ink [--d:min(1px,calc(100vw/1920),calc(100dvh/1174))]">
       <BakeryDecorations />
       <CustomizationRail color={brandColor} onChange={setBrandColor} />
       <h1 className="sr-only">Bakery customer website demo</h1>
       <div
         ref={ref}
-        className="absolute top-[calc(100*var(--d))] left-1/2 z-10 h-[calc(850*var(--d))] w-[calc(1382*var(--d))] -translate-x-1/2 overflow-hidden rounded-[calc(32*var(--d))] bg-white shadow-[0_calc(3.2*var(--d))_calc(24*var(--d))_rgba(0,0,0,0.1)]"
+        className="brand-scope absolute top-[calc(100*var(--d))] left-1/2 z-10 h-[calc(850*var(--d))] w-[calc(1382*var(--d))] -translate-x-1/2 overflow-hidden rounded-[calc(32*var(--d))] bg-white shadow-[0_calc(3.2*var(--d))_calc(24*var(--d))_rgba(0,0,0,0.1)]"
+        style={previewTheme}
       >
         <div className="absolute top-0 left-0 origin-top-left" style={{ transform: `scale(${size.scale})` }}>
           {size.height > 0 && <DesktopScreen summary={SUMMARY} height={size.height} framed={false} />}

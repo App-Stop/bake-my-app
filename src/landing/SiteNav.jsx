@@ -4,16 +4,17 @@ import { ROUTES } from '../router'
 import { asset } from './styles'
 
 const NAV_LINKS = [
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Business Tools', href: '#business-tools' },
+  { label: 'Savings Calculator', href: '#cost-calculator' },
   { label: 'Customize', href: '#customize' },
+  { label: 'Business Tools', href: '#business-tools' },
+  { label: 'Pricing', to: ROUTES.pricing },
 ]
 
-export function SiteNav({ forceDark = false }) {
+export function SiteNav({ forceDark = false, forceLight = false }) {
   const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
-    if (forceDark) return
+    if (forceDark || forceLight) return
 
     const checkTheme = () => {
       const navY = 40
@@ -31,9 +32,9 @@ export function SiteNav({ forceDark = false }) {
       window.removeEventListener('scroll', checkTheme)
       window.removeEventListener('resize', checkTheme)
     }
-  }, [forceDark])
+  }, [forceDark, forceLight])
 
-  const darkTheme = forceDark || isDark
+  const darkTheme = forceDark || (!forceLight && isDark)
   const homePath = window.location.pathname === '/' || window.location.pathname === ''
   const sectionHref = (href) => (homePath ? href : `/${href}`)
 
@@ -49,14 +50,14 @@ export function SiteNav({ forceDark = false }) {
       <Link
         to={ROUTES.home}
         aria-label="Bake my App home"
-        className="flex h-[calc(51*var(--px))] w-[calc(69.0639*var(--px))] shrink-0 items-center lg:w-[calc(289*var(--px))] lg:pl-[calc(20.4*var(--px))]"
+        className="flex h-[calc(51*var(--px))] w-[calc(69.0639*var(--px))] shrink-0 items-center lg:w-[calc(164*var(--px))] lg:pl-[calc(20.4*var(--px))]"
       >
         <img
-          src={asset('site-nav-logo.svg')}
+          src={asset(darkTheme ? 'site-nav-logo.svg' : 'pricing-page/nav-logo.svg')}
           alt="Bake my App"
           width={69.0639}
           height={49.8798}
-          className={`block h-auto w-[calc(69.0639*var(--px))] shrink-0 ${darkTheme ? 'brightness-0 invert' : 'brightness-0'}`}
+          className={`block h-auto w-[calc(69.0639*var(--px))] shrink-0 ${darkTheme ? 'brightness-0 invert' : ''}`}
         />
       </Link>
 
@@ -66,10 +67,12 @@ export function SiteNav({ forceDark = false }) {
         }`}
       >
         {NAV_LINKS.map((link) => (
-          <li key={link.href}>
-            <a href={sectionHref(link.href)} className="transition-opacity hover:opacity-75">
-              {link.label}
-            </a>
+          <li key={link.to || link.href}>
+            {link.to ? (
+              <Link to={link.to} className="transition-opacity hover:opacity-75">{link.label}</Link>
+            ) : (
+              <a href={sectionHref(link.href)} className="transition-opacity hover:opacity-75">{link.label}</a>
+            )}
           </li>
         ))}
       </ul>
@@ -78,7 +81,7 @@ export function SiteNav({ forceDark = false }) {
         <Link
           to={ROUTES.contact}
           className={`hidden rounded-full px-5 py-2.5 text-base leading-normal font-semibold whitespace-nowrap transition-colors lg:block ${
-            darkTheme ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-primary/10 text-primary hover:bg-primary/15'
+            darkTheme ? 'bg-white/10 text-white hover:bg-white/20' : 'border border-primary bg-white text-primary hover:bg-primary-light'
           }`}
         >
           Contact Us
@@ -86,7 +89,7 @@ export function SiteNav({ forceDark = false }) {
         <Link
           to={ROUTES.app}
           className={`rounded-full px-5 py-2.5 text-base leading-normal font-bold whitespace-nowrap transition-all duration-300 ${
-            darkTheme ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white shadow-sm hover:brightness-110'
+            darkTheme ? 'bg-white text-primary hover:bg-white/90' : 'bg-white text-primary hover:bg-primary-light'
           }`}
         >
           Start for Free

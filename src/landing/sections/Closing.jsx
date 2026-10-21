@@ -68,7 +68,7 @@ const FOOTER_COLUMNS = [
     title: 'Company',
     links: [
       { label: 'About', to: ROUTES.comingSoon },
-      { label: 'Pricing', href: '#pricing' },
+      { label: 'Pricing', to: ROUTES.pricing },
       { label: 'Blog', to: ROUTES.comingSoon },
       { label: 'Careers', to: ROUTES.comingSoon },
       { label: 'Contact Us', to: ROUTES.contact },
@@ -77,10 +77,10 @@ const FOOTER_COLUMNS = [
 ]
 
 const SOCIALS = [
-  { label: 'Instagram', icon: InstagramIcon },
-  { label: 'Twitter', icon: TwitterIcon },
-  { label: 'LinkedIn', icon: Linkedin01Icon },
-  { label: 'Facebook', icon: Facebook01Icon },
+  { label: 'Instagram', icon: InstagramIcon, asset: 'instagram.svg' },
+  { label: 'Twitter', icon: TwitterIcon, asset: 'twitter.svg' },
+  { label: 'LinkedIn', icon: Linkedin01Icon, asset: 'linkedin.svg' },
+  { label: 'Facebook', icon: Facebook01Icon, asset: 'facebook.svg' },
 ]
 
 function FooterLink({ link, className }) {
@@ -96,13 +96,13 @@ function FooterLink({ link, className }) {
   )
 }
 
-export function Footer() {
+export function Footer({ figmaPricingAssets = false }) {
   return (
     <footer data-nav-theme="dark" className="-mt-px bg-primary text-white">
       <div
         className={`flex flex-col items-center gap-[max(40*var(--m),60*var(--u))] pt-[max(56*var(--m),80*var(--u))] pb-[max(40*var(--m),60*var(--u))] ${CONTAINER}`}
       >
-        <img src={asset('logo-footer.svg')} alt="Bake my App" width={210} height={153} loading="lazy" className="h-auto w-[max(150*var(--m),210*var(--u))]" />
+        <img src={asset(figmaPricingAssets ? 'pricing-page/footer-logo.svg' : 'logo-footer.svg')} alt="Bake my App" width={210} height={153} loading="lazy" className="h-auto w-[max(150*var(--m),210*var(--u))]" />
         <div className="flex w-full flex-col items-center gap-[max(40*var(--m),60*var(--u))]">
           <nav
             aria-label="Footer"
@@ -129,7 +129,11 @@ export function Footer() {
                   aria-label={social.label}
                   className="flex size-10 items-center justify-center rounded-full bg-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] transition hover:bg-white/30"
                 >
-                  <Icon icon={social.icon} className="size-[calc(18*var(--px))]" />
+                  {figmaPricingAssets ? (
+                    <img src={asset(`pricing-page/${social.asset}`)} alt="" width={18} height={18} className="size-[calc(18*var(--px))]" />
+                  ) : (
+                    <Icon icon={social.icon} className="size-[calc(18*var(--px))]" />
+                  )}
                 </Link>
               </li>
             ))}
