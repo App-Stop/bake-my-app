@@ -166,7 +166,11 @@ function PlanCard({ plan, billing, showMore }) {
   const { featured } = plan
   return (
     <div
-      className={`relative flex h-full flex-col gap-9 overflow-hidden rounded-[calc(40*var(--px))] bg-white p-[calc(30*var(--px))] shadow-[inset_0_0_0_1px_var(--color-line)]`}
+      // On desktop the card's sections sit on rows shared with its siblings (subgrid), so prices, CTAs
+      // and lists line up even when one plan's description wraps to more lines.
+      className={`relative flex h-full flex-col gap-9 overflow-hidden rounded-[calc(40*var(--px))] bg-white p-[calc(30*var(--px))] shadow-[inset_0_0_0_1px_var(--color-line)] lg:grid lg:grid-rows-subgrid ${
+        showMore ? 'lg:row-span-5' : 'lg:row-span-4'
+      }`}
     >
       {featured && (
         <div className="pointer-events-none absolute top-[calc(-64*var(--u))] left-1/2 h-[calc(603*var(--u))] w-[calc(658*var(--u))] -translate-x-1/2 rotate-180 select-none">
@@ -205,7 +209,7 @@ function PlanCard({ plan, billing, showMore }) {
             <li key={feature} className="flex items-center gap-2">
               {!isTitle && (included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />)}
               <span
-                className={`text-base leading-normal ${feature === 'Addons' ? 'font-semibold' : 'font-medium'} ${included ? 'text-ink' : 'text-subtle'}`}
+                className={`text-base leading-normal ${isTitle ? 'font-semibold' : 'font-medium'} ${included ? 'text-ink' : 'text-subtle'}`}
               >
                 {!isTitle &&<span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>}
                 {feature}
@@ -217,11 +221,18 @@ function PlanCard({ plan, billing, showMore }) {
       {showMore && (
         <Link
           to={ROUTES.pricing}
-          className={`relative flex items-center gap-2.5 self-start py-2.5 text-base leading-normal font-semibold transition-opacity hover:opacity-75 ${plan.more.tone}`}
+          className={`relative flex items-center gap-2.5 self-start justify-self-start py-2.5 text-base leading-normal font-semibold transition-opacity hover:opacity-75 ${plan.more.tone}`}
         >
           {plan.more.label}
           <ArrowIcon className="size-6" />
         </Link>
+      )}
+      {/* Drawn last so the stroke stays above the featured waves. */}
+      {featured && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_0_0_2px_var(--color-primary)]"
+        />
       )}
     </div>
   )
@@ -285,7 +296,10 @@ export function Pricing({ standalone = false, showExpert = true }) {
         <div className="flex w-full flex-col gap-5">
           <div className="grid w-full grid-cols-1 gap-x-5 gap-y-12 lg:grid-cols-3 lg:gap-y-5">
             {PLANS.map((plan) => (
-              <div key={plan.name} className="relative">
+              <div
+                key={plan.name}
+                className={`relative lg:grid lg:grid-rows-subgrid ${standalone ? 'lg:row-span-4' : 'lg:row-span-5'}`}
+              >
                 {plan.featured && (
                   <p className="absolute top-[calc(-24*var(--px))] left-1/2 -translate-x-1/2 rounded-t-[calc(20*var(--px))] bg-primary px-3 pt-1 pb-0.5 font-malibu text-xs leading-normal tracking-[calc(0.24*var(--px))] whitespace-nowrap text-white">
                     MOST POPULAR

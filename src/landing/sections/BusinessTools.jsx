@@ -103,7 +103,7 @@ const TAB_CONTENT = {
   },
 }
 
-const TAB_CHANGE_INTERVAL = 4000
+const TAB_CHANGE_INTERVAL = 7000
 
 const revealDelay = (step) => ({ animationDelay: `${step * 70}ms` })
 
@@ -191,7 +191,7 @@ export function BusinessTools() {
                 )}
                 {tab.label}
                 {selected && (
-                  <span aria-hidden="true" className="absolute bottom-0 left-1/2 h-0.5 w-[67.82%] -translate-x-1/2 bg-primary/20">
+                  <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 bg-primary/20">
                     <span
                       className="animate-tab-progress block size-full bg-primary"
                       style={{ animationDuration: `${TAB_CHANGE_INTERVAL}ms` }}

@@ -31,13 +31,13 @@ const DECORATIONS = [
 ];
 
 const DEMO_COLORS = [
-  "#ff1fad",
-  "#903bff",
-  "#00c064",
-  "#00c9c6",
-  "#f30000",
-  "#f96c00",
-  "#0095ff",
+  "#FF1FAD",
+  "#903BFF",
+  "#00C064",
+  "#00C9C6",
+  "#F30000",
+  "#F96C00",
+  "#0095FF",
 ];
 const LOGO_COLORS = ["#efbb00", "#a7921b", "#8fa200"];
 

@@ -250,7 +250,6 @@ const DEMOS = [
   {
     key: 'mobile',
     title: 'Bakery Customer App',
-    to: ROUTES.demoMobile,
     art: (
       <>
         <div className="absolute inset-[9.37%_29.85%_-37.24%_29.73%]">
@@ -272,7 +271,6 @@ const DEMOS = [
   {
     key: 'website',
     title: 'Bakery Customer Website',
-    to: ROUTES.demoWebsite,
     art: (
       <div className="absolute top-[calc(50%+46.48%)] left-1/2 h-[174.22%] w-[82.14%] -translate-1/2 overflow-hidden rounded-[calc(10*var(--px))] shadow-[0_calc(6*var(--px))_calc(60*var(--px))_rgba(85,76,241,0.4)]">
         <img src={asset('demo/card-website.webp')} alt="" width={1723} height={4096} loading="lazy" className="absolute top-[0.07%] left-0 h-[171.38%] w-full max-w-none" />
@@ -282,7 +280,6 @@ const DEMOS = [
   {
     key: 'admin',
     title: 'Bakery Admin Panel',
-    to: ROUTES.demoAdmin,
     art: (
       <div className="absolute top-1/2 left-[calc(50%-0.5*var(--px))] h-[87.5%] w-[82.4%] -translate-1/2 shadow-[0_calc(4*var(--px))_calc(30*var(--px))_rgba(0,0,0,0.1)]">
         <img src={asset('demo/card-admin.webp')} alt="" width={3004} height={2088} loading="lazy" className="absolute inset-0 size-full max-w-none object-cover" />
@@ -292,7 +289,6 @@ const DEMOS = [
   {
     key: 'employee',
     title: 'Bakery Employee Panel',
-    to: ROUTES.demoStaff,
     art: (
       <div className="absolute top-1/2 left-[calc(50%-0.5*var(--px))] h-[87.5%] w-[82.4%] -translate-1/2 overflow-hidden rounded-[calc(4*var(--px))] shadow-[0_calc(4*var(--px))_calc(30*var(--px))_rgba(0,0,0,0.1)]">
         <img src={asset('demo/card-employee.webp')} alt="" width={3004} height={2242} loading="lazy" className="absolute top-[-5.1%] left-0 h-[107.62%] w-full max-w-none" />
@@ -303,9 +299,9 @@ const DEMOS = [
 
 /** "preview a demo" picker (Figma "Demo"). */
 function DemoModal({ onClose, closing, onClosed }) {
-  const open = (demo) => {
+  const open = () => {
     onClose()
-    navigate(demo.to)
+    navigate(ROUTES.app)
   }
 
   return (
@@ -328,7 +324,7 @@ function DemoModal({ onClose, closing, onClosed }) {
           <li key={demo.key}>
             <button
               type="button"
-              onClick={() => open(demo)}
+              onClick={open}
               className="group flex w-full flex-col gap-1.5 rounded-[calc(20*var(--px))] bg-white px-1 pt-1 pb-1.5 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <div className="relative aspect-[392/256] w-full overflow-clip rounded-[calc(16*var(--px))] bg-primary-light">
