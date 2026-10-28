@@ -72,7 +72,7 @@ export function Features() {
                   Website customers earn the same points and rewards.
                 </CardText>
               </div>
-              <Pill to={ROUTES.app} size="sm" className="self-start md:self-auto">
+              <Pill to={ROUTES.pricing} size="sm" className="self-start md:self-auto">
                 Get your Website
               </Pill>
             </div>

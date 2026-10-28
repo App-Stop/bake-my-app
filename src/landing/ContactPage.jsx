@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ArrowDown01Icon, ArrowRight02Icon } from '@hugeicons/core-free-icons'
+import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
+import { api } from '../lib/api'
+import { readUtm } from '../lib/utm'
 import { ROUTES } from '../router'
 import { Footer } from './sections/Closing'
 import { SiteNav } from './SiteNav'
@@ -17,6 +20,9 @@ const TOPICS = [
   'Partnerships',
   'Something else',
 ]
+
+// API field names this form shows errors for.
+const FIELD_NAMES = ['name', 'email', 'phone', 'businessName', 'topic', 'message', 'consent']
 
 function RouteCard({ title, children, soft = false, links }) {
   return (
@@ -64,12 +70,15 @@ function RouteCard({ title, children, soft = false, links }) {
   )
 }
 
-function Field({ label, required, children }) {
+function Field({ label, required, error, errorId, children }) {
   return (
-    <label className="flex min-w-0 flex-1 flex-col gap-2 text-sm leading-normal font-medium text-ink">
-      <span>{label}{required ? ' *' : ''}</span>
-      {children}
-    </label>
+    <div className="flex min-w-0 flex-1 flex-col gap-2">
+      <label className="flex flex-col gap-2 text-sm leading-normal font-medium text-ink">
+        <span>{label}{required ? ' *' : ''}</span>
+        {children}
+      </label>
+      {error && <span id={errorId} role="alert" className="text-xs leading-normal text-red-600">{error}</span>}
+    </div>
   )
 }
 
@@ -160,21 +169,83 @@ function MessageSentModal({ email, onClose }) {
 const controlClass =
   'w-full rounded-[calc(28*var(--px))] border-0 bg-white px-[max(18*var(--m),22*var(--u))] py-4 text-sm leading-6 text-ink outline-none placeholder:text-[#68667b] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
 
-function EnquiryForm() {
-  const [sentEmail, setSentEmail] = useState('')
+/** `?topic=Plans%20and%20pricing` preselects a topic; anything not in TOPICS is ignored. */
+function topicFromUrl() {
+  const topic = new URLSearchParams(window.location.search).get('topic')
+  return TOPICS.includes(topic) ? topic : ''
+}
 
-  function submit(event) {
+function EnquiryForm() {
+  const idPrefix = useId()
+  const [sentEmail, setSentEmail] = useState('')
+  const [sending, setSending] = useState(false)
+  const [errors, setErrors] = useState({}) // { email: 'Enter a valid email address', ... }
+  const [formError, setFormError] = useState('') // errors that belong to no single field
+  const inFlight = useRef(false) // blocks a second submit before the disabled state renders
+
+  const errorProps = (name) => ({
+    'aria-invalid': errors[name] ? true : undefined,
+    'aria-describedby': errors[name] ? `${idPrefix}-${name}-error` : undefined,
+  })
+  const fieldError = (name) => ({ error: errors[name], errorId: `${idPrefix}-${name}-error` })
+
+  // Editing a field clears its error.
+  function clearError(event) {
+    const name = event.target.name === 'business' ? 'businessName' : event.target.name
+    if (!name || !errors[name]) return
+    setErrors((current) => {
+      const next = { ...current }
+      delete next[name]
+      return next
+    })
+  }
+
+  async function submit(event) {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    setSentEmail(String(data.get('email') || ''))
+    if (inFlight.current) return
+    const form = event.currentTarget // read it before any await
+    const data = new FormData(form)
+    const email = String(data.get('email') || '').trim()
+
+    inFlight.current = true
+    setSending(true)
+    setErrors({})
+    setFormError('')
+    try {
+      await api.post('/v1/leads', {
+        source: 'contact_form',
+        name: data.get('name'),
+        email,
+        phone: data.get('phone'),
+        businessName: data.get('business'),
+        topic: data.get('topic'),
+        message: data.get('message'),
+        consent: data.get('consent') === 'on',
+        website: data.get('website'), // honeypot, must stay empty
+        utm: readUtm(),
+      })
+      form.reset()
+      setSentEmail(email)
+    } catch (error) {
+      const fieldErrors = error.fieldErrors ?? {}
+      setErrors(fieldErrors)
+      // Field errors for inputs this form doesn't have would otherwise be invisible.
+      const shown = Object.keys(fieldErrors).some((name) => FIELD_NAMES.includes(name))
+      if (!shown) setFormError(error.message || 'Something went wrong. Please try again.')
+    } finally {
+      inFlight.current = false
+      setSending(false)
+    }
   }
 
   return (
     <>
       <form
         onSubmit={submit}
+        onChange={clearError}
         aria-labelledby="contact-form-title"
-        className="flex min-w-0 flex-1 flex-col gap-10 rounded-[calc(32*var(--px))] bg-primary-light p-[max(24*var(--m),40*var(--u))]"
+        aria-busy={sending}
+        className="relative flex min-w-0 flex-1 flex-col gap-10 rounded-[calc(32*var(--px))] bg-primary-light p-[max(24*var(--m),40*var(--u))]"
       >
       <div className="flex flex-col gap-2">
         <h2 id="contact-form-title" className="font-malibu text-[length:max(32*var(--m),36*var(--u))] leading-[1.22] text-primary">
@@ -184,22 +255,29 @@ function EnquiryForm() {
         <p className="text-xs leading-normal text-[#68667b]">Fields marked * are required.</p>
       </div>
 
+      <Honeypot />
+
       <div className="flex flex-col gap-5 sm:flex-row">
-        <Field label="Your name" required>
-          <input className={controlClass} name="name" placeholder="What should we call you?" autoComplete="name" required />
+        <Field label="Your name" required {...fieldError('name')}>
+          <input className={controlClass} name="name" placeholder="What should we call you?" autoComplete="name" required minLength={2} maxLength={120} {...errorProps('name')} />
         </Field>
-        <Field label="Email address" required>
-          <input className={controlClass} type="email" name="email" placeholder="Where can we reply?" autoComplete="email" required />
+        <Field label="Email address" required {...fieldError('email')}>
+          <input className={controlClass} type="email" name="email" placeholder="Where can we reply?" autoComplete="email" required maxLength={254} {...errorProps('email')} />
         </Field>
       </div>
 
-      <Field label="Business name">
-        <input className={controlClass} name="business" placeholder="Your bakery or café name" autoComplete="organization" />
-      </Field>
+      <div className="flex flex-col gap-5 sm:flex-row">
+        <Field label="Phone or WhatsApp" {...fieldError('phone')}>
+          <input className={controlClass} type="tel" name="phone" placeholder="+92 300 1234567" autoComplete="tel" maxLength={25} {...errorProps('phone')} />
+        </Field>
+        <Field label="Business name" {...fieldError('businessName')}>
+          <input className={controlClass} name="business" placeholder="Your bakery or café name" autoComplete="organization" maxLength={160} {...errorProps('businessName')} />
+        </Field>
+      </div>
 
-      <Field label="What can we help with?" required>
+      <Field label="What can we help with?" required {...fieldError('topic')}>
         <span className="relative block">
-          <select className={`${controlClass} appearance-none pr-14 text-[#68667b]`} name="topic" defaultValue="" required>
+          <select className={`${controlClass} appearance-none pr-14 text-[#68667b]`} name="topic" defaultValue={topicFromUrl()} required {...errorProps('topic')}>
             <option value="" disabled>Select an enquiry topic</option>
             {TOPICS.map((topic) => <option key={topic}>{topic}</option>)}
           </select>
@@ -212,34 +290,45 @@ function EnquiryForm() {
         </span>
       </Field>
 
-      <Field label="Your message" required>
+      <Field label="Your message" required {...fieldError('message')}>
         <textarea
           className={`${controlClass} min-h-[calc(156*var(--px))] resize-y rounded-[calc(24*var(--px))]`}
           name="message"
           placeholder="Tell us about your business, your question, or what you’d like to do next…"
           required
+          maxLength={4000}
+          {...errorProps('message')}
         />
       </Field>
 
-      <label className="flex items-start gap-3 text-sm leading-[21px] text-body">
-        <input
-          type="checkbox"
-          name="consent"
-          required
-          className="contact-consent mt-0.5 size-6 shrink-0 appearance-none rounded-[5px] border-[1.5px] border-black bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        />
-        <span>
-          I agree to Bake my App using my details to respond to this enquiry, as described in the{' '}
-          <Link to={ROUTES.comingSoon} className="text-primary underline">Privacy Policy</Link>. *
-        </span>
-      </label>
+      <div className="flex flex-col gap-2">
+        <label className="flex items-start gap-3 text-sm leading-[21px] text-body">
+          <input
+            type="checkbox"
+            name="consent"
+            required
+            className="contact-consent mt-0.5 size-6 shrink-0 appearance-none rounded-[5px] border-[1.5px] border-black bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            {...errorProps('consent')}
+          />
+          <span>
+            I agree to Bake my App using my details to respond to this enquiry, as described in the{' '}
+            <Link to={ROUTES.comingSoon} className="text-primary underline">Privacy Policy</Link>. *
+          </span>
+        </label>
+        {errors.consent && (
+          <span id={`${idPrefix}-consent-error`} role="alert" className="text-xs leading-normal text-red-600">{errors.consent}</span>
+        )}
+      </div>
+
+      {formError && <p role="alert" className="text-sm leading-normal text-red-600">{formError}</p>}
 
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-[max(20*var(--m),30*var(--u))]">
         <button
           type="submit"
-          className="group flex shrink-0 items-center justify-center gap-4 rounded-full bg-primary px-7 py-4 text-base leading-normal font-semibold text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          disabled={sending}
+          className="group flex shrink-0 items-center justify-center gap-4 rounded-full bg-primary px-7 py-4 text-base leading-normal font-semibold text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-70 disabled:hover:brightness-100"
         >
-          Send message
+          {sending ? 'Sending…' : 'Send message'}
           <Icon icon={ArrowRight02Icon} className="size-6 transition-transform group-hover:translate-x-1" />
         </button>
         <p className="text-xs leading-5 text-[#68667b]">

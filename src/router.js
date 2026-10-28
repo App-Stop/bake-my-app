@@ -4,6 +4,7 @@ export const ROUTES = {
   home: '/',
   pricing: '/pricing',
   checkout: '/checkout',
+  checkoutSuccess: '/checkout/success',
   contact: '/contact',
   app: '/app',
   comingSoon: '/coming-soon',
@@ -13,9 +14,10 @@ export const ROUTES = {
   demoStaff: '/demo/staff',
 }
 
-export function navigate(to) {
+/** `replace` swaps the current history entry, e.g. when redirecting away from an invalid URL. */
+export function navigate(to, { replace = false } = {}) {
   if (to === window.location.pathname + window.location.search + window.location.hash) return
-  window.history.pushState({}, '', to)
+  window.history[replace ? 'replaceState' : 'pushState']({}, '', to)
   window.dispatchEvent(new PopStateEvent('popstate'))
   window.scrollTo(0, 0)
 }
@@ -30,4 +32,17 @@ export function usePathname() {
   }, [])
 
   return pathname
+}
+
+/** The current query string as URLSearchParams, kept in sync with navigation. */
+export function useSearchParams() {
+  const [search, setSearch] = useState(() => window.location.search)
+
+  useEffect(() => {
+    const onChange = () => setSearch(window.location.search)
+    window.addEventListener('popstate', onChange)
+    return () => window.removeEventListener('popstate', onChange)
+  }, [])
+
+  return new URLSearchParams(search)
 }

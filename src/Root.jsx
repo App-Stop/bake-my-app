@@ -6,6 +6,7 @@ import { ContactPage } from './landing/ContactPage.jsx'
 import { LandingPage } from './landing/LandingPage.jsx'
 import { PricingPage } from './landing/PricingPage.jsx'
 import { CheckoutPage } from './landing/CheckoutPage.jsx'
+import { CheckoutSuccessPage } from './landing/CheckoutSuccessPage.jsx'
 import { AdminDemo } from './landing/demo/AdminDemo.jsx'
 import { MobileAppDemo } from './landing/demo/MobileAppDemo.jsx'
 import { StaffDemo } from './landing/demo/StaffDemo.jsx'
@@ -17,6 +18,7 @@ const PAGES = {
   [ROUTES.contact]: { Page: ContactPage, title: 'Contact Bake My App' },
   [ROUTES.pricing]: { Page: PricingPage, title: 'Bake My App — Pricing' },
   [ROUTES.checkout]: { Page: CheckoutPage, title: 'Bake My App — Checkout' },
+  [ROUTES.checkoutSuccess]: { Page: CheckoutSuccessPage, title: 'Bake My App — Welcome aboard' },
   [ROUTES.home]: { Page: LandingPage, title: 'Bake My App — Your café, beautifully baked' },
   [ROUTES.app]: { Page: App, title: 'Bake My App — Set up your store' },
   [ROUTES.comingSoon]: { Page: ComingSoonPage, title: 'Bake My App — Coming soon' },

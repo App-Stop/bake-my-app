@@ -79,7 +79,7 @@ export function DemoPill({ label = 'Launch Demo', ...props }) {
 }
 
 /**
- * "Get …" CTA (web app onboarding) + "Launch Demo" (demo picker), as used in every section, with the
+ * "Get …" CTA (to the plans on /pricing) + "Launch Demo" (demo picker), as used in every section, with the
  * "FIRST MONTH FREE*" note underneath (left aligned, or centered with `align="center"`).
  */
 export function CtaPair({
@@ -97,7 +97,7 @@ export function CtaPair({
   return (
     <div className={`flex flex-col gap-2.5 ${centered ? 'items-center' : 'items-start'}`}>
       <div className={`flex flex-wrap items-center ${centered ? 'justify-center' : ''} ${GAP[30]} ${buttonRowClassName}`}>
-        <Pill to={ROUTES.app} variant={onPurple ? 'white' : 'primary'} size={size}>
+        <Pill to={ROUTES.pricing} variant={onPurple ? 'white' : 'primary'} size={size}>
           {label}
         </Pill>
         <DemoPill label={demoLabel} variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />

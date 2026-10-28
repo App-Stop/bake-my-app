@@ -25,7 +25,7 @@ export function Ready() {
               <CtaPair
                 tone="purple"
                 size="lg"
-                note="No card needed. Cancel anytime."
+                note="Free trial. Cancel anytime."
                 buttonRowClassName="sm:flex-nowrap"
               />
             </div>

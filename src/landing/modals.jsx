@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { Honeypot } from '../components/Honeypot'
+import { Link } from '../components/Link'
+import { api } from '../lib/api'
+import { readUtm } from '../lib/utm'
 import { ROUTES, navigate } from '../router'
 import { asset } from './styles'
 import { ModalsContext } from './useModals'
@@ -120,16 +124,114 @@ function CloseButton({ onClose, className }) {
   )
 }
 
+/** Email-only "first month free" capture shared by the promo and exit-offer popups. */
+function useEmailOffer() {
+  const [email, setEmail] = useState('')
+  const [trap, setTrap] = useState('') // hidden spam-trap field
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
+  const [sentTo, setSentTo] = useState('') // set once the offer is claimed
+  const inFlight = useRef(false) // blocks a second submit before the disabled state renders
+
+  const submit = async (e) => {
+    e.preventDefault()
+    if (inFlight.current) return
+    const address = email.trim()
+    inFlight.current = true
+    setSending(true)
+    setError('')
+    try {
+      await api.post('/v1/leads', {
+        source: 'promo_popup',
+        email: address,
+        consent: true, // the consent line is shown under the button
+        website: trap,
+        utm: readUtm(),
+      })
+      setSentTo(address)
+    } catch (err) {
+      setError(err.fieldErrors?.email || err.message || 'Something went wrong. Please try again.')
+    } finally {
+      inFlight.current = false
+      setSending(false)
+    }
+  }
+
+  const changeEmail = (value) => {
+    setEmail(value)
+    if (error) setError('')
+  }
+
+  return { email, changeEmail, trap, setTrap, sending, error, sentTo, submit }
+}
+
+function OfferEmailForm({ offer, titleId, onClose, inputClassName, buttonClassName }) {
+  const errorId = useId()
+  return (
+    <form onSubmit={offer.submit} aria-labelledby={titleId} aria-busy={offer.sending} className="relative flex w-full flex-col gap-2.5">
+      <Honeypot value={offer.trap} onChange={offer.setTrap} />
+      <input
+        type="email"
+        required
+        maxLength={254}
+        autoComplete="email"
+        value={offer.email}
+        onChange={(e) => offer.changeEmail(e.target.value)}
+        placeholder="Enter email address"
+        aria-label="Email address"
+        aria-invalid={offer.error ? true : undefined}
+        aria-describedby={offer.error ? errorId : undefined}
+        className={inputClassName}
+      />
+      {offer.error && (
+        <p id={errorId} role="alert" className="text-center text-xs leading-normal text-red-600 sm:text-sm">
+          {offer.error}
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={offer.sending}
+        className={`${buttonClassName} disabled:cursor-wait disabled:opacity-70 disabled:hover:brightness-100`}
+      >
+        {offer.sending ? 'Claiming…' : 'Claim Offer'}
+      </button>
+      {/* The API only accepts consent: true because this line is visible next to the button. */}
+      <p className="text-center text-xs leading-normal text-ink/70">
+        By claiming this offer you agree to our{' '}
+        <Link to={ROUTES.comingSoon} onClick={onClose} className="text-primary underline">
+          Privacy Policy
+        </Link>
+        .
+      </p>
+    </form>
+  )
+}
+
+/** Thank-you state shown in place of the form once the offer is claimed. */
+function OfferClaimed({ email, titleId, onClose }) {
+  return (
+    <div className="flex w-full flex-col items-center gap-5 text-center leading-normal">
+      <h2 id={titleId} className="w-full font-malibu text-2xl sm:text-[length:calc(36*var(--px))] leading-tight sm:leading-normal font-normal text-primary">
+        you&apos;re in!
+      </h2>
+      <p role="status" className="w-full text-sm sm:text-base text-ink opacity-80">
+        Our team will email you at <strong className="font-semibold break-all">{email}</strong> to set up your free month.
+      </p>
+      <Link
+        to={ROUTES.pricing}
+        onClick={onClose}
+        className="w-full rounded-full bg-primary px-5 py-3 sm:px-10 sm:py-5 text-sm sm:text-base leading-normal font-semibold text-white transition hover:brightness-110"
+      >
+        See plans
+      </Link>
+    </div>
+  )
+}
+
 /** "first month, completely free!" popup (Figma "Popup"). */
 function PromoModal({ onClose, closing, onClosed }) {
   const titleId = useId()
-  const [email, setEmail] = useState('')
-
-  const submit = (e) => {
-    e.preventDefault()
-    onClose()
-    navigate(ROUTES.app)
-  }
+  const offer = useEmailOffer()
 
   return (
     <Modal
@@ -150,32 +252,27 @@ function PromoModal({ onClose, closing, onClosed }) {
         loading="lazy"
         className="pointer-events-none absolute top-[-56px] left-1/2 h-[120px] w-[120px] -translate-x-1/2 object-contain select-none sm:top-[calc(-106*var(--px))] sm:left-[calc(50%-0.5*var(--px))] sm:h-[calc(218*var(--px))] sm:w-[calc(217*var(--px))] sm:max-w-none"
       />
-      <div className="flex w-full flex-col items-center gap-2 sm:gap-5 text-center leading-normal">
-        <h2 id={titleId} className="w-full font-malibu text-2xl sm:text-[length:calc(36*var(--px))] leading-tight sm:leading-normal font-normal text-primary">
-          first month, completely free!
-        </h2>
-        <p className="w-full text-sm sm:text-base text-ink opacity-80 leading-relaxed sm:leading-normal">
-          Get your bakery managed and live with all the tools and perks you need—plus your first month free.
-        </p>
-      </div>
-      <form onSubmit={submit} aria-labelledby={titleId} className="flex w-full flex-col gap-2.5">
-        <input
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email address"
-          aria-label="Email address"
-          className="w-full rounded-full bg-primary-light px-5 py-3 sm:px-10 sm:py-5 text-center text-sm sm:text-base leading-normal text-ink shadow-[inset_0_0_0_1px_white] outline-none placeholder:text-ink/40 focus-visible:shadow-[inset_0_0_0_1px_var(--color-primary)]"
-        />
-        <button
-          type="submit"
-          className="w-full rounded-full bg-primary px-5 py-3 sm:px-10 sm:py-5 text-sm sm:text-base leading-normal font-semibold text-white transition hover:brightness-110"
-        >
-          Claim Offer
-        </button>
-      </form>
+      {offer.sentTo ? (
+        <OfferClaimed email={offer.sentTo} titleId={titleId} onClose={onClose} />
+      ) : (
+        <>
+          <div className="flex w-full flex-col items-center gap-2 sm:gap-5 text-center leading-normal">
+            <h2 id={titleId} className="w-full font-malibu text-2xl sm:text-[length:calc(36*var(--px))] leading-tight sm:leading-normal font-normal text-primary">
+              first month, completely free!
+            </h2>
+            <p className="w-full text-sm sm:text-base text-ink opacity-80 leading-relaxed sm:leading-normal">
+              Get your bakery managed and live with all the tools and perks you need—plus your first month free.
+            </p>
+          </div>
+          <OfferEmailForm
+            offer={offer}
+            titleId={titleId}
+            onClose={onClose}
+            inputClassName="w-full rounded-full bg-primary-light px-5 py-3 sm:px-10 sm:py-5 text-center text-sm sm:text-base leading-normal text-ink shadow-[inset_0_0_0_1px_white] outline-none placeholder:text-ink/40 focus-visible:shadow-[inset_0_0_0_1px_var(--color-primary)] aria-invalid:shadow-[inset_0_0_0_1px_#dc2626]"
+            buttonClassName="w-full rounded-full bg-primary px-5 py-3 sm:px-10 sm:py-5 text-sm sm:text-base leading-normal font-semibold text-white transition hover:brightness-110"
+          />
+        </>
+      )}
     </Modal>
   )
 }
@@ -183,6 +280,7 @@ function PromoModal({ onClose, closing, onClosed }) {
 /** Exit confirmation shown when a user leaves the store setup flow. */
 function ExitOfferModal({ onClose, closing, onClosed }) {
   const titleId = useId()
+  const offer = useEmailOffer()
 
   const leaveSetup = () => {
     onClose()
@@ -208,31 +306,37 @@ function ExitOfferModal({ onClose, closing, onClosed }) {
         className="pointer-events-none absolute top-[-106px] left-1/2 h-[218px] w-[217px] max-w-none -translate-x-1/2 scale-x-[-1] select-none"
       />
 
-      <div className="flex w-full flex-col items-center gap-5 text-center">
-        <h2 id={titleId} className="w-full font-malibu text-[length:clamp(30px,7vw,36px)] leading-[44px] text-primary">
-          Before you go, your first month&apos;s on us.
-        </h2>
-        <p className="w-full text-base leading-normal text-ink/80">
-          Get your bakery managed and live with all the tools and perks you need—plus your first month free.
-        </p>
-      </div>
+      {offer.sentTo ? (
+        <OfferClaimed email={offer.sentTo} titleId={titleId} onClose={onClose} />
+      ) : (
+        <>
+          <div className="flex w-full flex-col items-center gap-5 text-center">
+            <h2 id={titleId} className="w-full font-malibu text-[length:clamp(30px,7vw,36px)] leading-[44px] text-primary">
+              Before you go, your first month&apos;s on us.
+            </h2>
+            <p className="w-full text-base leading-normal text-ink/80">
+              Get your bakery managed and live with all the tools and perks you need—plus your first month free.
+            </p>
+          </div>
 
-      <div aria-labelledby={titleId} className="flex w-full flex-col items-center gap-[30px]">
-        <button
-          type="button"
-          onClick={onClose}
-          className="w-full rounded-full bg-primary px-10 py-5 text-base leading-normal font-semibold text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          Claim Offer
-        </button>
-        <button
-          type="button"
-          onClick={leaveSetup}
-          className="text-base leading-normal font-medium text-muted transition hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-        >
-          No thanks
-        </button>
-      </div>
+          <div className="flex w-full flex-col items-center gap-[30px]">
+            <OfferEmailForm
+              offer={offer}
+              titleId={titleId}
+              onClose={onClose}
+              inputClassName="w-full rounded-full bg-primary-light px-10 py-5 text-center text-base leading-normal text-ink shadow-[inset_0_0_0_1px_white] outline-none placeholder:text-ink/40 focus-visible:shadow-[inset_0_0_0_1px_var(--color-primary)] aria-invalid:shadow-[inset_0_0_0_1px_#dc2626]"
+              buttonClassName="w-full rounded-full bg-primary px-10 py-5 text-base leading-normal font-semibold text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            />
+            <button
+              type="button"
+              onClick={leaveSetup}
+              className="text-base leading-normal font-medium text-muted transition hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              No thanks
+            </button>
+          </div>
+        </>
+      )}
     </Modal>
   )
 }

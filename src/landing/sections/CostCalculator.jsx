@@ -177,7 +177,7 @@ export function CostCalculator() {
 
               <div className="flex w-full flex-col gap-4">
                 <Link
-                  to={ROUTES.app}
+                  to={ROUTES.pricing}
                   className="flex w-full items-center justify-center rounded-full bg-white p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-primary transition hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   Keep my {savings}

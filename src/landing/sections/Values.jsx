@@ -48,7 +48,7 @@ export function Values() {
               </div>
             ))}
           </div>
-          <CtaPair tone="purple" size="lg" note="No card needed. Cancel anytime." />
+          <CtaPair tone="purple" size="lg" note="Free trial. Cancel anytime." />
         </div>
       </div>
       <img

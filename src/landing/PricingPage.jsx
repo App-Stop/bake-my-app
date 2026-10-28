@@ -1,5 +1,6 @@
 import { useId, useState } from 'react'
 import { Link } from '../components/Link'
+import { DEFAULT_TRIAL_DAYS, formatMoney, planHref, priceForInterval, usePlans } from '../lib/plans'
 import { ROUTES } from '../router'
 import { SiteNav } from './SiteNav'
 import { Footer } from './sections/Closing'
@@ -20,11 +21,22 @@ const COMPARISON = [
   ['Commission and setup', '0% · free', '0% · free', '0% · free'],
 ]
 
+// [key, name, fallback per-month price on yearly billing, note]
 const PLANS = [
-  ['Startup', '$99/mo'],
-  ['Growth', '$249/mo · most popular'],
-  ['Business Suite', 'from $499/mo'],
+  ['startup', 'Startup', 99, ''],
+  ['growth', 'Growth', 249, ' · most popular'],
+  ['business_suite', 'Business Suite', null, ''],
 ]
+
+/** Header price: the API's yearly per-month figure when loaded, the typed one otherwise. */
+function headerPrice(plans, key, fallback) {
+  if (fallback == null) return 'from $499/mo'
+  const year = priceForInterval(plans, key, 'year')
+  return `${year ? formatMoney(year.monthlyEquivalent, year.currency) : `$${fallback}`}/mo`
+}
+
+/** Trial length used in the page copy, from the Growth yearly price. */
+const trialDaysOf = (plans) => priceForInterval(plans, 'growth', 'year')?.trialDays ?? DEFAULT_TRIAL_DAYS
 
 function CellValue({ value }) {
   if (value === true) {
@@ -33,7 +45,7 @@ function CellValue({ value }) {
   return <span>{value}</span>
 }
 
-function ComparePlans() {
+function ComparePlans({ planState }) {
   return (
     <section aria-labelledby="compare-title" className="mx-auto h-[calc(967*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
       <h2 id="compare-title" className="text-center font-malibu text-[length:calc(36*var(--u))] leading-[calc(54*var(--u))] text-primary">
@@ -42,10 +54,10 @@ function ComparePlans() {
       <div className="mt-[calc(40*var(--u))] overflow-hidden rounded-[calc(24*var(--u))] border border-line bg-white">
         <div className="grid h-[calc(100*var(--u))] grid-cols-[35%_21.666%_21.666%_21.668%] bg-primary-light text-[length:calc(16*var(--u))] leading-normal text-ink">
           <div className="flex items-center px-[calc(32*var(--u))] font-semibold">Features</div>
-          {PLANS.map(([name, price]) => (
-            <div key={name} className="flex flex-col items-center justify-center gap-[calc(4*var(--u))] text-center">
+          {PLANS.map(([key, name, fallback, note]) => (
+            <div key={key} className="flex flex-col items-center justify-center gap-[calc(4*var(--u))] text-center">
               <strong className="text-[length:calc(18*var(--u))]">{name}</strong>
-              <span className="text-[length:calc(14*var(--u))] opacity-70">{price}</span>
+              <span className="text-[length:calc(14*var(--u))] opacity-70">{headerPrice(planState.plans, key, fallback)}{note}</span>
             </div>
           ))}
         </div>
@@ -61,8 +73,8 @@ function ComparePlans() {
         ))}
         <div className="grid h-[calc(101*var(--u))] grid-cols-[35%_21.666%_21.666%_21.668%] border-t border-line">
           <div />
-          <CompareCta to={ROUTES.app} label="Start for Free" />
-          <CompareCta to={ROUTES.app} label="Start for Free" primary />
+          <CompareCta to={planHref(planState, 'startup', 'year')} label="Start for Free" />
+          <CompareCta to={planHref(planState, 'growth', 'year')} label="Start for Free" primary />
           <CompareCta to={ROUTES.contact} label="Get a quote" />
         </div>
       </div>
@@ -85,12 +97,13 @@ function CompareCta({ to, label, primary = false }) {
 }
 
 const STEPS = [
-  ['1', 'Pick your plan', 'Start on Startup or Growth today. Your first month is free on yearly billing, no card needed.'],
+  ['1', 'Pick your plan', (trialDays) => `Start on Startup or Growth today with a ${trialDays}-day free trial. Cancel anytime before it ends.`],
   ['2', 'Send us your menu', 'Share your menu, logo and photos. We build your website, apps and kitchen screen for you.'],
   ['3', 'Go live and keep 100%', 'We publish to the App Store and Google Play. Customers order direct and you keep every dollar.'],
 ]
 
-function GetStarted() {
+function GetStarted({ planState }) {
+  const trialDays = trialDaysOf(planState.plans)
   return (
     <section aria-labelledby="steps-title" className="mx-auto flex h-[calc(545*var(--u))] w-full max-w-[calc(1920*var(--u))] flex-col items-center px-[calc(160*var(--u))]">
       <h2 id="steps-title" className="font-malibu text-[length:calc(56*var(--u))] leading-[calc(71*var(--u))] text-primary">live in 3 easy steps</h2>
@@ -100,20 +113,20 @@ function GetStarted() {
           <article key={number} className="flex flex-col gap-[calc(16*var(--u))] rounded-[calc(32*var(--u))] bg-primary-light p-[calc(32*var(--u))]">
             <p className="font-malibu text-[length:calc(56*var(--u))] leading-normal text-primary">{number}</p>
             <h3 className="text-[length:calc(22*var(--u))] leading-normal font-bold text-ink">{title}</h3>
-            <p className="text-[length:calc(16*var(--u))] leading-[1.5] text-[#68667b]">{copy}</p>
+            <p className="text-[length:calc(16*var(--u))] leading-[1.5] text-[#68667b]">{typeof copy === 'function' ? copy(trialDays) : copy}</p>
           </article>
         ))}
       </div>
       <div className="mt-[calc(48*var(--u))] flex flex-col items-center gap-[calc(12*var(--u))]">
         <div className="flex gap-[calc(16*var(--u))]">
-          <Link to={ROUTES.app} className="flex items-center gap-[calc(8*var(--u))] rounded-full bg-primary px-[calc(32*var(--u))] py-[calc(16*var(--u))] text-[length:calc(16*var(--u))] font-semibold text-white">
+          <Link to={planHref(planState, 'growth', 'year')} className="flex items-center gap-[calc(8*var(--u))] rounded-full bg-primary px-[calc(32*var(--u))] py-[calc(16*var(--u))] text-[length:calc(16*var(--u))] font-semibold text-white">
             Start for Free <img src={asset('pricing-page/arrow-small-white.svg')} alt="" width={20} height={20} className="h-[calc(20*var(--u))] w-[calc(20*var(--u))]" />
           </Link>
           <Link to={ROUTES.demoMobile} className="flex items-center gap-[calc(8*var(--u))] rounded-full border-[1.5px] border-primary px-[calc(32*var(--u))] py-[calc(16*var(--u))] text-[length:calc(16*var(--u))] font-semibold text-primary">
             Try a live bakery app <img src={asset('pricing-page/arrow-small-purple.svg')} alt="" width={20} height={20} className="h-[calc(20*var(--u))] w-[calc(20*var(--u))]" />
           </Link>
         </div>
-        <p className="text-[length:calc(13*var(--u))] text-[#68667b]">No card needed. Cancel anytime.</p>
+        <p className="text-[length:calc(13*var(--u))] text-[#68667b]">{trialDays}-day free trial. Cancel anytime.</p>
       </div>
     </section>
   )
@@ -164,13 +177,14 @@ function PricingFaq() {
 }
 
 export function PricingPage() {
+  const planState = usePlans()
   return (
     <div className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       <SiteNav forceLight />
       <main className="flex flex-col gap-[calc(140*var(--u))] pt-[calc(134*var(--u))]">
         <Pricing standalone showExpert={false} />
-        <ComparePlans />
-        <GetStarted />
+        <ComparePlans planState={planState} />
+        <GetStarted planState={planState} />
         <div className="mx-auto h-[calc(211.2*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
           <ContactExpert mascot="pricing-page/expert-mascot.svg" />
         </div>

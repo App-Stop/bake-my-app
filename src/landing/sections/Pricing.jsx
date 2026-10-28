@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { Link } from '../../components/Link'
+import { DEFAULT_TRIAL_DAYS, INTERVAL, formatMoney, planHref, priceFor, usePlans } from '../../lib/plans'
 import { ROUTES } from '../../router'
 import { MinusSignIcon } from '@hugeicons/core-free-icons'
 import { ArrowIcon, CheckCircle, Deco, Icon } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
+// Stands in for the trial line in a feature list; rendered with the API's trialDays.
+const TRIAL_FEATURE = 'free-trial'
+
+// `key` matches the API's plan key; `rates` are fallbacks shown until (or unless) the API answers.
 const PLANS = [
   {
+    key: 'startup',
     name: 'Startup',
     description: 'For a neighborhood bakery that wants to start taking direct orders.',
     rates: { yearly: 99, monthly: 129 },
-    alternateRate: 129,
     limited: true,
     cta: 'Start for Free',
     features: [
@@ -22,16 +27,16 @@ const PLANS = [
       'Order confirmations and receipts',
       'Basic sales dashboard',
       '0% commission and free setup',
-      'First month free on yearly billing',
+      TRIAL_FEATURE,
     ],
     included: 9,
     more: { label: 'Learn more', tone: 'text-ink' },
   },
   {
+    key: 'growth',
     name: 'Growth',
     description: 'For cafes ready for their own app and repeat customers.',
     rates: { yearly: 249, monthly: 299 },
-    alternateRate: 299,
     limited: true,
     cta: 'Start for Free',
     features: [
@@ -51,6 +56,7 @@ const PLANS = [
     featured: true,
   },
   {
+    key: 'business_suite',
     name: 'Business Suite',
     description: 'For bakery groups, multi-location cafes and commissaries.',
     price: { yearly: 'from $499', monthly: 'from $599' },
@@ -126,7 +132,17 @@ function BillingToggle({ billing, onChange }) {
 const PRICE = 'font-malibu text-[length:max(48*var(--m),64*var(--u))] whitespace-nowrap'
 const PRICE_SUFFIX = 'font-malibu text-[length:max(24*var(--m),32*var(--u))] whitespace-nowrap'
 
-function PlanPrice({ plan, billing }) {
+/** Per-month figures for both toggle positions: the API's when loaded, the typed fallbacks otherwise. */
+function perMonthRates(plans, plan) {
+  const month = priceFor(plans, plan.key, 'monthly')
+  const year = priceFor(plans, plan.key, 'yearly')
+  return {
+    monthly: month ? formatMoney(month.amount, month.currency) : `$${plan.rates.monthly}`,
+    yearly: year ? formatMoney(year.monthlyEquivalent, year.currency) : `$${plan.rates.yearly}`,
+  }
+}
+
+function PlanPrice({ plan, billing, plans }) {
   const { featured, rates } = plan
   if (!rates) {
     return (
@@ -139,7 +155,8 @@ function PlanPrice({ plan, billing }) {
       </div>
     )
   }
-  const price = `$${rates[billing]}`
+  const perMonth = perMonthRates(plans, plan)
+  const price = perMonth[billing]
   return (
     <div className="relative flex flex-col leading-normal">
       <div className="flex items-center gap-2">
@@ -155,15 +172,17 @@ function PlanPrice({ plan, billing }) {
       </div>
       <p className="text-base text-ink opacity-80">
         {billing === 'yearly'
-          ? `billed yearly, or $${plan.alternateRate} month to month`
-          : `billed month to month, or $${plan.rates.yearly}/mo billed yearly`}
+          ? `billed yearly, or ${perMonth.monthly} month to month`
+          : `billed month to month, or ${perMonth.yearly}/mo billed yearly`}
       </p>
     </div>
   )
 }
 
-function PlanCard({ plan, billing, showMore }) {
+function PlanCard({ plan, billing, showMore, planState }) {
   const { featured } = plan
+  const trialDays = priceFor(planState.plans, plan.key, billing)?.trialDays ?? DEFAULT_TRIAL_DAYS
+  const featureLabel = (feature) => (feature === TRIAL_FEATURE ? `${trialDays}-day free trial` : feature)
   return (
     <div
       // On desktop the card's sections sit on rows shared with its siblings (subgrid), so prices, CTAs
@@ -189,9 +208,9 @@ function PlanCard({ plan, billing, showMore }) {
         <h3 className="text-[length:max(20*var(--m),24*var(--u))] font-semibold">{plan.name}</h3>
         <p className="text-base opacity-80">{plan.description}</p>
       </div>
-      <PlanPrice plan={plan} billing={billing} />
+      <PlanPrice plan={plan} billing={billing} plans={planState.plans} />
       <Link
-        to={plan.rates ? ROUTES.app : ROUTES.contact}
+        to={plan.rates ? planHref(planState, plan.key, INTERVAL[billing]) : ROUTES.contact}
         className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'
@@ -205,6 +224,7 @@ function PlanCard({ plan, billing, showMore }) {
         {plan.features.map((feature, i) => {
           const included = i < plan.included
           const isTitle = isListTitle(feature)
+          const label = featureLabel(feature)
           return (
             <li key={feature} className="flex items-center gap-2">
               {!isTitle && (included ? <CheckCircle /> : <Icon icon={MinusSignIcon} className="size-6 text-subtle" />)}
@@ -212,7 +232,7 @@ function PlanCard({ plan, billing, showMore }) {
                 className={`text-base leading-normal ${isTitle ? 'font-semibold' : 'font-medium'} ${included ? 'text-ink' : 'text-subtle'}`}
               >
                 {!isTitle &&<span className="sr-only">{included ? 'Included: ' : 'Not included: '}</span>}
-                {feature}
+                {label}
               </span>
             </li>
           )
@@ -282,6 +302,7 @@ function Title() {
 
 export function Pricing({ standalone = false, showExpert = true }) {
   const [billing, setBilling] = useState('yearly')
+  const planState = usePlans()
   return (
     <section id="pricing" className={`relative scroll-mt-10 ${standalone ? '' : 'mt-[max(80*var(--m),180*var(--u))]'}`}>
       <Deco src="deco-biscuit.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
@@ -305,7 +326,7 @@ export function Pricing({ standalone = false, showExpert = true }) {
                     MOST POPULAR
                   </p>
                 )}
-                <PlanCard plan={plan} billing={billing} showMore={!standalone} />
+                <PlanCard plan={plan} billing={billing} showMore={!standalone} planState={planState} />
               </div>
             ))}
           </div>

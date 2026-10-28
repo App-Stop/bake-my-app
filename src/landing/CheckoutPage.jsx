@@ -1,58 +1,87 @@
-import { useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
-import { ROUTES, navigate } from '../router'
+import { ApiError, api } from '../lib/api'
+import { CHECKOUT_PLANS, formatDaysFromNow, formatMoney, priceForInterval, usePlans } from '../lib/plans'
+import { readUtm } from '../lib/utm'
+import { ROUTES, navigate, useSearchParams } from '../router'
 import { asset } from './styles'
 
 const checkoutAsset = (name) => asset(`checkout/${name}`)
 
+const INTERVALS = ['month', 'year']
+const FALLBACK_NAMES = { startup: 'Startup', growth: 'Growth' } // shown while the plans load
+const FIELD_NAMES = ['email', 'name', 'businessName', 'phone', 'consent'] // API fields with an input here
+
+/** Only ever send the visitor to Stripe over HTTPS, whatever the API returns. */
+function isStripeUrl(value) {
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' && (url.hostname === 'stripe.com' || url.hostname.endsWith('.stripe.com'))
+  } catch {
+    return false
+  }
+}
+
+/** What the visitor pays and when, from the API price. The server decides the real charge; this only describes it. */
+function checkoutTerms(price, interval) {
+  const trial = price.trialDays > 0
+  const money = (cents) => formatMoney(cents, price.currency, true)
+  return {
+    trial,
+    trialDays: price.trialDays,
+    amount: money(price.amount),
+    dueToday: money(trial ? 0 : price.amount),
+    chargeDate: trial ? formatDaysFromNow(price.trialDays) : null,
+    per: interval === 'year' ? 'year' : 'month',
+    billed: interval === 'year' ? 'Billed yearly' : 'Billed monthly',
+  }
+}
+
 function SummaryRow({ label, value, muted = false }) {
   return (
-    <div className={`flex items-start justify-between text-[length:max(12px,calc(14*var(--u)))] leading-normal font-medium ${muted ? 'text-white/80' : 'text-white'}`}>
-      <span>{label}</span><span>{value}</span>
+    <div className={`flex items-start justify-between gap-4 text-[length:max(12px,calc(14*var(--u)))] leading-normal font-medium ${muted ? 'text-white/80' : 'text-white'}`}>
+      <span>{label}</span><span className="whitespace-nowrap">{value}</span>
     </div>
   )
 }
 
-function SummaryPanel({ plan, price }) {
+function SummaryPanel({ name, terms, loading }) {
+  const placeholder = '—'
   return (
     <section className="flex justify-center bg-[#232050] px-6 py-12 text-white lg:w-1/2 lg:justify-end lg:pt-[calc(96*var(--u))] lg:pr-[calc(120*var(--u))] lg:pb-10">
-      <div className="flex w-full max-w-[calc(400*var(--u))] flex-col gap-8">
+      <div className="flex w-full max-w-[calc(400*var(--u))] flex-col gap-8" aria-busy={loading}>
         <Link to={ROUTES.pricing} aria-label="Back to pricing" className="flex items-center gap-3 self-start">
           <img src={checkoutAsset('back.svg')} alt="" width={20} height={20} />
           <img src={checkoutAsset('logo.svg')} alt="Bake my App" width={49.412} height={36} />
         </Link>
-        <div className="flex flex-col gap-1.5 whitespace-nowrap">
-          <p className="text-[length:max(12px,calc(16*var(--u)))] font-medium text-white/80">Subscribe to {plan}</p>
+        <div className="flex flex-col gap-1.5">
+          <p className="text-[length:max(12px,calc(16*var(--u)))] font-medium text-white/80">Subscribe to {name}</p>
           <div className="flex items-baseline gap-2">
-            <strong className="text-[length:max(12px,calc(36*var(--u)))] leading-normal font-semibold">$0.00</strong>
+            <strong className="text-[length:max(12px,calc(36*var(--u)))] leading-normal font-semibold">{terms?.dueToday ?? placeholder}</strong>
             <span className="text-[length:max(12px,calc(14*var(--u)))] font-medium text-white/70">due today</span>
           </div>
-          <p className="text-[length:max(12px,calc(14*var(--u)))] text-white/70">Then ${price}.00 per month starting November 20, 2026</p>
+          <p className="text-[length:max(12px,calc(14*var(--u)))] text-white/70">
+            {!terms
+              ? loading ? 'Loading plan details…' : 'Plan details are unavailable right now.'
+              : terms.trial
+                ? `Then ${terms.amount} per ${terms.per} starting ${terms.chargeDate}`
+                : `Then ${terms.amount} per ${terms.per}`}
+          </p>
         </div>
         <div className="flex w-full flex-col gap-4">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-0.5">
-              <strong className="text-[length:max(12px,calc(14*var(--u)))] font-medium">Bake my App · {plan}</strong>
-              <span className="text-[length:max(12px,calc(12*var(--u)))] text-white/65">Billed monthly</span>
+              <strong className="text-[length:max(12px,calc(14*var(--u)))] font-medium">Bake my App · {name}</strong>
+              <span className="text-[length:max(12px,calc(12*var(--u)))] text-white/65">{terms?.billed ?? placeholder}</span>
             </div>
-            <span className="text-[length:max(12px,calc(14*var(--u)))] font-medium">${price}.00</span>
+            <span className="text-[length:max(12px,calc(14*var(--u)))] font-medium whitespace-nowrap">{terms?.amount ?? placeholder}</span>
           </div>
           <div className="h-px bg-white/20" />
-          <SummaryRow label="Subtotal" value={`$${price}.00`} />
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <span className="flex items-center gap-1.5 self-start rounded-md bg-white/20 px-2 py-1 text-[length:max(12px,calc(12*var(--u)))] font-semibold">
-                <img src={checkoutAsset('tag.svg')} alt="" width={14} height={14} />
-                FIRSTMONTH
-                <img src={checkoutAsset('close.svg')} alt="" width={12} height={12} />
-              </span>
-              <span className="text-[length:max(12px,calc(12*var(--u)))] text-white/65">100% off for 1 month</span>
-            </div>
-            <span className="text-[length:max(12px,calc(14*var(--u)))] font-medium">–${price}.00</span>
-          </div>
-          <SummaryRow label="Tax" value="$0.00" muted />
+          <SummaryRow label="Subtotal" value={terms?.amount ?? placeholder} />
+          {terms?.trial && <SummaryRow label={`${terms.trialDays}-day free trial`} value={`–${terms.amount}`} muted />}
           <div className="h-px bg-white/20" />
-          <SummaryRow label="Total due today" value="$0.00" />
+          <SummaryRow label="Total due today" value={terms?.dueToday ?? placeholder} />
         </div>
         <div className="flex items-center gap-4 pt-4 text-[length:max(12px,calc(12*var(--u)))] text-white/60 lg:mt-auto">
           <span className="font-medium">Powered by stripe</span><span className="h-3.5 w-px bg-white/30" />
@@ -63,89 +92,191 @@ function SummaryPanel({ plan, price }) {
   )
 }
 
-function Wallets() {
+const inputClass = 'h-11 w-full rounded-md border border-[#e0e0e0] bg-white px-3 text-[length:max(12px,calc(15*var(--u)))] font-normal text-[#30313d] shadow-[0_1px_2px_rgba(0,0,0,0.04)] outline-none placeholder:text-[#87888f] focus:border-primary aria-invalid:border-red-600'
+const errorClass = 'text-[length:max(12px,calc(13*var(--u)))] leading-normal font-normal text-red-600'
+const textClass = 'text-[length:max(12px,calc(12*var(--u)))] leading-normal text-[#6d6e78]'
+
+function Field({ label, error, errorId, children }) {
   return (
-    <div className="flex h-11 w-full gap-3">
-      <button type="button" className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md bg-black text-[length:max(12px,calc(17*var(--u)))] font-semibold text-white">
-        <img src={checkoutAsset('apple.svg')} alt="Apple" width={16.842} height={20} /> Pay
-      </button>
-      <button type="button" className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md bg-black text-[length:max(12px,calc(17*var(--u)))] font-semibold text-white">
-        <span className="relative size-[calc(21*var(--u))] overflow-hidden">
-          {['google-1.svg', 'google-2.svg', 'google-3.svg', 'google-4.svg'].map((name) => <img key={name} src={checkoutAsset(name)} alt="" width={21} height={21} className="absolute inset-0" />)}
-        </span>
-        Pay
-      </button>
-      <button type="button" className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md bg-[#00d66f] text-[#011e0f]">
-        <span className="text-[length:max(12px,calc(14*var(--u)))] font-medium">Pay with</span><strong className="text-[length:max(12px,calc(17*var(--u)))]">link</strong>
-      </button>
+    <div className="flex flex-col gap-1.5">
+      <label className="flex flex-col gap-1.5 text-[length:max(12px,calc(14*var(--u)))] leading-normal font-medium text-[#30313d]">
+        {label}
+        {children}
+      </label>
+      {error && <span id={errorId} role="alert" className={errorClass}>{error}</span>}
     </div>
   )
 }
 
-const inputClass = 'h-11 w-full border border-[#e0e0e0] bg-white px-3 text-[length:max(12px,calc(15*var(--u)))] text-[#30313d] shadow-[0_1px_2px_rgba(0,0,0,0.04)] outline-none placeholder:text-[#87888f] focus:z-10 focus:border-primary'
+function CheckoutForm({ planKey, interval, terms }) {
+  const idPrefix = useId()
+  const [sending, setSending] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [formError, setFormError] = useState(null) // { message, status }
+  const inFlight = useRef(false) // blocks a second submit before the disabled state renders
 
-function Label({ children }) {
-  return <label className="flex flex-col gap-1.5 text-[length:max(12px,calc(14*var(--u)))] leading-normal font-medium text-[#30313d]">{children}</label>
-}
+  // Coming back from Stripe with the browser's Back button restores this page with the
+  // button still disabled. Re-enable it.
+  useEffect(() => {
+    const onShow = (event) => {
+      if (!event.persisted) return
+      inFlight.current = false
+      setSending(false)
+    }
+    window.addEventListener('pageshow', onShow)
+    return () => window.removeEventListener('pageshow', onShow)
+  }, [])
 
-function PaymentForm({ price }) {
-  const [save, setSave] = useState(false)
-  const submit = (event) => {
+  const errorProps = (name) => ({
+    'aria-invalid': errors[name] ? true : undefined,
+    'aria-describedby': errors[name] ? `${idPrefix}-${name}-error` : undefined,
+  })
+  const fieldError = (name) => ({ error: errors[name], errorId: `${idPrefix}-${name}-error` })
+
+  // Editing a field clears its error.
+  function clearError(event) {
+    const name = event.target.name === 'business' ? 'businessName' : event.target.name
+    if (!name || !errors[name]) return
+    setErrors((current) => {
+      const next = { ...current }
+      delete next[name]
+      return next
+    })
+  }
+
+  async function submit(event) {
     event.preventDefault()
-    navigate(ROUTES.app)
+    if (inFlight.current || !terms) return
+    const data = new FormData(event.currentTarget)
+
+    inFlight.current = true
+    setSending(true)
+    setErrors({})
+    setFormError(null)
+    try {
+      // No price, amount or trial is sent: the server decides them from the plan and interval.
+      const { data: session } = await api.post('/v1/billing/checkout-sessions', {
+        planKey,
+        billingInterval: interval,
+        email: String(data.get('email') || '').trim(),
+        name: data.get('name'),
+        businessName: data.get('business'),
+        phone: data.get('phone'),
+        consent: data.get('consent') === 'on',
+        website: data.get('website'), // honeypot, must stay empty
+        utm: readUtm(),
+      })
+      if (!isStripeUrl(session?.url)) throw new ApiError('Something went wrong. Please try again.')
+      window.location.assign(session.url) // leave the button disabled: the page is closing
+    } catch (error) {
+      const fieldErrors = error.fieldErrors ?? {}
+      setErrors(fieldErrors)
+      if (!Object.keys(fieldErrors).some((name) => FIELD_NAMES.includes(name))) {
+        setFormError({ message: error.message || 'Something went wrong. Please try again.', status: error.status })
+      }
+      inFlight.current = false
+      setSending(false)
+    }
   }
 
   return (
-    <form onSubmit={submit} className="flex w-full max-w-[calc(440*var(--u))] flex-col gap-6" aria-label="Payment details">
-      <Wallets />
-      <div className="flex items-center gap-3 text-[length:max(12px,calc(14*var(--u)))] text-[#6d6e78]"><span className="h-px flex-1 bg-black/10" /><span>Or pay with card</span><span className="h-px flex-1 bg-black/10" /></div>
-      <Label>Email<input required type="email" defaultValue="owner@sunrisebakery.com" className={`${inputClass} rounded-md font-normal`} /></Label>
-      <Label>
-        Card information
-        <span className="flex flex-col">
-          <span className="relative flex">
-            <input required inputMode="numeric" placeholder="1234 1234 1234 1234" className={`${inputClass} rounded-t-md pr-36 font-normal`} />
-            <span className="pointer-events-none absolute top-1/2 right-3 flex -translate-y-1/2 gap-1 text-[length:calc(9*var(--u))] font-bold text-white">
-              <i className="rounded-[3px] bg-[#1a1f71] px-1 py-0.5 not-italic">VISA</i><i className="rounded-[3px] bg-[#eb001b] px-1 py-0.5 not-italic">MC</i><i className="rounded-[3px] bg-[#2e77bc] px-1 py-0.5 not-italic">AMEX</i><i className="rounded-[3px] bg-[#f58220] px-1 py-0.5 not-italic">DISC</i>
-            </span>
+    <form
+      onSubmit={submit}
+      onChange={clearError}
+      aria-label="Your details"
+      aria-busy={sending}
+      className="relative flex w-full max-w-[calc(440*var(--u))] flex-col gap-6"
+    >
+      <Honeypot />
+      <Field label="Email" {...fieldError('email')}>
+        <input name="email" type="email" required maxLength={254} autoComplete="email" placeholder="you@yourbakery.com" className={inputClass} {...errorProps('email')} />
+      </Field>
+      <Field label="Your name" {...fieldError('name')}>
+        <input name="name" required minLength={2} maxLength={120} autoComplete="name" placeholder="Full name" className={inputClass} {...errorProps('name')} />
+      </Field>
+      <Field label="Business name" {...fieldError('businessName')}>
+        <input name="business" maxLength={160} autoComplete="organization" placeholder="Your bakery or café name" className={inputClass} {...errorProps('businessName')} />
+      </Field>
+      <Field label="Phone or WhatsApp (optional)" {...fieldError('phone')}>
+        <input name="phone" type="tel" maxLength={25} autoComplete="tel" placeholder="+92 300 1234567" className={inputClass} {...errorProps('phone')} />
+      </Field>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="flex items-start gap-3 text-[length:max(12px,calc(14*var(--u)))] leading-normal text-[#30313d]">
+          <input name="consent" type="checkbox" required className="mt-0.5 size-4 shrink-0 accent-primary" {...errorProps('consent')} />
+          <span>
+            I agree to the{' '}
+            <a href={ROUTES.comingSoon} target="_blank" rel="noopener noreferrer" className="text-primary underline">Terms</a>
+            {' '}and the{' '}
+            <a href={ROUTES.comingSoon} target="_blank" rel="noopener noreferrer" className="text-primary underline">Privacy Policy</a>
           </span>
-          <span className="-mt-px flex">
-            <input required placeholder="MM / YY" className={`${inputClass} w-1/2 rounded-bl-md font-normal`} />
-            <span className="relative -ml-px w-1/2"><input required placeholder="CVC" className={`${inputClass} rounded-br-md pr-11 font-normal`} /><img src={checkoutAsset('cvc.svg')} alt="" width={24} height={16} className="pointer-events-none absolute top-3.5 right-3" /></span>
-          </span>
-        </span>
-      </Label>
-      <Label>Cardholder name<input required placeholder="Full name on card" className={`${inputClass} rounded-md font-normal`} /></Label>
-      <Label>
-        Country or region
-        <span className="flex flex-col">
-          <span className="relative"><select defaultValue="United States" className={`${inputClass} appearance-none rounded-t-md font-normal`}><option>United States</option><option>Canada</option><option>United Kingdom</option></select><img src={checkoutAsset('chevron.svg')} alt="" width={12} height={12} className="pointer-events-none absolute top-4 right-3" /></span>
-          <input required placeholder="ZIP" className={`${inputClass} -mt-px rounded-b-md font-normal`} />
-        </span>
-      </Label>
-      <button type="button" onClick={() => setSave(!save)} className="flex w-full items-start gap-3 rounded-md border border-[#e0e0e0] px-4 py-3.5 text-left">
-        <span className={`mt-px flex size-4 shrink-0 items-center justify-center rounded border ${save ? 'border-primary bg-primary text-white' : 'border-[#87888f] bg-white'}`}>{save ? '✓' : ''}</span>
-        <span className="flex flex-col gap-0.5"><strong className="text-[length:max(12px,calc(14*var(--u)))] font-medium text-[#30313d]">Save my information for faster checkout</strong><span className="text-[length:max(12px,calc(13*var(--u)))] leading-normal text-[#6d6e78]">Pay securely at Bake my App and everywhere Link is accepted.</span></span>
+        </label>
+        {errors.consent && <span id={`${idPrefix}-consent-error`} role="alert" className={errorClass}>{errors.consent}</span>}
+      </div>
+
+      {formError && (
+        <p role="alert" className={`${errorClass} text-[length:max(13px,calc(14*var(--u)))]`}>
+          {formError.message}{' '}
+          {[400, 409].includes(formError.status) && <Link to={ROUTES.contact} className="font-medium underline">Contact us</Link>}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={sending || !terms}
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-primary text-[length:max(12px,calc(16*var(--u)))] font-semibold text-white shadow-[0_4px_12px_rgba(84,77,242,0.25)] transition disabled:cursor-not-allowed disabled:opacity-70 aria-busy:cursor-wait"
+        aria-busy={sending}
+      >
+        <img src={checkoutAsset('lock.svg')} alt="" width={14} height={14} />
+        {sending ? 'Redirecting to secure payment…' : 'Continue to secure payment'}
       </button>
-      <button type="submit" className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-primary text-[length:max(12px,calc(16*var(--u)))] font-semibold text-white shadow-[0_4px_12px_rgba(84,77,242,0.25)]">
-        <img src={checkoutAsset('lock.svg')} alt="" width={14} height={14} /> Start trial
-      </button>
-      <p className="text-center text-[length:max(12px,calc(12*var(--u)))] leading-normal text-[#6d6e78]">By subscribing, you authorize Bake my App to charge you ${price}.00 per month starting November 20, 2026, according to their terms, until you cancel. You can cancel anytime before then and won’t be charged.</p>
+      <p className={`text-center ${textClass}`}>
+        {!terms
+          ? 'You will enter your card on Stripe’s secure page.'
+          : terms.trial
+            ? `You will enter your card on Stripe’s secure page. You will not be charged until ${terms.chargeDate}. Cancel anytime before then.`
+            : `You will enter your card on Stripe’s secure page and be charged ${terms.amount} today, then every ${terms.per} until you cancel.`}
+      </p>
     </form>
   )
 }
 
+function CheckoutUnavailable() {
+  return (
+    <div role="alert" className="flex w-full max-w-[calc(440*var(--u))] flex-col gap-4 rounded-md border border-[#e0e0e0] p-6 text-[length:max(13px,calc(15*var(--u)))] leading-normal text-[#30313d]">
+      <p>Online checkout is not available right now. Please contact us and we&apos;ll get you set up.</p>
+      <Link to={ROUTES.contact} className="self-start rounded-md bg-primary px-5 py-3 font-semibold text-white">
+        Contact us
+      </Link>
+    </div>
+  )
+}
+
+/** `/checkout?plan=<startup|growth>&interval=<month|year>`: collects contact details, then hands off to Stripe Checkout. */
 export function CheckoutPage() {
-  const requestedPlan = new URLSearchParams(window.location.search).get('plan')
-  const growth = requestedPlan === 'growth'
-  const plan = growth ? 'Growth' : 'Startup'
-  const price = growth ? 249 : 99
+  const params = useSearchParams()
+  const planKey = params.get('plan')
+  const interval = INTERVALS.includes(params.get('interval')) ? params.get('interval') : 'year'
+  const validPlan = CHECKOUT_PLANS.includes(planKey)
+  const { plans, failed } = usePlans()
+
+  // Business Suite is sold by quote and anything else isn't a plan: back to the plan cards.
+  useEffect(() => {
+    if (!validPlan) navigate(ROUTES.pricing, { replace: true })
+  }, [validPlan])
+
+  if (!validPlan) return null
+
+  const price = priceForInterval(plans, planKey, interval)
+  const unavailable = failed || (plans && !price?.purchasable)
+  const terms = price ? checkoutTerms(price, interval) : null
+  const name = plans?.[planKey]?.name ?? FALLBACK_NAMES[planKey]
 
   return (
     <main className="checkout-page flex min-h-dvh flex-col bg-white font-inter lg:flex-row">
-      <SummaryPanel plan={plan} price={price} />
+      <SummaryPanel name={name} terms={terms} loading={!plans && !failed} />
       <div className="flex justify-center px-6 py-12 lg:w-1/2 lg:justify-start lg:pt-[calc(96*var(--u))] lg:pl-[calc(120*var(--u))]">
-        <PaymentForm price={price} />
+        {unavailable ? <CheckoutUnavailable /> : <CheckoutForm planKey={planKey} interval={interval} terms={terms} />}
       </div>
     </main>
   )
