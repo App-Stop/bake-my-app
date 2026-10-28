@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { ArrowDown01Icon, ArrowRight02Icon } from '@hugeicons/core-free-icons'
+import { ArrowDown01Icon, ArrowRight02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
 import { api } from '../lib/api'
@@ -169,6 +169,135 @@ function MessageSentModal({ email, onClose }) {
 const controlClass =
   'w-full rounded-[calc(28*var(--px))] border-0 bg-white px-[max(18*var(--m),22*var(--u))] py-4 text-sm leading-6 text-ink outline-none placeholder:text-[#68667b] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
 
+/**
+ * Site-styled replacement for a native <select> (ARIA "select-only combobox"): focus stays on the
+ * button, arrows/Home/End/letters move the highlight, Enter/Space pick, Escape/Tab/outside click close.
+ */
+function TopicSelect({ label, value, onChange, error, errorId, buttonRef }) {
+  const id = useId()
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(-1)
+  const rootRef = useRef(null)
+  const listRef = useRef(null)
+  const selectedIndex = TOPICS.indexOf(value)
+
+  useEffect(() => {
+    if (!open) return undefined
+    const closeOutside = (event) => {
+      if (!rootRef.current?.contains(event.target)) setOpen(false)
+    }
+    document.addEventListener('pointerdown', closeOutside)
+    return () => document.removeEventListener('pointerdown', closeOutside)
+  }, [open])
+
+  // Keep the highlighted option in view when moving with the keyboard.
+  useEffect(() => {
+    if (open && active >= 0) listRef.current?.children[active]?.scrollIntoView({ block: 'nearest' })
+  }, [open, active])
+
+  const show = (index = selectedIndex >= 0 ? selectedIndex : 0) => {
+    setActive(index)
+    setOpen(true)
+  }
+  const pick = (index) => {
+    onChange(TOPICS[index])
+    setOpen(false)
+  }
+
+  function onKeyDown(event) {
+    const last = TOPICS.length - 1
+    const { key } = event
+    if (!open) {
+      if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(key)) {
+        event.preventDefault()
+        show(key === 'ArrowUp' && selectedIndex < 0 ? last : undefined)
+      }
+      return
+    }
+    if (key === 'ArrowDown') setActive((i) => Math.min(i + 1, last))
+    else if (key === 'ArrowUp') setActive((i) => Math.max(i - 1, 0))
+    else if (key === 'Home') setActive(0)
+    else if (key === 'End') setActive(last)
+    else if (key === 'Enter' || key === ' ') pick(active)
+    else if (key === 'Escape') setOpen(false)
+    else if (key === 'Tab') return setOpen(false)
+    else if (key.length === 1) {
+      // Type-ahead: jump to the next topic starting with the typed letter.
+      const letter = key.toLowerCase()
+      const order = TOPICS.map((_, i) => (active + 1 + i) % TOPICS.length)
+      const match = order.find((i) => TOPICS[i].toLowerCase().startsWith(letter))
+      if (match !== undefined) setActive(match)
+    } else return
+    event.preventDefault()
+  }
+
+  return (
+    <div ref={rootRef} className="flex min-w-0 flex-1 flex-col gap-2">
+      <span id={`${id}-label`} className="text-sm leading-normal font-medium text-ink">{label} *</span>
+      <div className="relative">
+        <button
+          ref={buttonRef}
+          type="button"
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={`${id}-list`}
+          aria-labelledby={`${id}-label ${id}-value`}
+          aria-activedescendant={open && active >= 0 ? `${id}-option-${active}` : undefined}
+          aria-required="true"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          onClick={() => (open ? setOpen(false) : show())}
+          onKeyDown={onKeyDown}
+          className={`${controlClass} flex items-center justify-between gap-3 pr-14 text-left ${value ? 'text-ink' : 'text-[#68667b]'} ${
+            error ? 'ring-2 ring-red-600' : ''
+          }`}
+        >
+          <span id={`${id}-value`} className="truncate">{value || 'Select an enquiry topic'}</span>
+        </button>
+        <Icon
+          icon={ArrowDown01Icon}
+          strokeWidth={2.5}
+          aria-hidden="true"
+          className={`pointer-events-none absolute top-1/2 right-5 size-4 -translate-y-1/2 text-primary transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+        <ul
+          ref={listRef}
+          id={`${id}-list`}
+          role="listbox"
+          aria-labelledby={`${id}-label`}
+          tabIndex={-1}
+          hidden={!open}
+          className="absolute inset-x-0 top-[calc(100%+8px)] z-20 max-h-72 overflow-y-auto rounded-[calc(24*var(--px))] bg-white p-2 shadow-[0_12px_40px_rgba(35,32,80,0.16)] ring-1 ring-black/5"
+        >
+          {TOPICS.map((topic, index) => {
+            const selected = topic === value
+            return (
+              <li
+                key={topic}
+                id={`${id}-option-${index}`}
+                role="option"
+                aria-selected={selected}
+                // Keep focus on the button so the keyboard keeps working after a click.
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => pick(index)}
+                onMouseEnter={() => setActive(index)}
+                className={`flex cursor-pointer items-center justify-between gap-3 rounded-[calc(18*var(--px))] px-4 py-3 text-sm leading-6 transition-colors ${
+                  index === active ? 'bg-primary-light' : ''
+                } ${selected ? 'font-semibold text-primary' : 'text-ink'}`}
+              >
+                {topic}
+                {selected && <Icon icon={Tick02Icon} strokeWidth={2.5} aria-hidden="true" className="size-4 shrink-0" />}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      {error && <span id={errorId} role="alert" className="text-xs leading-normal text-red-600">{error}</span>}
+    </div>
+  )
+}
+
 /** `?topic=Plans%20and%20pricing` preselects a topic; anything not in TOPICS is ignored. */
 function topicFromUrl() {
   const topic = new URLSearchParams(window.location.search).get('topic')
@@ -181,6 +310,8 @@ function EnquiryForm() {
   const [sending, setSending] = useState(false)
   const [errors, setErrors] = useState({}) // { email: 'Enter a valid email address', ... }
   const [formError, setFormError] = useState('') // errors that belong to no single field
+  const [topic, setTopic] = useState(topicFromUrl)
+  const topicRef = useRef(null)
   const inFlight = useRef(false) // blocks a second submit before the disabled state renders
 
   const errorProps = (name) => ({
@@ -191,7 +322,10 @@ function EnquiryForm() {
 
   // Editing a field clears its error.
   function clearError(event) {
-    const name = event.target.name === 'business' ? 'businessName' : event.target.name
+    clearFieldError(event.target.name === 'business' ? 'businessName' : event.target.name)
+  }
+
+  function clearFieldError(name) {
     if (!name || !errors[name]) return
     setErrors((current) => {
       const next = { ...current }
@@ -203,6 +337,12 @@ function EnquiryForm() {
   async function submit(event) {
     event.preventDefault()
     if (inFlight.current) return
+    // The custom dropdown isn't covered by the browser's `required` check.
+    if (!topic) {
+      setErrors((current) => ({ ...current, topic: 'Please choose what we can help with' }))
+      topicRef.current?.focus()
+      return
+    }
     const form = event.currentTarget // read it before any await
     const data = new FormData(form)
     const email = String(data.get('email') || '').trim()
@@ -218,13 +358,14 @@ function EnquiryForm() {
         email,
         phone: data.get('phone'),
         businessName: data.get('business'),
-        topic: data.get('topic'),
+        topic,
         message: data.get('message'),
         consent: data.get('consent') === 'on',
         website: data.get('website'), // honeypot, must stay empty
         utm: readUtm(),
       })
       form.reset()
+      setTopic('')
       setSentEmail(email)
     } catch (error) {
       const fieldErrors = error.fieldErrors ?? {}
@@ -275,20 +416,17 @@ function EnquiryForm() {
         </Field>
       </div>
 
-      <Field label="What can we help with?" required {...fieldError('topic')}>
-        <span className="relative block">
-          <select className={`${controlClass} appearance-none pr-14 text-[#68667b]`} name="topic" defaultValue={topicFromUrl()} required {...errorProps('topic')}>
-            <option value="" disabled>Select an enquiry topic</option>
-            {TOPICS.map((topic) => <option key={topic}>{topic}</option>)}
-          </select>
-          <Icon
-            icon={ArrowDown01Icon}
-            strokeWidth={2.5}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-5 size-4 -translate-y-1/2 text-primary"
-          />
-        </span>
-      </Field>
+      <TopicSelect
+        label="What can we help with?"
+        value={topic}
+        onChange={(next) => {
+          setTopic(next)
+          clearFieldError('topic')
+        }}
+        buttonRef={topicRef}
+        {...fieldError('topic')}
+      />
+      <input type="hidden" name="topic" value={topic} />
 
       <Field label="Your message" required {...fieldError('message')}>
         <textarea

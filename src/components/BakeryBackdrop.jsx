@@ -43,11 +43,11 @@ const LOGO_COLORS = ["#efbb00", "#a7921b", "#8fa200"];
 
 export function BakeryDecorations({ setup = false }) {
   const setupClasses = [
-    "left-[2.85%] top-[6.7%] size-[5.84%]",
-    "right-[0.2%] top-[6.1%] size-[5.84%] rotate-[27.5deg]",
-    "left-[11.8%] top-[48.8%] size-[4.1%] rotate-[12.5deg]",
-    "right-[14.2%] top-[45%] size-[3.3%]",
-    "right-[6.8%] top-[75.2%] size-[5.84%]",
+    "left-[2.85%] top-[6.7%] w-[5.84%] aspect-square",
+    "right-[0.2%] top-[6.1%] w-[5.84%] aspect-square rotate-[27.5deg]",
+    "left-[11.8%] top-[48.8%] w-[4.1%] aspect-square rotate-[12.5deg]",
+    "right-[14.2%] top-[45%] w-[3.3%] aspect-square",
+    "right-[6.8%] top-[75.2%] w-[5.84%] aspect-square",
   ];
 
   return (
@@ -67,7 +67,7 @@ export function BakeryDecorations({ setup = false }) {
         <img
           src="/landing/demo/deco-cupcake.svg"
           alt=""
-          className="absolute bottom-[4.1%] left-[5.1%] size-[5.84%] -rotate-[14deg]"
+          className="absolute bottom-[4.1%] left-[5.1%] w-[5.84%] aspect-square -rotate-[14deg]"
         />
       )}
     </div>

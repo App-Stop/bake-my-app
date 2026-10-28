@@ -19,7 +19,8 @@ export function navigate(to, { replace = false } = {}) {
   if (to === window.location.pathname + window.location.search + window.location.hash) return
   window.history[replace ? 'replaceState' : 'pushState']({}, '', to)
   window.dispatchEvent(new PopStateEvent('popstate'))
-  window.scrollTo(0, 0)
+  // 'instant': plain scrollTo follows the CSS `scroll-behavior: smooth`, which the page swap interrupts.
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
 
 export function usePathname() {
