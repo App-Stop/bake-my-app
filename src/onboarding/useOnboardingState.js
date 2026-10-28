@@ -116,7 +116,12 @@ function load() {
  * `{ persist: false, initial }` for a throwaway copy (the landing demos), which never touches storage.
  */
 export function useOnboardingState({ persist = true, initial = INITIAL_STATE } = {}) {
-  const [state, setState] = useState(() => (persist ? load() : initial))
+  const [state, setState] = useState(() => {
+    if (!persist) return initial
+    const saved = load()
+    // The setup form starts empty on every visit instead of showing earlier (or sample) answers.
+    return saved.launched ? saved : { ...saved, shop: { ...saved.shop, name: '', email: '', phone: '', logo: null } }
+  })
 
   useEffect(() => {
     if (!persist) return
