@@ -4,7 +4,11 @@ import { Pen01Icon } from '@hugeicons/core-free-icons'
 import logo from '../assets/logo.svg'
 import { PrimaryButton } from '../components/buttons'
 import { SectionLabel, TextField, UploadBox } from '../components/form'
+import { Honeypot } from '../components/Honeypot'
+import { Link } from '../components/Link'
+import { api } from '../lib/api'
 import { extractPalette, normalizeHex } from '../lib/color'
+import { readUtm } from '../lib/utm'
 import { useModals } from '../landing/useModals'
 import { navigate, ROUTES } from '../router'
 
@@ -140,10 +144,41 @@ function BrandColorPicker({ state, actions }) {
   )
 }
 
+/**
+ * Tells the sales team about the shop. Fire-and-forget: the visitor moves on whatever the API says.
+ * The logo stays in the browser; the API needs an email to follow up, so without one nothing is sent.
+ */
+function sendShopLead({ shop, brandColor }, trap) {
+  const email = shop.email.trim()
+  if (!email) return
+  api
+    .post('/v1/leads', {
+      source: 'shop_setup',
+      email,
+      phone: shop.phone.trim(),
+      businessName: shop.name.trim(),
+      message: `Brand colour: ${brandColor.toUpperCase()}`,
+      consent: true, // the consent line is shown next to the button
+      website: trap,
+      utm: readUtm(),
+    })
+    .catch(() => {})
+}
+
 export function OnboardingScreen({ state, actions }) {
   const { shop } = state
   const { openExitOffer } = useModals()
+  const [trap, setTrap] = useState('') // hidden spam-trap field
+  const launched = useRef(false) // a double click must not send the lead twice
   const setShopField = (field) => (event) => actions.updateShop({ [field]: event.target.value })
+
+  const launch = () => {
+    if (!launched.current) {
+      launched.current = true
+      sendShopLead(state, trap)
+    }
+    navigate(ROUTES.demoAdmin)
+  }
 
   return (
     <div className="onboarding-page relative mx-auto min-h-[calc(1024*var(--px))] w-full max-w-[1440px] px-6">
@@ -213,21 +248,29 @@ export function OnboardingScreen({ state, actions }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2.5">
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.demoAdmin)}
-            className="rounded-full px-5 py-4 text-base font-semibold text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
-          >
-            Skip for now
-          </button>
-          <PrimaryButton
-            className="py-4"
-            onClick={() => navigate(ROUTES.demoAdmin)}
-            disabled={!shop.name.trim()}
-          >
-            Launch my Store
-          </PrimaryButton>
+        <Honeypot value={trap} onChange={setTrap} />
+
+        <div className="flex flex-col items-end gap-2.5">
+          <div className="flex items-center justify-end gap-2.5">
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.demoAdmin)}
+              className="rounded-full px-5 py-4 text-base font-semibold text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
+            >
+              Skip for now
+            </button>
+            <PrimaryButton className="py-4" onClick={launch} disabled={!shop.name.trim()}>
+              Launch my Store
+            </PrimaryButton>
+          </div>
+          {/* The API only accepts consent: true because this line is visible next to the button. */}
+          <p className="text-xs leading-normal text-muted">
+            By continuing you agree to our{' '}
+            <Link to={ROUTES.comingSoon} className="text-primary underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </div>
       </section>
     </div>

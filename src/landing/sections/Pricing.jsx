@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from '../../components/Link'
-import { DEFAULT_TRIAL_DAYS, INTERVAL, formatMoney, planHref, priceFor, usePlans } from '../../lib/plans'
+import { DEFAULT_TRIAL_DAYS, INTERVAL, QUOTE_HREF, formatMoney, planHref, priceFor, usePlans } from '../../lib/plans'
 import { ROUTES } from '../../router'
 import { MinusSignIcon } from '@hugeicons/core-free-icons'
 import { ArrowIcon, CheckCircle, Deco, Icon } from '../ui'
@@ -210,7 +210,7 @@ function PlanCard({ plan, billing, showMore, planState }) {
       </div>
       <PlanPrice plan={plan} billing={billing} plans={planState.plans} />
       <Link
-        to={plan.rates ? planHref(planState, plan.key, INTERVAL[billing]) : ROUTES.contact}
+        to={plan.rates ? planHref(planState, plan.key, INTERVAL[billing]) : QUOTE_HREF}
         className={`relative flex w-full items-center justify-center gap-2.5 rounded-full p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold whitespace-nowrap transition ${
           featured
             ? 'bg-primary text-white hover:brightness-110'

@@ -304,6 +304,11 @@ function topicFromUrl() {
   return TOPICS.includes(topic) ? topic : ''
 }
 
+/** Lead source for the API: "Get a quote" links add `?source=quote`. */
+function sourceFromUrl() {
+  return new URLSearchParams(window.location.search).get('source') === 'quote' ? 'quote' : 'contact_form'
+}
+
 function EnquiryForm() {
   const idPrefix = useId()
   const [sentEmail, setSentEmail] = useState('')
@@ -311,6 +316,7 @@ function EnquiryForm() {
   const [errors, setErrors] = useState({}) // { email: 'Enter a valid email address', ... }
   const [formError, setFormError] = useState('') // errors that belong to no single field
   const [topic, setTopic] = useState(topicFromUrl)
+  const [source] = useState(sourceFromUrl)
   const topicRef = useRef(null)
   const inFlight = useRef(false) // blocks a second submit before the disabled state renders
 
@@ -353,7 +359,7 @@ function EnquiryForm() {
     setFormError('')
     try {
       await api.post('/v1/leads', {
-        source: 'contact_form',
+        source,
         name: data.get('name'),
         email,
         phone: data.get('phone'),

@@ -67,6 +67,9 @@ export const priceFor = (plans, key, billing) => priceForInterval(plans, key, IN
 export const priceForInterval = (plans, key, interval) =>
   plans?.[key]?.prices.find((price) => price.interval === interval) ?? null
 
+/** "Get a quote": the contact form, sent to the API as a quote request. */
+export const QUOTE_HREF = `${ROUTES.contact}?source=quote&topic=${encodeURIComponent('Plans and pricing')}`
+
 /** Link for a plan button: checkout unless the API failed or says the price can't be bought online. */
 export function planHref({ plans, failed }, key, interval) {
   const price = priceForInterval(plans, key, interval)

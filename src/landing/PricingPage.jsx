@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { Link } from '../components/Link'
-import { DEFAULT_TRIAL_DAYS, formatMoney, planHref, priceForInterval, usePlans } from '../lib/plans'
+import { DEFAULT_TRIAL_DAYS, QUOTE_HREF, formatMoney, planHref, priceForInterval, usePlans } from '../lib/plans'
 import { ROUTES } from '../router'
 import { SiteNav } from './SiteNav'
 import { Footer } from './sections/Closing'
@@ -75,7 +75,7 @@ function ComparePlans({ planState }) {
           <div />
           <CompareCta to={planHref(planState, 'startup', 'year')} label="Start for Free" />
           <CompareCta to={planHref(planState, 'growth', 'year')} label="Start for Free" primary />
-          <CompareCta to={ROUTES.contact} label="Get a quote" />
+          <CompareCta to={QUOTE_HREF} label="Get a quote" />
         </div>
       </div>
     </section>
