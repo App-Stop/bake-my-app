@@ -15,7 +15,7 @@ import {
 import fire from '../assets/fire.svg'
 import { BgGlow, Icon, PhoneFrame, Star, TabBar, glass } from './phone'
 
-function Header({ logo, mark, address }) {
+function Header({ logo, mark, address, actions }) {
   return (
     <div className="absolute top-0 left-0 flex h-[115.2px] w-full flex-col items-center justify-end gap-[6px] overflow-clip rounded-b-[18px] bg-white px-[9.6px] pb-[9.6px]">
       <BgGlow />
@@ -29,7 +29,7 @@ function Header({ logo, mark, address }) {
             <Icon icon={CroissantIcon} size={19.2} />
           )}
         </div>
-        <div className={`flex h-[30px] min-w-px flex-1 items-center justify-center gap-[4.8px] rounded-[60px] px-[6px] text-ink ${glass}`}>
+        <button type="button" onClick={() => actions?.go("address")} className={`flex h-[30px] min-w-px flex-1 items-center justify-center gap-[4.8px] rounded-[60px] px-[6px] text-ink ${glass}`}>
           <div className="flex min-w-0 flex-col items-center gap-[1.2px] leading-normal whitespace-nowrap">
             <span className="text-[6px] opacity-60">Deliver to</span>
             <span className="max-w-full truncate text-[8.4px] font-medium" title={address || '742 Evergreen Terrace, Springfield'}>
@@ -37,15 +37,15 @@ function Header({ logo, mark, address }) {
             </span>
           </div>
           <Icon icon={ArrowDown01Icon} size={9.6} />
-        </div>
-        <div className={`flex size-[30px] shrink-0 items-center justify-center rounded-[60px] text-ink ${glass}`}>
+        </button>
+        <button type="button" aria-label="Notifications" onClick={() => actions?.go("notifications")} className={`flex size-[30px] shrink-0 items-center justify-center rounded-[60px] text-ink ${glass}`}>
           <Icon icon={BellIcon} size={14.4} />
-        </div>
+        </button>
       </div>
       <div className={`relative flex h-[30px] w-full items-center justify-between rounded-[60px] px-[6px] ${glass}`}>
         <div className="flex items-center gap-[6px] text-subtle">
           <Icon icon={Search01Icon} size={14.4} />
-          <span className="text-[8.4px] leading-normal whitespace-nowrap">Search croissant, cakes, fresh items</span>
+          <input aria-label="Search menu" className="min-w-0 w-[175px] bg-transparent text-[8.4px] outline-none" placeholder="Search croissant, cakes, fresh items" onChange={(event) => actions?.setQuery(event.target.value)} />
         </div>
         <Icon icon={FilterVerticalIcon} size={14.4} className="text-ink" />
       </div>
@@ -53,7 +53,7 @@ function Header({ logo, mark, address }) {
   )
 }
 
-function CategoryTabs({ firstLabel, firstCount }) {
+function CategoryTabs({ firstLabel, firstCount, actions }) {
   const tabs = [
     { icon: CroissantIcon, label: firstLabel, count: firstCount },
     { icon: CakeIcon, label: 'Cakes', count: 8 },
@@ -64,9 +64,9 @@ function CategoryTabs({ firstLabel, firstCount }) {
     { icon: BiscuitIcon, label: 'Donuts', count: 6 },
   ]
   return (
-    <div className="flex w-full items-center gap-[6px]">
+    <div className="flex w-full items-center gap-[6px] overflow-x-auto">
       {tabs.map(({ icon, label, count }, i) => (
-        <div
+        <button type="button" onClick={() => actions?.browse(label)}
           key={label + i}
           className={`flex shrink-0 items-start gap-[2.4px] rounded-[36px] px-[7.2px] py-[4.8px] ${i === 0 ? 'bg-brand-light' : ''}`}
         >
@@ -77,7 +77,7 @@ function CategoryTabs({ firstLabel, firstCount }) {
             </span>
           </div>
           <span className="text-[6px] leading-normal text-black opacity-40">{count}</span>
-        </div>
+        </button>
       ))}
     </div>
   )
@@ -98,7 +98,7 @@ function ProductImage({ product, className }) {
   )
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, actions }) {
   return (
     <div className="relative flex h-[96px] w-full shrink-0 flex-col items-start justify-between overflow-clip rounded-[12px] bg-brand-light p-[8.4px]">
       <ProductImage
@@ -111,7 +111,7 @@ function ProductCard({ product }) {
       />
 
       <div className="relative flex w-full flex-col items-start gap-[3.6px] leading-normal text-ink">
-        <p className="max-w-[120px] truncate text-[9.6px] font-medium">{product.name}</p>
+        <button type="button" onClick={() => actions?.openProduct(product)} className="max-w-[120px] truncate text-[9.6px] font-medium">{product.name}</button>
         <p className="flex items-center gap-[2.4px] whitespace-nowrap">
           <span className="text-[9.6px]">${Number.isInteger(product.price) ? product.price : product.price.toFixed(2)}</span>
           <span className="text-[8.4px] opacity-40">/piece</span>
@@ -129,36 +129,36 @@ function ProductCard({ product }) {
         </div>
       </div>
 
-      <div className={`relative flex size-[30px] items-center justify-center rounded-[60px] text-ink ${glass}`}>
+      <button type="button" aria-label={`Add ${product.name} to cart`} onClick={() => actions?.add(product)} className={`relative flex size-[30px] items-center justify-center rounded-[60px] text-ink ${glass}`}>
         <Icon icon={ShoppingBasketAdd03Icon} size={14.4} />
-      </div>
+      </button>
 
       {product.isNew && (
         <span className="absolute top-[9px] left-[93px] rounded-[3.6px] bg-brand px-[2.4px] py-[1.2px] text-center text-[6px] leading-normal font-semibold text-on-brand">
           NEW
         </span>
       )}
-      <div className="absolute top-[8.4px] left-[198px] flex size-[14.4px] items-center justify-center rounded-full border-[0.3px] border-white/20 bg-white/40 text-ink backdrop-blur-[6px]">
+      <button type="button" aria-label={`Save ${product.name}`} aria-pressed={actions?.favorites.includes(product.name) || false} onClick={() => actions?.toggleFavorite(product)} className="absolute top-[8.4px] left-[198px] flex size-[14.4px] items-center justify-center rounded-full border-[0.3px] border-white/20 bg-white/40 text-ink backdrop-blur-[6px]">
         <Icon icon={FavouriteIcon} size={9.6} strokeWidth={1.44} />
-      </div>
+      </button>
     </div>
   )
 }
 
 /** `logo` is an uploaded store logo (on white); `mark` a white glyph drawn on the brand circle. */
-export function HomeScreen({ summary, logo, mark, address }) {
+export function HomeScreen({ summary, logo, mark, address, actions }) {
   return (
-    <PhoneFrame label="Storefront home screen preview">
-      <Header logo={logo} mark={mark} address={address || summary?.address} />
-      <div className="absolute top-[127.2px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px]">
-        <CategoryTabs firstLabel={summary.categoryLabel} firstCount={summary.products.length} />
+    <PhoneFrame interactive={!!actions} label="Storefront home screen preview">
+      <Header actions={actions} logo={logo} mark={mark} address={address || summary?.address} />
+      <div className="absolute top-[127.2px] bottom-[60px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px] overflow-y-auto">
+        <CategoryTabs actions={actions} firstLabel={summary.categoryLabel} firstCount={summary.products.length} />
         <div className="flex w-full flex-col gap-[6px]">
           {summary.products.map((product, i) => (
-            <ProductCard key={product.name + i} product={product} />
+            <ProductCard key={product.name + i} product={product} actions={actions} />
           ))}
         </div>
       </div>
-      <TabBar active="home" />
+      {!actions && <TabBar active="home" />}
     </PhoneFrame>
   )
 }

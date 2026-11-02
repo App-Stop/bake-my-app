@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { INITIAL_STATE } from '../../onboarding/useOnboardingState'
-import { DESKTOP_WIDTH, DesktopScreen } from '../../preview/DesktopScreen'
+import { DESKTOP_WIDTH } from '../../preview/DesktopScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
+import { WebsiteStorefront } from './WebsiteStorefront'
 import { DemoBar } from './DemoShell'
 import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
@@ -41,7 +42,7 @@ export function WebsiteDemo() {
         style={brandTheme(color)}
       >
         <div className="absolute top-0 left-0 origin-top-left" style={{ transform: `scale(${size.scale})` }}>
-          {size.height > 0 && <DesktopScreen summary={SUMMARY} logo={logo} height={size.height} framed={false} />}
+          {size.height > 0 && <WebsiteStorefront summary={SUMMARY} logo={logo} height={size.height} />}
         </div>
       </div>
       <div className="pointer-events-none absolute inset-x-4 bottom-[calc(40*var(--d))] z-30 flex justify-center">

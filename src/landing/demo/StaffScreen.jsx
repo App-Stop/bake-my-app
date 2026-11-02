@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  ArrowDown01Icon,
   Logout03Icon,
   MenuRestaurantIcon,
   PackagingIcon,
@@ -12,6 +11,7 @@ import {
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { DemoLogo } from './DemoLogo'
+import { WEBSITE_PRODUCTS } from './storefrontCatalog'
 
 /*
  * Staff portal order console (Figma "branch-main", 1308 × 819.2 at 1×). Sample orders move through
@@ -98,7 +98,7 @@ function useClock() {
   }
 }
 
-function TopBar() {
+function TopBar({ screen, onNavigate }) {
   const { time, date } = useClock()
   return (
     <header className="flex w-full items-center gap-8 border-[0.8px] border-[#f0ece9] bg-white p-4">
@@ -106,14 +106,14 @@ function TopBar() {
         <DemoLogo className="h-[38.307px] w-[53.04px]" />
       </div>
       <nav className="flex w-[480px] items-center justify-center gap-[6.4px] text-[11.2px] leading-normal">
-        <span className="flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] bg-primary-light p-[9.6px] font-medium text-primary">
+        <button type="button" onClick={() => onNavigate("orders")} aria-pressed={screen === "orders"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] font-medium ${screen === "orders" ? "bg-primary-light text-primary" : "text-body"}`}>
           <Icon icon={ShoppingBasket03Icon} />
           Orders
-        </span>
-        <span className="flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] text-body">
+        </button>
+        <button type="button" onClick={() => onNavigate("menu")} aria-pressed={screen === "menu"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] ${screen === "menu" ? "bg-primary-light text-primary" : "text-body"}`}>
           <Icon icon={MenuRestaurantIcon} />
           Menu
-        </span>
+        </button>
       </nav>
       <div className="flex min-w-px flex-1 items-center gap-4">
         <div className="flex min-w-px flex-1 flex-col items-end gap-[3.2px] text-right leading-normal">
@@ -304,15 +304,18 @@ function OrderDetails({ order, onAdvance }) {
 
 export function StaffScreen() {
   const [orders, setOrders] = useState(INITIAL_ORDERS)
+  const [screen, setScreen] = useState('orders')
+  const [unavailable, setUnavailable] = useState([])
+  const [statusFilter, setStatusFilter] = useState('all')
   const [tab, setTab] = useState('active')
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState(INITIAL_ORDERS[0].id)
 
   const q = query.trim().toLowerCase()
   const visible = orders.filter(
-    (o) => TABS.find((t) => t.id === tab).match(o) && (!q || `${o.id} ${o.number} ${o.customer}`.toLowerCase().includes(q)),
+    (o) => TABS.find((t) => t.id === tab).match(o) && (statusFilter === "all" || o.status === statusFilter) && (!q || `${o.id} ${o.number} ${o.customer}`.toLowerCase().includes(q)),
   )
-  const selected = orders.find((o) => o.id === selectedId) ?? visible[0]
+  const selected = visible.find((o) => o.id === selectedId) ?? visible[0]
 
   const advance = (status) => {
     const stamp = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
@@ -329,43 +332,58 @@ export function StaffScreen() {
 
   return (
     <div className="flex size-full flex-col overflow-clip bg-surface font-sans text-ink">
-      <TopBar />
-      <div className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4">
-        <div className="flex w-full items-center justify-between">
-          <Tabs orders={orders} tab={tab} onChange={setTab} />
-          <div className="flex items-center justify-end gap-2">
-            <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
-              <Icon icon={Search01Icon} />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search order #, customer..."
-                aria-label="Search orders"
-                className="min-w-px flex-1 bg-transparent text-[10.4px] leading-normal text-ink outline-none placeholder:text-muted"
-              />
-            </label>
-            <span className="flex items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white py-[9.6px] pr-[9.6px] pl-[12.8px] text-[10.4px] leading-normal text-ink">
-              Filter
-              <Icon icon={ArrowDown01Icon} />
-            </span>
+      <TopBar screen={screen} onNavigate={setScreen} />
+      {screen === "menu" ? <StaffMenu unavailable={unavailable} setUnavailable={setUnavailable} /> : <>
+        <div className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4">
+          <div className="flex w-full items-center justify-between">
+            <Tabs orders={orders} tab={tab} onChange={setTab} />
+            <div className="flex items-center justify-end gap-2">
+              <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
+                <Icon icon={Search01Icon} />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search order #, customer..."
+                  aria-label="Search orders"
+                  className="min-w-px flex-1 bg-transparent text-[10.4px] leading-normal text-ink outline-none placeholder:text-muted"
+                />
+              </label>
+              <select aria-label="Filter orders by status" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-full border border-line bg-white p-[9.6px] text-[10.4px]">
+                <option value="all">All statuses</option>
+                {Object.keys(STATUS_STYLE).map((status) => <option key={status}>{status}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="flex min-h-px w-full flex-1 items-start gap-6">
+            <div className="flex max-h-full min-w-px flex-1 flex-col gap-[4.8px] overflow-y-auto rounded-2xl bg-white p-2">
+              {visible.length ? (
+                visible.map((order, i) => (
+                  <div key={order.id} className="flex flex-col gap-[4.8px]">
+                    {i > 0 && <div className="h-[0.8px] w-full bg-line" />}
+                    <OrderRow order={order} selected={order.id === selected?.id} onSelect={() => setSelectedId(order.id)} />
+                  </div>
+                ))
+              ) : (
+                <p className="p-6 text-center text-[11.2px] text-muted">No orders here right now.</p>
+              )}
+            </div>
+            {selected && <OrderDetails order={selected} onAdvance={advance} />}
           </div>
         </div>
-        <div className="flex min-h-px w-full flex-1 items-start gap-6">
-          <div className="flex max-h-full min-w-px flex-1 flex-col gap-[4.8px] overflow-y-auto rounded-2xl bg-white p-2">
-            {visible.length ? (
-              visible.map((order, i) => (
-                <div key={order.id} className="flex flex-col gap-[4.8px]">
-                  {i > 0 && <div className="h-[0.8px] w-full bg-line" />}
-                  <OrderRow order={order} selected={order.id === selected?.id} onSelect={() => setSelectedId(order.id)} />
-                </div>
-              ))
-            ) : (
-              <p className="p-6 text-center text-[11.2px] text-muted">No orders here right now.</p>
-            )}
-          </div>
-          {selected && <OrderDetails order={selected} onAdvance={advance} />}
-        </div>
-      </div>
+      </>}
     </div>
   )
+}
+
+function StaffMenu({ unavailable, setUnavailable }) {
+  const [query, setQuery] = useState('')
+  const [category, setCategory] = useState('All')
+  const categories = ['All', ...new Set(WEBSITE_PRODUCTS.map((item) => item.category))]
+  const visible = WEBSITE_PRODUCTS.filter((item) => (category === 'All' || item.category === category) && item.name.toLowerCase().includes(query.toLowerCase()))
+  return <section className="min-h-0 flex-1 overflow-y-auto p-6" aria-label="Staff menu">
+    <div className="mb-5 flex items-center justify-between"><div><h2 className="text-xl font-semibold">Menu availability</h2><p className="text-sm text-muted">Manage which items are available at your bakery.</p></div><input aria-label="Search menu items" placeholder="Search menu items…" value={query} onChange={(event) => setQuery(event.target.value)} className="rounded-full border border-line bg-white px-4 py-2 text-sm" /></div>
+    <div className="mb-5 flex gap-2">{categories.map((name) => <button type="button" key={name} aria-pressed={name === category} onClick={() => setCategory(name)} className={`rounded-full px-4 py-2 text-sm ${category === name ? 'bg-primary text-white' : 'bg-white text-body'}`}>{name}</button>)}</div>
+    <div className="grid grid-cols-4 gap-4">{visible.map((item) => { const available = !unavailable.includes(item.name); return <article key={item.name} className="rounded-2xl bg-white p-4"><img src={item.image} alt={item.name} className="mx-auto h-24 w-full object-contain" /><h3 className="mt-3 text-sm font-semibold">{item.name}</h3><p className="my-2 text-xs text-muted">{item.category} · {money(item.price)}</p><button type="button" role="switch" aria-checked={available} aria-label={`${item.name} availability`} onClick={() => setUnavailable((items) => available ? [...items, item.name] : items.filter((name) => name !== item.name))} className={`w-full rounded-full px-3 py-2 text-xs font-semibold ${available ? 'bg-primary-light text-primary' : 'bg-surface text-muted'}`}>{available ? 'Available' : 'Sold out'}</button></article> })}</div>
+    {!visible.length && <p className="p-8 text-center text-muted">No menu items match your search.</p>}
+  </section>
 }

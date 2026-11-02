@@ -42,10 +42,10 @@ export function Star({ size }) {
 }
 
 /** iPhone 17 Pro frame at 60% scale (241.2 × 524.4), matching the Figma mockups. */
-export function PhoneFrame({ label, children }) {
+export function PhoneFrame({ label, children, interactive = false }) {
   return (
     <div
-      role="img"
+      role={interactive ? undefined : "img"}
       aria-label={label}
       className="relative h-[524.4px] w-[241.2px] shrink-0 overflow-clip rounded-[30px] bg-white font-inter shadow-[0_12px_40px_-16px_rgba(17,17,17,0.18)]"
     >

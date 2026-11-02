@@ -1,3 +1,4 @@
+import { CROISSANTS, CAKES } from '../landing/demo/storefrontCatalog'
 import {
   ArrowDown01Icon,
   BiscuitIcon,
@@ -21,27 +22,7 @@ import {
   TwitterIcon,
 } from '@hugeicons/core-free-icons'
 import fire from '../assets/fire.svg'
-import almondCroissant from '../assets/products/almond-croissant.webp'
-import chocolateCroissant from '../assets/products/chocolate-croissant.webp'
-import lotusCroissant from '../assets/products/lotus-croissant.webp'
-import matchaCroissant from '../assets/products/matcha-croissant.webp'
-import signatureCroissant from '../assets/products/signature-croissant.webp'
 import brandFilm from '../assets/desktop/brand-film.webp'
-import cake0672a from '../assets/desktop/cake-0672a.webp'
-import cake0c45c from '../assets/desktop/cake-0c45c.webp'
-import cake2bcfb from '../assets/desktop/cake-2bcfb.webp'
-import cake37d97 from '../assets/desktop/cake-37d97.webp'
-import cake5b259 from '../assets/desktop/cake-5b259.webp'
-import cake616ba from '../assets/desktop/cake-616ba.webp'
-import cake7b605 from '../assets/desktop/cake-7b605.webp'
-import cake7edde from '../assets/desktop/cake-7edde.webp'
-import cakeA01fd from '../assets/desktop/cake-a01fd.webp'
-import cakeB23a4 from '../assets/desktop/cake-b23a4.webp'
-import cakeB52a7 from '../assets/desktop/cake-b52a7.webp'
-import cakeB6b25 from '../assets/desktop/cake-b6b25.webp'
-import cakeCcc58 from '../assets/desktop/cake-ccc58.webp'
-import cakeD3a5c from '../assets/desktop/cake-d3a5c.webp'
-import cakeD8067 from '../assets/desktop/cake-d8067.webp'
 import hero from '../assets/desktop/hero.webp'
 import logoFooter from '../assets/desktop/logo-footer.svg'
 import logoNav from '../assets/desktop/logo-nav.svg'
@@ -60,34 +41,6 @@ export const DESKTOP_WIDTH = 641.2
 export const DESKTOP_HEIGHT = 457.57
 
 const FLIP = 'scaleX(-1)'
-// Product shots shown 135.96% and re-centered (Figma crop) or 150% wide and shifted (landscape shots).
-const ZOOM = { size: '135.96%', left: '-17.98%', top: '-17.98%' }
-const WIDE = { width: '150%', height: '100%', left: '-28.21%', top: '0' }
-
-const CROISSANTS = [
-  { name: 'Classic Butter Croissant', price: 4.5, kcal: 272, rating: 4.8, reviews: '2.1k+', image: signatureCroissant },
-  { name: 'Chocolate Croissant', price: 5.25, kcal: 310, rating: 4.9, reviews: '3.4k+', image: chocolateCroissant, crop: ZOOM, flip: true },
-  { name: 'Almond Croissant', price: 5.75, kcal: 420, rating: 4.7, reviews: '1.8k+', image: lotusCroissant, flip: true },
-  { name: 'Ham & Cheese Croissant', price: 6.5, kcal: 385, rating: 4.6, reviews: '980+', image: almondCroissant, flip: true },
-  { name: 'Pistachio Croissant', price: 6.95, kcal: 395, rating: 4.9, reviews: '2.7k+', image: matchaCroissant, isNew: true },
-  { name: 'Matcha White Choc Croissant', price: 7.25, kcal: 365, rating: 4.5, reviews: '640+', image: signatureCroissant, flip: true },
-  { name: 'Plain Croissant', price: 3.75, kcal: 240, rating: 4.4, reviews: '5.2k+', image: chocolateCroissant, crop: ZOOM, flip: true },
-  { name: 'Raspberry Croissant', price: 5.5, kcal: 335, rating: 4.7, reviews: '1.5k+', image: lotusCroissant, flip: true },
-  { name: 'Cinnamon Crème Croissant', price: 5.95, kcal: 350, rating: 4.8, reviews: '2.3k+', image: almondCroissant, flip: true },
-]
-
-// The blurred glow behind each cake is sometimes a different shot than the cake itself.
-const CAKES = [
-  { name: 'Black Forest Gateau', price: 38, unit: 'whole', kcal: 450, rating: 4.8, reviews: '2.1k+', image: cake5b259, glow: cake5b259, glowTransform: 'scaleY(-1)' },
-  { name: 'Funfetti Birthday Cake', price: 42, unit: 'whole', kcal: 380, rating: 4.9, reviews: '3.4k+', image: cake0672a, glow: cake0672a, glowTransform: 'rotate(180deg)', flip: true },
-  { name: 'Strawberry Mousse Cake', price: 45, unit: 'whole', kcal: 320, rating: 4.7, reviews: '1.8k+', image: cakeB52a7, glow: cakeB52a7, glowTransform: 'rotate(180deg)', crop: WIDE, flip: true },
-  { name: 'Chocolate Ganache Cake', price: 32.99, kcal: 450, rating: 4.9, reviews: '3.2k+', image: cakeCcc58, glow: cake7edde, glowTransform: 'scaleY(-1)' },
-  { name: 'Vanilla Bean Cheesecake', price: 26.99, kcal: 320, rating: 4.7, reviews: '1.9k+', image: cakeB23a4, glow: cakeA01fd, glowTransform: FLIP, flip: true },
-  { name: 'Strawberry Shortcake', price: 24.99, kcal: 290, rating: 4.6, reviews: '2.3k+', image: cake37d97, glow: cake2bcfb, glowTransform: 'rotate(180deg)', crop: WIDE, flip: true },
-  { name: 'Red Velvet Layer Cake', price: 28.5, kcal: 380, rating: 4.8, reviews: '2.7k+', image: cakeD3a5c, glow: cake7b605, glowTransform: 'scaleY(-1)' },
-  { name: 'Tiramisu Layer Cake', price: 34.5, kcal: 410, rating: 4.9, reviews: '4.1k+', image: cake0c45c, glow: cake616ba, glowTransform: 'rotate(180deg)', flip: true },
-  { name: 'Lemon Drizzle Cake', price: 22.5, kcal: 260, rating: 4.8, reviews: '1.5k+', image: cakeD8067, glow: cakeB6b25, glowTransform: 'rotate(180deg)', crop: WIDE, flip: true },
-]
 
 const HERO_SHADE =
   'linear-gradient(270deg, rgba(0,0,0,0) 45.158%, rgba(0,0,0,0.006) 51.623%, rgba(0,0,0,0.023) 56.885%, rgba(0,0,0,0.049) 61.128%, rgba(0,0,0,0.084) 64.537%, rgba(0,0,0,0.127) 67.298%, rgba(0,0,0,0.176) 69.595%, rgba(0,0,0,0.23) 71.615%, rgba(0,0,0,0.287) 73.542%, rgba(0,0,0,0.348) 75.562%, rgba(0,0,0,0.41) 77.86%, rgba(0,0,0,0.472) 80.621%, rgba(0,0,0,0.533) 84.03%, rgba(0,0,0,0.592) 88.273%, rgba(0,0,0,0.648) 93.534%, rgba(0,0,0,0.7) 100%)'
@@ -100,11 +53,11 @@ const PILL_TEXT = 'text-[5.343px] leading-normal font-semibold whitespace-nowrap
 const HEADLINE =
   'text-[21.373px] leading-normal font-medium tracking-[-0.6679px] text-white [text-shadow:0_0_33.396px_black]'
 
-function BrandButton({ children }) {
+function BrandButton({ children, onClick }) {
   return (
-    <span className={`flex h-[16.698px] items-center justify-center rounded-full bg-brand px-[6.679px] text-on-brand ${PILL_TEXT}`}>
+    <button type="button" onClick={onClick} className={`flex h-[16.698px] items-center justify-center rounded-full bg-brand px-[6.679px] text-on-brand ${PILL_TEXT}`}>
       {children}
-    </span>
+    </button>
   )
 }
 
@@ -112,7 +65,7 @@ function Divider() {
   return <span className="w-[0.334px] self-stretch bg-current opacity-30" />
 }
 
-function Navbar({ logo }) {
+function Navbar({ logo, actions }) {
   return (
     <div className="sticky top-0 z-10 flex h-[27.162px] items-center justify-between bg-brand px-[66.792px] text-on-brand">
       <div className="flex items-center gap-[13.358px]">
@@ -127,24 +80,24 @@ function Navbar({ logo }) {
         )}
         <div className="flex items-center gap-[3.34px]">
           <Divider />
-          <div className="flex items-center gap-[2.672px]">
+          <button type="button" onClick={() => actions?.go("address")} className="flex items-center gap-[2.672px]">
             <Icon icon={Location01Icon} size={8.015} />
             <div className="flex flex-col gap-[0.668px] leading-normal whitespace-nowrap">
               <span className="text-[4.007px] opacity-80">Deliver to</span>
-              <span className="text-[5.343px] font-semibold">Select your address</span>
+              <span className="text-[5.343px] font-semibold">{actions?.address || "Select your address"}</span>
             </div>
-          </div>
+          </button>
           <Divider />
-          <div className="flex items-center gap-[2.672px]">
+          <button type="button" onClick={() => actions?.go("orders")} className="flex items-center gap-[2.672px]">
             <Icon icon={Gps01Icon} size={8.015} />
             <span className={PILL_TEXT}>Track your order</span>
-          </div>
+          </button>
         </div>
       </div>
       <div className="flex h-[16.698px] w-[120.225px] items-center justify-between rounded-full border-[0.334px] border-current bg-white/10 px-[3.34px] backdrop-blur-[3.34px]">
         <div className="flex items-center gap-[3.34px]">
           <Icon icon={Search01Icon} size={8.015} />
-          <span className="text-[4.675px] leading-normal whitespace-nowrap">Search croissant, cakes, fresh items</span>
+          <input aria-label="Search menu" className="w-[95px] bg-transparent text-[4.675px] outline-none placeholder:text-current" placeholder="Search croissant, cakes, fresh items" value={actions?.query || ""} onChange={(event) => actions?.setQuery(event.target.value)} />
         </div>
         <Icon icon={FilterVerticalIcon} size={8.015} />
       </div>
@@ -154,18 +107,18 @@ function Navbar({ logo }) {
           <span className={PILL_TEXT}>En</span>
           <Icon icon={ArrowDown01Icon} size={5.343} />
         </div>
-        <span className={`flex h-[17.811px] items-center rounded-full border-[0.668px] border-current px-[6.679px] ${PILL_TEXT}`}>
+        <button type="button" onClick={() => actions?.go("login")} className={`flex h-[17.811px] items-center rounded-full border-[0.668px] border-current px-[6.679px] ${PILL_TEXT}`}>
           Log in
-        </span>
-        <span className={`flex h-[16.698px] items-center rounded-full bg-white px-[6.679px] text-brand ${PILL_TEXT}`}>
+        </button>
+        <button type="button" onClick={() => actions?.go("signup")} className={`flex h-[16.698px] items-center rounded-full bg-white px-[6.679px] text-brand ${PILL_TEXT}`}>
           Sign up for free delivery
-        </span>
+        </button>
       </div>
     </div>
   )
 }
 
-function Hero() {
+function Hero({ actions }) {
   return (
     <div className="relative -mt-[1.112px] h-[267.166px] overflow-clip">
       <img src={hero} alt="" className="absolute inset-0 size-full object-cover" />
@@ -177,7 +130,7 @@ function Hero() {
           at your home
         </p>
         <div className="flex items-center gap-[6.679px]">
-          <BrandButton>Browse Menu</BrandButton>
+          <BrandButton onClick={() => actions?.browse()}>Browse Menu</BrandButton>
           <span className={`text-white ${PILL_TEXT}`}>or scroll down</span>
         </div>
       </div>
@@ -185,7 +138,7 @@ function Hero() {
   )
 }
 
-function CategoryTabs({ firstLabel, firstCount }) {
+function CategoryTabs({ firstLabel, firstCount, actions }) {
   const tabs = [
     { icon: CroissantIcon, label: firstLabel, count: firstCount },
     { icon: CakeIcon, label: 'Cakes', count: 8 },
@@ -198,7 +151,7 @@ function CategoryTabs({ firstLabel, firstCount }) {
   return (
     <div className="flex items-center justify-between bg-white px-[66.792px] py-[3.34px]">
       {tabs.map(({ icon, label, count }, i) => (
-        <div
+        <button type="button" onClick={() => actions?.browse(label)}
           key={label + i}
           className={`flex min-w-px flex-1 items-start justify-center gap-[1.336px] rounded-[20.037px] p-[4.007px] ${i === 0 ? 'bg-brand-light' : ''}`}
         >
@@ -207,7 +160,7 @@ function CategoryTabs({ firstLabel, firstCount }) {
             <span className={`max-w-[60px] truncate text-[6.679px] leading-normal ${i === 0 ? 'font-medium' : ''}`}>{label}</span>
           </div>
           <span className="text-[4.007px] leading-normal text-black opacity-40">{count}</span>
-        </div>
+        </button>
       ))}
     </div>
   )
@@ -230,7 +183,7 @@ function ProductImage({ src, crop, transform, className, style }) {
   )
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, actions }) {
   const { image, crop, flip } = product
   return (
     <div className="relative flex flex-col items-center justify-center gap-[3.34px] self-start overflow-clip rounded-[6.679px] bg-brand-light px-[6.679px] pb-[6.679px]">
@@ -240,7 +193,7 @@ function ProductCard({ product }) {
         transform={product.glowTransform ?? (flip ? FLIP : undefined)}
         className="pointer-events-none absolute top-[calc(50%-52.19px)] left-1/2 size-[91.505px] -translate-1/2 opacity-50 blur-[16.698px]"
       />
-      <ProductImage src={image} crop={crop} transform={flip ? FLIP : undefined} className="pointer-events-none relative size-[53.433px] shrink-0" />
+      <button type="button" aria-label={`View ${product.name}`} onClick={() => actions?.openProduct(product)}><ProductImage src={image} crop={crop} transform={flip ? FLIP : undefined} className="pointer-events-none relative size-[53.433px] shrink-0" /></button>
 
       <div className="relative flex w-full items-end justify-between gap-[3.34px]">
         <div className="flex min-w-px flex-1 flex-col items-start gap-[2.004px] leading-normal text-ink">
@@ -261,10 +214,10 @@ function ProductCard({ product }) {
             </span>
           </div>
         </div>
-        <span className="flex h-[14.694px] w-[46.086px] shrink-0 items-center justify-center gap-[2.004px] rounded-full border-[0.334px] border-white bg-white/80 text-ink backdrop-blur-[3.34px]">
+        <button type="button" onClick={() => actions?.add(product)} className="flex h-[14.694px] w-[46.086px] shrink-0 items-center justify-center gap-[2.004px] rounded-full border-[0.334px] border-white bg-white/80 text-ink backdrop-blur-[3.34px]">
           <Icon icon={ShoppingBasketAdd03Icon} size={8.015} />
           <span className="text-[4.675px] leading-normal font-medium whitespace-nowrap">Add to cart</span>
-        </span>
+        </button>
       </div>
 
       {product.isNew && (
@@ -272,20 +225,20 @@ function ProductCard({ product }) {
           NEW
         </span>
       )}
-      <span className="absolute top-[4.68px] right-[4.79px] flex size-[14.694px] items-center justify-center rounded-full border-[0.167px] border-white/40 bg-white/40 text-ink backdrop-blur-[3.34px]">
+      <button type="button" aria-label={`Save ${product.name}`} aria-pressed={actions?.favorites.includes(product.name) || false} onClick={() => actions?.toggleFavorite(product)} className="absolute top-[4.68px] right-[4.79px] flex size-[14.694px] items-center justify-center rounded-full border-[0.167px] border-white/40 bg-white/40 text-ink backdrop-blur-[3.34px]">
         <Icon icon={FavouriteIcon} size={8.015} strokeWidth={1.2} />
-      </span>
+      </button>
     </div>
   )
 }
 
-function ProductSection({ title, products, className = '' }) {
+function ProductSection({ title, products, className = '', actions }) {
   return (
     <section className={`mx-[66.79px] flex flex-col gap-[6.679px] ${className}`}>
       <h3 className="text-[10.687px] leading-normal font-medium text-ink">{title}</h3>
       <div className="grid grid-cols-3 gap-[6.679px]">
         {products.map((product, i) => (
-          <ProductCard key={product.name + i} product={product} />
+          <ProductCard key={product.name + i} product={product} actions={actions} />
         ))}
       </div>
     </section>
@@ -340,7 +293,7 @@ function AppPromo() {
   )
 }
 
-function BrandFilm() {
+function BrandFilm({ actions }) {
   return (
     <div className="relative mt-[26.832px] h-[233.771px] overflow-hidden">
       <img src={brandFilm} alt="" className="absolute top-[-51.78%] left-[0.01%] h-[203.56%] w-[99.98%] max-w-none" />
@@ -348,7 +301,7 @@ function BrandFilm() {
       <div className="absolute top-1/2 left-[calc(50%+0.16px)] flex w-[221.414px] -translate-1/2 flex-col items-center gap-[6.679px]">
         <p className={`text-center ${HEADLINE}`}>Baked with precision, care and love for you</p>
         <div className="flex flex-col items-center gap-[6.679px]">
-          <BrandButton>Order Now</BrandButton>
+          <BrandButton onClick={() => actions?.browse()}>Order Now</BrandButton>
           <span className="text-[5.343px] leading-normal whitespace-nowrap text-white italic">Free Delivery*</span>
         </div>
       </div>
@@ -431,28 +384,28 @@ function croissantsFor(summary) {
 }
 
 /** `framed` draws the preview window; the website demo passes `framed={false}` and its own height. */
-export function DesktopScreen({ summary, logo, height = DESKTOP_HEIGHT, framed = true }) {
+export function DesktopScreen({ summary, logo, height = DESKTOP_HEIGHT, framed = true, actions }) {
   return (
     <div
-      role="img"
+      role={actions ? undefined : "img"}
       aria-label="Storefront website preview"
       className={`relative overflow-hidden bg-white font-inter ${framed ? 'rounded-[15.052px] shadow-[0_3.01px_22.577px_rgba(0,0,0,0.1)]' : ''}`}
       style={{ width: DESKTOP_WIDTH, height }}
     >
       <div className="h-full overflow-x-clip overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <Navbar logo={logo} />
-        <Hero />
-        <CategoryTabs firstLabel={summary?.categoryLabel ?? 'Croissants'} firstCount={summary?.products?.length ?? 5} />
-        <ProductSection title="Original Hand-Tossed Croissants" products={croissantsFor(summary)} className="mt-[9.017px]" />
+        <Navbar logo={logo} actions={actions} />
+        <Hero actions={actions} />
+        <CategoryTabs actions={actions} firstLabel={summary?.categoryLabel ?? 'Croissants'} firstCount={summary?.products?.length ?? 5} />
+        <ProductSection actions={actions} title="Original Hand-Tossed Croissants" products={croissantsFor(summary)} className="mt-[9.017px]" />
         <AppPromo />
-        <ProductSection title="Freshly Baked Cakes" products={CAKES} className="mt-[8.126px]" />
-        <BrandFilm />
+        <ProductSection actions={actions} title="Freshly Baked Cakes" products={CAKES} className="mt-[8.126px]" />
+        <BrandFilm actions={actions} />
         <Footer logo={logo} />
       </div>
-      <div className="absolute top-[46.087px] right-0 flex items-center gap-[2.004px] rounded-l-full bg-white py-[4.675px] pr-[13.358px] pl-[8.015px] text-ink drop-shadow-[0_0_13.358px_rgba(0,0,0,0.25)]">
+      <button type="button" onClick={() => actions?.go("cart")} className="absolute top-[46.087px] right-0 flex items-center gap-[2.004px] rounded-l-full bg-white py-[4.675px] pr-[13.358px] pl-[8.015px] text-ink drop-shadow-[0_0_13.358px_rgba(0,0,0,0.25)]">
         <Icon icon={ShoppingBasket03Icon} size={10.687} />
-        <span className="text-[6.679px] leading-normal font-medium whitespace-nowrap">Cart (2)</span>
-      </div>
+        <span className="text-[6.679px] leading-normal font-medium whitespace-nowrap">Cart ({actions ? actions.count : 2})</span>
+      </button>
     </div>
   )
 }

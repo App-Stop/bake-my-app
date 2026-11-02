@@ -1,0 +1,20 @@
+<svg width="520" height="340" viewBox="0 0 520 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_1_8547)">
+<circle cx="339" cy="-7" r="107" fill="#554CF1"/>
+</g>
+<g filter="url(#filter1_f_1_8547)">
+<circle cx="137" r="63" fill="#554CF1"/>
+</g>
+<defs>
+<filter id="filter0_f_1_8547" x="-8" y="-354" width="694" height="694" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="120" result="effect1_foregroundBlur_1_8547"/>
+</filter>
+<filter id="filter1_f_1_8547" x="-66" y="-203" width="406" height="406" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="70" result="effect1_foregroundBlur_1_8547"/>
+</filter>
+</defs>
+</svg>
