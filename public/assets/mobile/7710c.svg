@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1017.94" height="873.097" viewBox="0 0 1017.94 873.097" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="BG Glow" opacity="0.8">
+<g id="BG Glow_2" filter="url(#filter0_f_0_147)">
+<circle cx="581.387" cy="436.548" r="134.613" fill="#554CF1"/>
+</g>
+<g id="BG Glow_3" filter="url(#filter1_f_0_147)">
+<ellipse cx="313.5" cy="459.548" rx="93.5" ry="93" fill="#554CF1"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_147" x="144.839" y="-3.44553e-06" width="873.097" height="873.097" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="150.968" result="effect1_foregroundBlur_0_147"/>
+</filter>
+<filter id="filter1_f_0_147" x="0" y="146.548" width="627" height="626" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="110" result="effect1_foregroundBlur_0_147"/>
+</filter>
+</defs>
+</svg>

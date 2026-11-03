@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { DesktopScreen, DESKTOP_WIDTH } from '../../preview/DesktopScreen';
 import { CROISSANTS, CAKES, WEBSITE_PRODUCTS } from './storefrontCatalog';
+import { brandIllustrationProps } from './brandIllustrations';
 import chocolateSyrup from '../../assets/addons/chocolate-syrup.webp';
 import caramelSauce from '../../assets/addons/caramel-sauce.webp';
 import whippedCream from '../../assets/addons/whipped-cream.webp';
@@ -29,7 +30,7 @@ const existingAssets = {
   '6965d.png': qr,
   '1bd10.png': film
 };
-const asset = (name, alt = '', props = {}) => <img src={existingAssets[name] || A + name} alt={alt} {...props} />;
+const asset = (name, alt = '', props = {}) => <img src={existingAssets[name] || A + name} alt={alt} {...brandIllustrationProps(name, props)} />;
 function Button({
   children,
   secondary,

@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="scooter-02">
+<path id="Vector" d="M2 16C2 12.8182 4.23858 11 7 11C9.76142 11 12 12.8182 12 16H2Z" fill="white" stroke-width="1.5" stroke-linejoin="round" stroke="white"/>
+<path id="Vector_2" d="M5 8H9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
+<path id="Vector_3" d="M10 16C10 17.6569 8.65685 19 7 19C5.34315 19 4 17.6569 4 16" stroke-width="1.5" stroke="white"/>
+<path id="Vector_4" d="M22 17C22 18.1046 21.1046 19 20 19C18.8954 19 18 18.1046 18 17C18 15.8954 18.8954 15 20 15C21.1046 15 22 15.8954 22 17Z" stroke-width="1.5" stroke="white"/>
+<g id="Vector_5">
+<path d="M16.5366 5H15.9899V8H16H17.9849C18.8809 8 19.1964 7.14264 18.8809 6.5034C18.4246 5.57927 17.5214 5 16.5366 5Z" fill="white"/>
+<path d="M16 8C17.3333 8.63768 20 11.1739 20 15M16 8H17.9849C18.8809 8 19.1964 7.14264 18.8809 6.5034C18.4246 5.57927 17.5214 5 16.5366 5H15.9899M16 8H15.9899M15.9899 5V8M15.9899 5H12.9444M15.9899 8C15.9899 9.91304 15.7776 16 12 16H17.6665" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
+</g>
+</g>
+</svg>

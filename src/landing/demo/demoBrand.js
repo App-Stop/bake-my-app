@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { readableTextOn } from '../../lib/color'
+import { illustrationFilter } from '../../lib/illustrationFilter'
 import { STORAGE_KEY } from '../../onboarding/useOnboardingState'
 
 // Bake my App purple, for visitors who haven't been through the setup form.
@@ -63,6 +64,7 @@ export function brandTheme(color) {
   return {
     '--brand': color,
     '--brand-light': light,
+    '--brand-illustration-filter': illustrationFilter(color),
     '--on-brand': readableTextOn(color),
     '--color-primary': color,
     '--color-primary-light': light,
