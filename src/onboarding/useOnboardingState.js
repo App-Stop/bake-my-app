@@ -164,6 +164,24 @@ export function useOnboardingState({ persist = true, initial = INITIAL_STATE } =
   return [state, actions]
 }
 
+/**
+ * The contact details the visitor typed into the setup form (for pre-filling checkout), read straight
+ * from storage. Empty strings for anything not filled in; the built-in sample values never count.
+ */
+export function readSavedContact() {
+  let shop = {}
+  try {
+    shop = JSON.parse(localStorage.getItem(STORAGE_KEY))?.shop ?? {}
+  } catch {
+    // Unavailable or corrupt storage: nothing to pre-fill.
+  }
+  const pick = (field) => {
+    const value = typeof shop[field] === 'string' ? shop[field].trim() : ''
+    return value === INITIAL_STATE.shop[field] ? '' : value
+  }
+  return { email: pick('email'), businessName: pick('name'), phone: pick('phone') }
+}
+
 /** Parses "$1.25", "1.25" or "12%" into a number, or null when empty/invalid. */
 export function parseAmount(value) {
   const n = parseFloat(String(value).replace(/[^0-9.]/g, ''))

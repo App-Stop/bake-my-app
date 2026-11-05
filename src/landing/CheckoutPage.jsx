@@ -5,6 +5,7 @@ import { ApiError, api } from '../lib/api'
 import { CHECKOUT_PLANS, formatDaysFromNow, formatMoney, priceForInterval, usePlans } from '../lib/plans'
 import { readUtm } from '../lib/utm'
 import { ROUTES, navigate, useSearchParams } from '../router'
+import { readSavedContact } from '../onboarding/useOnboardingState'
 import { asset } from './styles'
 
 const checkoutAsset = (name) => asset(`checkout/${name}`)
@@ -114,6 +115,7 @@ function CheckoutForm({ planKey, interval, terms }) {
   const [errors, setErrors] = useState({})
   const [formError, setFormError] = useState(null) // { message, status }
   const inFlight = useRef(false) // blocks a second submit before the disabled state renders
+  const [saved] = useState(readSavedContact) // details already given in the setup form
 
   // Coming back from Stripe with the browser's Back button restores this page with the
   // button still disabled. Re-enable it.
@@ -189,16 +191,16 @@ function CheckoutForm({ planKey, interval, terms }) {
     >
       <Honeypot />
       <Field label="Email" {...fieldError('email')}>
-        <input name="email" type="email" required maxLength={254} autoComplete="email" placeholder="you@yourbakery.com" className={inputClass} {...errorProps('email')} />
+        <input name="email" type="email" required maxLength={254} autoComplete="email" placeholder="you@yourbakery.com" defaultValue={saved.email} className={inputClass} {...errorProps('email')} />
       </Field>
       <Field label="Your name" {...fieldError('name')}>
         <input name="name" required minLength={2} maxLength={120} autoComplete="name" placeholder="Full name" className={inputClass} {...errorProps('name')} />
       </Field>
       <Field label="Business name" {...fieldError('businessName')}>
-        <input name="business" maxLength={160} autoComplete="organization" placeholder="Your bakery or café name" className={inputClass} {...errorProps('businessName')} />
+        <input name="business" maxLength={160} autoComplete="organization" placeholder="Your bakery or café name" defaultValue={saved.businessName} className={inputClass} {...errorProps('businessName')} />
       </Field>
       <Field label="Phone or WhatsApp (optional)" {...fieldError('phone')}>
-        <input name="phone" type="tel" maxLength={25} autoComplete="tel" placeholder="+92 300 1234567" className={inputClass} {...errorProps('phone')} />
+        <input name="phone" type="tel" maxLength={25} autoComplete="tel" placeholder="+92 300 1234567" defaultValue={saved.phone} className={inputClass} {...errorProps('phone')} />
       </Field>
 
       <div className="flex flex-col gap-1.5">

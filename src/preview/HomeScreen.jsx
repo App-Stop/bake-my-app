@@ -64,7 +64,7 @@ function CategoryTabs({ firstLabel, firstCount, actions }) {
     { icon: BiscuitIcon, label: 'Donuts', count: 6 },
   ]
   return (
-    <div className="flex w-full items-center gap-[6px] overflow-x-auto">
+    <div className="flex w-full items-center gap-[6px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {tabs.map(({ icon, label, count }, i) => (
         <button type="button" onClick={() => actions?.browse(label)}
           key={label + i}
@@ -150,7 +150,7 @@ export function HomeScreen({ summary, logo, mark, address, actions }) {
   return (
     <PhoneFrame interactive={!!actions} label="Storefront home screen preview">
       <Header actions={actions} logo={logo} mark={mark} address={address || summary?.address} />
-      <div className="absolute top-[127.2px] bottom-[60px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px] overflow-y-auto">
+      <div className="absolute top-[127.2px] bottom-[60px] left-[9.6px] flex w-[222px] flex-col items-start gap-[12px] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <CategoryTabs actions={actions} firstLabel={summary.categoryLabel} firstCount={summary.products.length} />
         <div className="flex w-full flex-col gap-[6px]">
           {summary.products.map((product, i) => (

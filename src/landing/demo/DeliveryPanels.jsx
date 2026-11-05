@@ -293,9 +293,9 @@ export function DeliveredDialog({
     <header className="dv-delivered-header"><div className="dv-delivered-glow">{image('delivered-glow.svg')}</div>{image('delivered-check.png', '', {
           className: 'dv-delivered-check'
         })}<h2 id="dv-delivered-title">{pickup ? 'Order complete' : 'Delivered'}</h2><p>Enjoy your freshly baked meal</p></header>
-    <div className="dv-delivered-body">{pickup ? <section className="pu-points-claim"><div><h3>You got <span>{image('pickup-points.svg')}</span>+50 Cozy Points!</h3><p>Scan the QR code to download the app and claim the cozy points!</p></div>{image('delivered-qr.png', 'Scan to download the app and claim Cozy Points', {
+    <div className="dv-delivered-body">{pickup ? <section className="pu-points-claim"><div><h3>You got <span>{image('pickup-points.svg')}</span>+50 Bake Points!</h3><p>Scan the QR code to download the app and claim the Bake Points!</p></div>{image('delivered-qr.png', 'Scan to download the app and claim Bake Points', {
             className: 'dv-delivered-qr'
-          })}</section> : <><div className="dv-points"><span>{image('points-purple.svg')}</span><b>+50</b>Cozy Points</div>
+          })}</section> : <><div className="dv-points"><span>{image('points-purple.svg')}</span><b>+50</b>Bake Points</div>
       <section className="dv-app-points ws-shadow"><div><h3>Get <span className="dv-extra-points"><i>{image('points-white.svg')}</i>+30</span> more on our app</h3><p>Scan and download now!</p></div>{image('delivered-qr.png', 'Scan to download the app', {
               className: 'dv-delivered-qr'
             })}</section></>}

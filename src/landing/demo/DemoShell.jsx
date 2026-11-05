@@ -6,10 +6,10 @@ import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBac
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
 
 const DEMO_TABS = [
-  { label: 'Customer Mobile App', to: ROUTES.demoMobile },
   { label: 'Customer Website', to: ROUTES.demoWebsite },
   { label: 'Admin Portal', to: ROUTES.demoAdmin },
   { label: 'Staff Portal', to: ROUTES.demoStaff },
+  { label: 'Customer Mobile App', to: ROUTES.demoMobile },
 ]
 
 // Where the bar sits in the 1920×1174 demo frames (76 tall, 40 from the bottom).

@@ -4,7 +4,7 @@ import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
 import { api } from '../lib/api'
 import { readUtm } from '../lib/utm'
-import { ROUTES, navigate } from '../router'
+import { ROUTES, appRouteFor, navigate } from '../router'
 import { asset } from './styles'
 import { ModalsContext } from './useModals'
 
@@ -403,9 +403,9 @@ const DEMOS = [
 
 /** "preview a demo" picker (Figma "Demo"). */
 function DemoModal({ onClose, closing, onClosed }) {
-  const open = () => {
+  const open = (demoKey) => {
     onClose()
-    navigate(ROUTES.app)
+    navigate(appRouteFor(demoKey))
   }
 
   return (
@@ -428,7 +428,7 @@ function DemoModal({ onClose, closing, onClosed }) {
           <li key={demo.key}>
             <button
               type="button"
-              onClick={open}
+              onClick={() => open(demo.key)}
               className="group flex w-full flex-col gap-1.5 rounded-[calc(20*var(--px))] bg-white px-1 pt-1 pb-1.5 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <div className="relative aspect-[392/256] w-full overflow-clip rounded-[calc(16*var(--px))] bg-primary-light">

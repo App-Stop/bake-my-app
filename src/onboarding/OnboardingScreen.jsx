@@ -10,7 +10,7 @@ import { api } from '../lib/api'
 import { extractPalette, normalizeHex } from '../lib/color'
 import { readUtm } from '../lib/utm'
 import { useModals } from '../landing/useModals'
-import { navigate, ROUTES } from '../router'
+import { DEMO_ROUTES, navigate, ROUTES } from '../router'
 
 const PRESETS = [
   { name: 'Pink', hex: '#ff1fad' },
@@ -177,7 +177,9 @@ export function OnboardingScreen({ state, actions }) {
       launched.current = true
       sendShopLead(state, trap)
     }
-    navigate(ROUTES.demoAdmin)
+    // Open the demo picked in the "preview a demo" modal; otherwise the first demo tab (Customer Website).
+    const picked = new URLSearchParams(window.location.search).get('demo')
+    navigate(DEMO_ROUTES[picked] ?? ROUTES.demoWebsite)
   }
 
   return (
@@ -252,13 +254,6 @@ export function OnboardingScreen({ state, actions }) {
 
         <div className="flex flex-col items-end gap-2.5">
           <div className="flex items-center justify-end gap-2.5">
-            <button
-              type="button"
-              onClick={() => navigate(ROUTES.demoAdmin)}
-              className="rounded-full px-5 py-4 text-base font-semibold text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
-            >
-              Skip for now
-            </button>
             <PrimaryButton className="py-4" onClick={launch} disabled={!shop.name.trim()}>
               Launch my Store
             </PrimaryButton>

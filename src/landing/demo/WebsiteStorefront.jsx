@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DesktopScreen, DESKTOP_WIDTH } from '../../preview/DesktopScreen';
 import { CROISSANTS, CAKES, WEBSITE_PRODUCTS } from './storefrontCatalog';
 import { brandIllustrationProps } from './brandIllustrations';
+import { DemoLogo } from './DemoLogo';
 import chocolateSyrup from '../../assets/addons/chocolate-syrup.webp';
 import caramelSauce from '../../assets/addons/caramel-sauce.webp';
 import whippedCream from '../../assets/addons/whipped-cream.webp';
@@ -62,7 +63,7 @@ function Header({
   address
 }) {
   return <header className="ws-header">
-    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : asset('8b418.svg', 'Cozy')}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>Deliver to</small><b>{address === '742 Evergreen Terrace, Texas' ? 'Select your address' : address}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
+    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>Deliver to</small><b>{address === '742 Evergreen Terrace, Texas' ? 'Select your address' : address}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
     <form className="ws-search" onSubmit={event => {
       event.preventDefault();
       browse();
@@ -82,10 +83,10 @@ function Footer({
   go,
   notify
 }) {
-  return <footer className="ws-footer"><div className="ws-footer-top"><div className="ws-footer-brand">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : asset('8d175.svg', 'Cozy')}<p>Freshly baked, delivered to your door. From classic butter to seasonal specials — every bite is made with care.</p><div className="ws-social">{['80d03.svg', 'b0d7a.svg', '48f8a.svg'].map((src, i) => <span key={src} aria-label={['Instagram', 'Facebook', 'Twitter'][i]}>{asset(src)}</span>)}</div></div><div className="ws-footer-links">{Object.entries(columns).map(([title, links]) => <div key={title}><b>{title}</b>{links.map(link => <button key={link} onClick={() => title === 'Menu' ? browse(link) : go(title === 'Locations' ? 'address' : 'support')}>{link}</button>)}</div>)}</div><div className="ws-newsletter"><b>Newsletter</b><p>Get new drops, seasonal specials, and early access to limited batches.</p><form onSubmit={event => {
+  return <footer className="ws-footer"><div className="ws-footer-top"><div className="ws-footer-brand">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-white" />}<p>Freshly baked, delivered to your door. From classic butter to seasonal specials — every bite is made with care.</p><div className="ws-social">{['80d03.svg', 'b0d7a.svg', '48f8a.svg'].map((src, i) => <span key={src} aria-label={['Instagram', 'Facebook', 'Twitter'][i]}>{asset(src)}</span>)}</div></div><div className="ws-footer-links">{Object.entries(columns).map(([title, links]) => <div key={title}><b>{title}</b>{links.map(link => <button key={link} onClick={() => title === 'Menu' ? browse(link) : go(title === 'Locations' ? 'address' : 'support')}>{link}</button>)}</div>)}</div><div className="ws-newsletter"><b>Newsletter</b><p>Get new drops, seasonal specials, and early access to limited batches.</p><form onSubmit={event => {
           event.preventDefault();
           notify('Thanks for subscribing to our demo newsletter.');
-        }}><label>{asset('a4efb.svg')}<input type="email" required placeholder="Email address" aria-label="Newsletter email address" /></label><Button className="ws-subscribe" onClick={event => event.currentTarget.form.requestSubmit()}>Subscribe</Button></form><small>By subscribing, you agree to our Terms and Privacy Policy.</small></div></div><div className="ws-footer-bottom"><span>© 2026 Cozy. All rights reserved.</span><div>{['Privacy', 'Terms', 'Cookies'].map(label => <button key={label} onClick={() => go('support')}>{label}</button>)}</div></div></footer>;
+        }}><label>{asset('a4efb.svg')}<input type="email" required placeholder="Email address" aria-label="Newsletter email address" /></label><Button className="ws-subscribe" onClick={event => event.currentTarget.form.requestSubmit()}>Subscribe</Button></form><small>By subscribing, you agree to our Terms and Privacy Policy.</small></div></div><div className="ws-footer-bottom"><span>© 2026 Bake My App. All rights reserved.</span><div>{['Privacy', 'Terms', 'Cookies'].map(label => <button key={label} onClick={() => go('support')}>{label}</button>)}</div></div></footer>;
 }
 function AppPromo({
   wide = false
@@ -191,7 +192,7 @@ export function WebsiteStorefront({
   const [category, setCategory] = useState('Croissants');
   const [address, setAddress] = useState('742 Evergreen Terrace, Texas');
   const [fulfillment, setFulfillment] = useState('delivery');
-  const [pickupAddress, setPickupAddress] = useState('742 Cozy Cafe, Texas');
+  const [pickupAddress, setPickupAddress] = useState('742 Bake Cafe, Texas');
   const [pickupInstructions, setPickupInstructions] = useState('Please give paper bag');
   const [customer, setCustomer] = useState({
     name: 'John Doe',
@@ -242,10 +243,10 @@ export function WebsiteStorefront({
     } : item).filter(item => item.qty > 0));
   }
   function applyPromo() {
-    if (promo.trim().toUpperCase() === 'COZY20') {
+    if (promo.trim().toUpperCase() === 'BAKE20') {
       setPromoApplied(true);
       setPromoError('');
-    } else setPromoError('This code is not valid. Try COZY20.');
+    } else setPromoError('This code is not valid. Try BAKE20.');
   }
   function advanceDelivery() {
     if (!order) return;

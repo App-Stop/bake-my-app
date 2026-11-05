@@ -303,7 +303,7 @@ export function EditBrandColorModal({
                   <div className="size-2.5 rounded-full bg-[#ffbd2e]" />
                   <div className="size-2.5 rounded-full bg-[#27c93f]" />
                   <div className="mx-auto rounded bg-white/70 px-3 py-0.5 text-[10px] text-muted font-sans truncate max-w-[200px]">
-                    https://{shop.name ? shop.name.toLowerCase().replace(/[^a-z0-9]/g, '') : 'rossbakers'}.cozy.app
+                    https://{shop.name ? shop.name.toLowerCase().replace(/[^a-z0-9]/g, '') : 'rossbakers'}.bake.app
                   </div>
                 </div>
 

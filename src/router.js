@@ -14,6 +14,17 @@ export const ROUTES = {
   demoStaff: '/demo/staff',
 }
 
+/** Demo keys used in `/app?demo=<key>`, so onboarding opens the demo picked in the "preview a demo" modal. */
+export const DEMO_ROUTES = {
+  website: ROUTES.demoWebsite,
+  admin: ROUTES.demoAdmin,
+  employee: ROUTES.demoStaff,
+  mobile: ROUTES.demoMobile,
+}
+
+/** The onboarding URL that continues to the given demo once the store is launched. */
+export const appRouteFor = (demoKey) => `${ROUTES.app}?demo=${encodeURIComponent(demoKey)}`
+
 /** `replace` swaps the current history entry, e.g. when redirecting away from an invalid URL. */
 export function navigate(to, { replace = false } = {}) {
   if (to === window.location.pathname + window.location.search + window.location.hash) return

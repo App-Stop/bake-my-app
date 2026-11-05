@@ -1,6 +1,6 @@
 import { DashboardScreen } from '../../dashboard/DashboardScreen'
 import { INITIAL_STATE, useOnboardingState } from '../../onboarding/useOnboardingState'
-import { ROUTES, navigate } from '../../router'
+import { appRouteFor, navigate } from '../../router'
 import { setDemoBrandColor, useDemoBrand } from './demoBrand'
 import { DemoLogo } from './DemoLogo'
 import { DemoPage, DemoWindow } from './DemoShell'
@@ -35,7 +35,7 @@ export function AdminDemo() {
           <DashboardScreen
             state={brandState}
             actions={brandActions}
-            onEdit={() => navigate(ROUTES.app)}
+            onEdit={() => navigate(appRouteFor('admin'))}
             onStartOver={actions.reset}
             className="h-full"
             sidebarLogo={<DemoLogo className="h-[59px] w-[81px]" />}
