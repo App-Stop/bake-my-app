@@ -40,13 +40,48 @@ export function ModalsProvider({ children }) {
   )
 }
 
+const FIT_MARGIN = 24 // px kept free above and below a `fitHeight` panel
+
+/**
+ * Zoom (≤ 1) that fits the panel plus its `overhang` (artwork sticking out above it) in the window
+ * height. The panel is measured unzoomed on every resize, since its width — and so its text
+ * wrapping — can change too.
+ */
+function useFitHeight(panelRef, overhang) {
+  const [zoom, setZoom] = useState(1)
+  const enabled = overhang !== undefined
+
+  useLayoutEffect(() => {
+    if (!enabled) return undefined
+    const update = () => {
+      const panel = panelRef.current
+      if (!panel) return
+      const previous = panel.style.zoom
+      panel.style.zoom = '1'
+      const natural = panel.offsetHeight + overhang
+      panel.style.zoom = previous
+      const available = window.innerHeight - 2 * FIT_MARGIN
+      setZoom(Math.max(0.5, Math.min(1, available / natural)))
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [panelRef, overhang, enabled])
+
+  return enabled ? zoom : null
+}
+
 /**
  * Centered dialog over a dimmed page. Sizes use `--px` (inside `.landing-page`), so the Figma
  * 1920 sizes scale down with the viewport on desktop and stay 1× below it.
+ * `fitHeight` (with `overhang`, the px of artwork above the panel) shrinks the whole panel so it
+ * fits short windows instead of scrolling.
  */
-function Modal({ label, onClose, onClosed, closing, fit = false, className = '', children }) {
+function Modal({ label, onClose, onClosed, closing, fit = false, overhang, className = '', children }) {
   const overlayRef = useRef(null)
   const panelRef = useRef(null)
+  const zoom = useFitHeight(panelRef, overhang)
+  const fitHeight = zoom !== null
 
   useEffect(() => {
     const previous = document.activeElement
@@ -93,7 +128,10 @@ function Modal({ label, onClose, onClosed, closing, fit = false, className = '',
     >
       {/* `fit` panels have no mascot overhang, so on desktop they sit centred with a slim margin and never scroll. */}
       <div
-        className={`flex min-h-full items-center justify-center px-4 pt-16 pb-6 sm:pt-32 ${fit ? 'lg:py-6' : 'lg:py-[calc(140*var(--px))]'}`}
+        className={`flex min-h-full items-center justify-center px-4 ${
+          fitHeight ? '' : `pt-16 pb-6 sm:pt-32 ${fit ? 'lg:py-6' : 'lg:py-[calc(140*var(--px))]'}`
+        }`}
+        style={fitHeight ? { paddingTop: FIT_MARGIN + overhang * zoom, paddingBottom: FIT_MARGIN } : undefined}
         onMouseDown={(e) => e.target === e.currentTarget && onClose()}
       >
         <div
@@ -103,6 +141,7 @@ function Modal({ label, onClose, onClosed, closing, fit = false, className = '',
           aria-label={label}
           tabIndex={-1}
           className={`relative rounded-3xl sm:rounded-[calc(40*var(--px))] bg-white shadow-[0_calc(20*var(--px))_calc(60*var(--px))_rgba(0,0,0,0.3)] outline-none ${className}`}
+          style={fitHeight ? { zoom } : undefined}
         >
           {children}
         </div>
@@ -293,6 +332,7 @@ function ExitOfferModal({ onClose, closing, onClosed }) {
       onClose={onClose}
       closing={closing}
       onClosed={onClosed}
+      overhang={106} // the mascot above the panel
       className="flex w-[min(500px,calc(100vw-32px))] flex-col items-center gap-10 px-6 pt-[120px] pb-10 sm:px-10"
     >
       <CloseButton onClose={onClose} className="top-[30px] right-[30px]" />
