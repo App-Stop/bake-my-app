@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useDemoBrand } from './demoBrand'
 import { presetColor } from '../../lib/brandPalette'
 
@@ -16,9 +17,43 @@ const files = {
   '90e89.png': boy + '2-3.png', '294af.png': boy + '2-2.png',
 }
 
+// Figma exported the mobile SVGs (header glows etc.) with the Figma purple baked in;
+// they're fetched once and re-filled with the demo's brand color.
+const FIGMA_PURPLE = /#554CF1/gi
+const svgText = new Map() // src -> SVG markup ('' when it has nothing to recolor or failed to load)
+const pending = new Map() // src -> in-flight fetch
+
+function loadSvg(src) {
+  if (!pending.has(src)) {
+    pending.set(src, fetch(src)
+      .then((r) => (r.ok ? r.text() : ''))
+      .catch(() => '')
+      .then((text) => { svgText.set(src, /#554CF1/i.test(text) ? text : '') }))
+  }
+  return pending.get(src)
+}
+
+function useBrandSvg(src, color) {
+  const recolorable = typeof src === 'string' && src.startsWith('/assets/mobile/') && src.endsWith('.svg')
+  const [, loaded] = useState(0)
+  useEffect(() => {
+    if (!recolorable || svgText.has(src)) return
+    let live = true
+    loadSvg(src).then(() => { if (live) loaded((n) => n + 1) })
+    return () => { live = false }
+  }, [src, recolorable])
+  if (!recolorable) return src
+  // Render nothing until loaded, so the purple original never flashes in.
+  if (!svgText.has(src)) return undefined
+  const text = svgText.get(src)
+  if (!text) return src
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(text.replace(FIGMA_PURPLE, color))}`
+}
+
 export function BrandImage({ src, alt = '', ...props }) {
   const { color } = useDemoBrand()
   const file = files[src?.split('/').at(-1)]
-  const themed = file ? `/assets/3d/${presetColor(color).slice(1)}/${encodeURIComponent(file)}` : src
+  const svg = useBrandSvg(src, color)
+  const themed = file ? `/assets/3d/${presetColor(color).slice(1)}/${encodeURIComponent(file)}` : svg
   return <img {...props} src={themed} alt={alt} />
 }
