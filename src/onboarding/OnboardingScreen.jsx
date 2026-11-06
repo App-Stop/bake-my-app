@@ -1,29 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Pen01Icon } from '@hugeicons/core-free-icons'
+import { useRef, useState } from 'react'
 import logo from '../assets/logo.svg'
 import { PrimaryButton } from '../components/buttons'
 import { SectionLabel, TextField, UploadBox } from '../components/form'
 import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
 import { api } from '../lib/api'
-import { extractPalette, normalizeHex } from '../lib/color'
+import { BRAND_COLORS as PRESETS } from '../lib/brandPalette'
 import { readUtm } from '../lib/utm'
 import { useModals } from '../landing/useModals'
 import { DEMO_ROUTES, navigate, ROUTES } from '../router'
-
-const PRESETS = [
-  { name: 'Pink', hex: '#ff1fad' },
-  { name: 'Violet', hex: '#903bff' },
-  { name: 'Green', hex: '#00c064' },
-  { name: 'Cyan', hex: '#00c9c6' },
-  { name: 'Red', hex: '#f30000' },
-  { name: 'Orange', hex: '#f96c00' },
-  { name: 'Blue', hex: '#0095ff' },
-  { name: 'Yellow', hex: '#edba00' },
-]
-
-const FALLBACK_LOGO_COLORS = ['#efbb00', '#a7921b', '#8fa200']
 
 function ColorSwatch({ hex, name, selected, onSelect }) {
   return (
@@ -43,24 +28,8 @@ function ColorSwatch({ hex, name, selected, onSelect }) {
 }
 
 function BrandColorPicker({ state, actions }) {
-  const { brandColor, shop } = state
-  const [palette, setPalette] = useState({ logo: null, colors: FALLBACK_LOGO_COLORS })
-  const [draft, setDraft] = useState(null)
-  const colorInputRef = useRef(null)
-  const suggested = shop.logo && palette.logo === shop.logo ? palette.colors : FALLBACK_LOGO_COLORS
-  const hexDraft = draft ?? brandColor.slice(1).toUpperCase()
-  const isSelected = (hex) => hex.toLowerCase() === brandColor.toLowerCase()
-
-  useEffect(() => {
-    if (!shop.logo) return
-    let cancelled = false
-    extractPalette(shop.logo).then((colors) => {
-      if (!cancelled) setPalette({ logo: shop.logo, colors: colors.length ? colors : FALLBACK_LOGO_COLORS })
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [shop.logo])
+  const { brandColor } = state
+  const isSelected = (hex) => hex === brandColor
 
   return (
     <div className="min-w-0 flex-1">
@@ -78,68 +47,7 @@ function BrandColorPicker({ state, actions }) {
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 min-[1200px]:grid-cols-2 min-[1200px]:gap-[calc(30*var(--px))]">
-        <div className="min-w-0">
-          <SectionLabel>Based from your logo</SectionLabel>
-          <div role="radiogroup" aria-label="Colors from your logo" className="mt-2.5 flex flex-wrap gap-2.5">
-            {suggested.map((hex) => (
-              <ColorSwatch
-                key={hex}
-                hex={hex}
-                selected={isSelected(hex)}
-                onSelect={actions.setBrandColor}
-              />
-            ))}
-          </div>
-        </div>
 
-        <div className="min-w-0">
-          <SectionLabel>Custom</SectionLabel>
-          <div className="mt-2.5 flex items-center gap-2.5">
-            <button
-              type="button"
-              aria-label="Open color picker"
-              onClick={() => colorInputRef.current?.click()}
-              className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style={{
-                background:
-                  'conic-gradient(#ff00a6, #6600ff, #006fff, #00e78b, #99db00, #ff7b00, #ff0000, #ff00a6)',
-              }}
-            >
-              <HugeiconsIcon icon={Pen01Icon} size={20} color="white" className="size-5" />
-              <input
-                ref={colorInputRef}
-                type="color"
-                tabIndex={-1}
-                value={brandColor}
-                onChange={(event) => actions.setBrandColor(event.target.value)}
-                className="pointer-events-none absolute inset-0 opacity-0"
-              />
-            </button>
-            <label className="flex h-10 min-w-0 items-center rounded-[calc(10*var(--px))] border border-line bg-white px-3 focus-within:border-primary">
-              <span className="sr-only">Custom brand color</span>
-              <input
-                value={`#${hexDraft.replace(/^#/, '')}`}
-                maxLength={7}
-                spellCheck={false}
-                aria-invalid={!normalizeHex(hexDraft)}
-                onChange={(event) => {
-                  const next = event.target.value.replace('#', '').toUpperCase()
-                  setDraft(next)
-                  const normalized = normalizeHex(next)
-                  if (normalized && next.length === 6) actions.setBrandColor(normalized)
-                }}
-                onBlur={() => {
-                  const normalized = normalizeHex(hexDraft)
-                  if (normalized) actions.setBrandColor(normalized)
-                  setDraft(null)
-                }}
-                className="w-full min-w-[calc(72*var(--px))] bg-transparent text-base text-ink uppercase outline-none"
-              />
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

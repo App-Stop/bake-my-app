@@ -11,8 +11,10 @@ export function Sheet({ title, onClose, children, className = '' }) {
   useEffect(() => {
     const before = document.activeElement
     const el = ref.current
-    el?.focus()
-    return () => { if (before instanceof HTMLElement && before.isConnected) before.focus() }
+    // The phone uses scaled content inside a clipped frame. Focusing a sheet
+    // must not scroll that frame to the content's unscaled layout position.
+    el?.focus({ preventScroll: true })
+    return () => { if (before instanceof HTMLElement && before.isConnected) before.focus({ preventScroll: true }) }
   }, [])
   return <div className="ma-overlay" onClick={onClose}>
     <section ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className={`ma-sheet ${className}`} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => {

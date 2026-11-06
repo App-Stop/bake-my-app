@@ -1,6 +1,6 @@
 /* Figma customer website, 1920px design canvas fitted to the existing demo window. */
 .ws-viewport { position: relative; overflow: hidden; background: white; color: #111; font-family: Inter, sans-serif; }
-.ws-viewport .brand-illustration { filter: var(--brand-illustration-filter, none); }
+.ws-viewport .brand-illustration { }
 .ws-scroll { height: 100%; overflow: auto; scrollbar-width: none; }
 .ws-scroll::-webkit-scrollbar { display: none; }
 .ws-site { width: 1920px; font-size: 16px; line-height: normal; --ws-dark: color-mix(in srgb, var(--brand, #554cf1) 28%, #0f0f12); }

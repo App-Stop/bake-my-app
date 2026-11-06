@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
+  ArrowDown01Icon,
+  Bread04Icon,
+  CakeIcon,
+  Clock05Icon,
+  Coffee02Icon,
+  CroissantIcon,
+  DonutIcon,
   Logout03Icon,
   MenuRestaurantIcon,
   PackagingIcon,
@@ -12,6 +19,12 @@ import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { DemoLogo } from './DemoLogo'
 import { WEBSITE_PRODUCTS } from './storefrontCatalog'
+import { ToggleSwitch } from '../../dashboard/branches/ToggleSwitch'
+import flakyButterCroissant from '../../assets/menu/flaky-butter-croissant.webp'
+import almondFrangipaneCroissant from '../../assets/menu/almond-frangipane-croissant.webp'
+import doubleChocolateCroissant from '../../assets/menu/double-chocolate-croissant.webp'
+import matchaCreamCruffin from '../../assets/menu/matcha-cream-cruffin.webp'
+import savoryHamCheeseCroissant from '../../assets/menu/savory-ham-cheese-croissant.webp'
 
 /*
  * Staff portal order console (Figma "branch-main", 1308 × 819.2 at 1×). Sample orders move through
@@ -128,10 +141,10 @@ function TopBar({ screen, onNavigate }) {
   )
 }
 
-function Tabs({ orders, tab, onChange }) {
+function Tabs({ tabs, tab, onChange }) {
   return (
     <div role="tablist" className="flex h-9 w-[528px] items-start gap-[6.4px] border-b-[0.8px] border-line-strong">
-      {TABS.map(({ id, label, match }) => {
+      {tabs.map(({ id, label, count }) => {
         const active = tab === id
         return (
           <button
@@ -150,7 +163,7 @@ function Tabs({ orders, tab, onChange }) {
                 active ? 'bg-primary text-white' : 'bg-line text-subtle'
               }`}
             >
-              {orders.filter(match).length}
+              {count}
             </span>
           </button>
         )
@@ -305,7 +318,7 @@ function OrderDetails({ order, onAdvance }) {
 export function StaffScreen() {
   const [orders, setOrders] = useState(INITIAL_ORDERS)
   const [screen, setScreen] = useState('orders')
-  const [unavailable, setUnavailable] = useState([])
+  const [unavailable, setUnavailable] = useState(['Matcha Cream Cruffin'])
   const [statusFilter, setStatusFilter] = useState('all')
   const [tab, setTab] = useState('active')
   const [query, setQuery] = useState('')
@@ -336,7 +349,7 @@ export function StaffScreen() {
       {screen === "menu" ? <StaffMenu unavailable={unavailable} setUnavailable={setUnavailable} /> : <>
         <div className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4">
           <div className="flex w-full items-center justify-between">
-            <Tabs orders={orders} tab={tab} onChange={setTab} />
+            <Tabs tabs={TABS.map((t) => ({ ...t, count: orders.filter(t.match).length }))} tab={tab} onChange={setTab} />
             <div className="flex items-center justify-end gap-2">
               <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
                 <Icon icon={Search01Icon} />
@@ -375,15 +388,131 @@ export function StaffScreen() {
   )
 }
 
+// Staff menu (Figma "branch-menu" 68:4643), drawn at the same 0.8 scale as the order console.
+const STAFF_CATEGORIES = [
+  ['Croissants', CroissantIcon],
+  ['Donuts', DonutIcon],
+  ['Coffee', Coffee02Icon],
+  ['Bread', Bread04Icon],
+  ['Cakes', CakeIcon],
+]
+const STAFF_CROISSANTS = [
+  ['Flaky Butter Croissant', 2.5, 'Golden, buttery layers laminated by hand every morning.', flakyButterCroissant],
+  ['Almond Frangipane Croissant', 3.5, 'Twice-baked croissant filled with rich almond cream.', almondFrangipaneCroissant],
+  ['Double Chocolate Croissant', 3, 'Croissant filled with 2x chocolate cream.', doubleChocolateCroissant],
+  ['Matcha Cream Cruffin', 4.5, 'Croissant-muffin hybrid piped with whipped matcha cream.', matchaCreamCruffin],
+  ['Savory Ham & Cheese Croissant', 4, 'Smoked ham and melted gruyère baked into flaky pastry.', savoryHamCheeseCroissant],
+].map(([name, price, desc, image]) => ({ name, price, desc, image, prep: '10 min', category: 'Croissants' }))
+const CATEGORY_DETAILS = {
+  Donuts: ['5 min', 'Fried fresh and finished with a vanilla glaze.'],
+  Coffee: ['3 min', 'Espresso drinks made with house-roasted beans.'],
+  Bread: ['15 min', 'Slow-fermented loaf with a crisp, crackly crust.'],
+  Cakes: ['20 min', 'Whole cake, decorated to order.'],
+}
+const STAFF_ITEMS = [
+  ...STAFF_CROISSANTS,
+  ...WEBSITE_PRODUCTS.filter((item) => CATEGORY_DETAILS[item.category]).map((item) => ({
+    ...item, prep: CATEGORY_DETAILS[item.category][0], desc: CATEGORY_DETAILS[item.category][1],
+  })),
+]
+const STOCK_TABS = [
+  { id: 'all', label: 'All', match: () => true },
+  { id: 'in', label: 'In Stock', match: (available) => available },
+  { id: 'out', label: 'Out of Stock', match: (available) => !available },
+]
+const SORTS = {
+  default: ['Filter', () => 0],
+  'price-asc': ['Price: low to high', (a, b) => a.price - b.price],
+  'price-desc': ['Price: high to low', (a, b) => b.price - a.price],
+  name: ['Name: A–Z', (a, b) => a.name.localeCompare(b.name)],
+}
+
+function CountBadge({ active, children }) {
+  return <span className={`flex size-4 shrink-0 items-center justify-center rounded-full text-[8px] font-semibold ${active ? 'bg-primary text-white' : 'bg-line text-subtle'}`}>{children}</span>
+}
+
 function StaffMenu({ unavailable, setUnavailable }) {
   const [query, setQuery] = useState('')
-  const [category, setCategory] = useState('All')
-  const categories = ['All', ...new Set(WEBSITE_PRODUCTS.map((item) => item.category))]
-  const visible = WEBSITE_PRODUCTS.filter((item) => (category === 'All' || item.category === category) && item.name.toLowerCase().includes(query.toLowerCase()))
-  return <section className="min-h-0 flex-1 overflow-y-auto p-6" aria-label="Staff menu">
-    <div className="mb-5 flex items-center justify-between"><div><h2 className="text-xl font-semibold">Menu availability</h2><p className="text-sm text-muted">Manage which items are available at your bakery.</p></div><input aria-label="Search menu items" placeholder="Search menu items…" value={query} onChange={(event) => setQuery(event.target.value)} className="rounded-full border border-line bg-white px-4 py-2 text-sm" /></div>
-    <div className="mb-5 flex gap-2">{categories.map((name) => <button type="button" key={name} aria-pressed={name === category} onClick={() => setCategory(name)} className={`rounded-full px-4 py-2 text-sm ${category === name ? 'bg-primary text-white' : 'bg-white text-body'}`}>{name}</button>)}</div>
-    <div className="grid grid-cols-4 gap-4">{visible.map((item) => { const available = !unavailable.includes(item.name); return <article key={item.name} className="rounded-2xl bg-white p-4"><img src={item.image} alt={item.name} className="mx-auto h-24 w-full object-contain" /><h3 className="mt-3 text-sm font-semibold">{item.name}</h3><p className="my-2 text-xs text-muted">{item.category} · {money(item.price)}</p><button type="button" role="switch" aria-checked={available} aria-label={`${item.name} availability`} onClick={() => setUnavailable((items) => available ? [...items, item.name] : items.filter((name) => name !== item.name))} className={`w-full rounded-full px-3 py-2 text-xs font-semibold ${available ? 'bg-primary-light text-primary' : 'bg-surface text-muted'}`}>{available ? 'Available' : 'Sold out'}</button></article> })}</div>
-    {!visible.length && <p className="p-8 text-center text-muted">No menu items match your search.</p>}
-  </section>
+  const [category, setCategory] = useState('Croissants')
+  const [stock, setStock] = useState('all')
+  const [sort, setSort] = useState('default')
+  const isAvailable = (item) => !unavailable.includes(item.name)
+  const stockTab = STOCK_TABS.find((t) => t.id === stock)
+  const matches = STAFF_ITEMS.filter((item) => stockTab.match(isAvailable(item)) && item.name.toLowerCase().includes(query.trim().toLowerCase()))
+  const visible = matches.filter((item) => item.category === category).sort(SORTS[sort][1])
+  const [, CategoryGlyph] = STAFF_CATEGORIES.find(([name]) => name === category)
+  const toggle = (item) => setUnavailable((names) => isAvailable(item) ? [...names, item.name] : names.filter((name) => name !== item.name))
+
+  return (
+    <section className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4" aria-label="Staff menu">
+      <div className="flex w-full items-center justify-between">
+        <Tabs tabs={STOCK_TABS.map((t) => ({ ...t, count: STAFF_ITEMS.filter((item) => t.match(isAvailable(item))).length }))} tab={stock} onChange={setStock} />
+        <div className="flex items-center justify-end gap-2">
+          <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
+            <Icon icon={Search01Icon} />
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search items.." aria-label="Search menu items" className="min-w-px flex-1 bg-transparent text-[10.4px] leading-normal text-ink outline-none placeholder:text-muted" />
+          </label>
+          <label className="relative flex items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white py-[9.6px] pr-[9.6px] pl-[12.8px] text-[10.4px] leading-normal text-ink">
+            <select aria-label="Sort menu items" value={sort} onChange={(e) => setSort(e.target.value)} className="cursor-pointer appearance-none bg-transparent pr-[22px] outline-none">
+              {Object.entries(SORTS).map(([id, [label]]) => <option key={id} value={id}>{label}</option>)}
+            </select>
+            <Icon icon={ArrowDown01Icon} className="pointer-events-none absolute right-[9.6px]" />
+          </label>
+        </div>
+      </div>
+      <div className="flex min-h-px w-full flex-1 items-start gap-[19.2px]">
+        <nav aria-label="Menu categories" className="flex w-[224px] shrink-0 flex-col gap-4 rounded-2xl bg-white px-2 py-4">
+          <h2 className="px-2 text-[12.8px] leading-normal font-semibold text-ink">Categories</h2>
+          <div className="flex flex-col gap-[3.2px]">
+            {STAFF_CATEGORIES.map(([name, icon]) => {
+              const active = name === category
+              return (
+                <button key={name} type="button" aria-pressed={active} onClick={() => setCategory(name)} className={`flex w-full items-center gap-[9.6px] rounded-[9.6px] py-[9.6px] pr-[9.6px] pl-[6.4px] text-left text-[11.2px] leading-normal ${active ? 'bg-primary-light font-semibold text-primary' : 'text-body hover:bg-surface'}`}>
+                  <Icon icon={icon} size={19.2} className={active ? '' : 'text-muted'} />
+                  <span className="min-w-px flex-1">{name}</span>
+                  <CountBadge active={active}>{matches.filter((item) => item.category === name).length}</CountBadge>
+                </button>
+              )
+            })}
+          </div>
+        </nav>
+        <div className="flex max-h-full min-w-px flex-1 flex-col gap-4 overflow-y-auto rounded-2xl bg-white px-[11.2px] py-[19.2px]">
+          <div className="flex items-center gap-[11.2px] px-[9.6px]">
+            <span className="flex size-[36.8px] shrink-0 items-center justify-center rounded-full border-[0.74px] border-line bg-surface text-primary"><Icon icon={CategoryGlyph} size={23.55} /></span>
+            <div className="flex flex-col gap-[1.6px] leading-normal">
+              <h2 className="text-[14.4px] font-semibold text-ink">{category}</h2>
+              <p className="text-[9.6px] text-muted">{visible.length} {visible.length === 1 ? 'item' : 'items'} in this category</p>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            {visible.map((item) => {
+              const available = isAvailable(item)
+              return (
+                <div key={item.name} className="flex items-center gap-[12.8px] rounded-[9.6px] p-[12.8px] transition-colors hover:bg-primary-light focus-within:bg-primary-light">
+                  <span className="size-[51.2px] shrink-0 overflow-hidden rounded-[6.4px] border-[0.8px] border-line bg-white">
+                    <img src={item.image} alt="" className={`size-full object-cover ${available ? '' : 'opacity-60 grayscale'}`} />
+                  </span>
+                  <div className="flex min-w-px flex-1 flex-col gap-[3.2px] leading-normal">
+                    <p className="truncate text-[11.2px] font-medium text-ink">{item.name}</p>
+                    <p className="flex items-center gap-[3.2px] text-[9.6px] text-muted">
+                      <Icon icon={Clock05Icon} size={12.8} />
+                      <span className="shrink-0">{item.prep}</span>
+                      <span aria-hidden="true" className="size-[1.6px] shrink-0 rounded-full bg-muted" />
+                      <span className="min-w-px flex-1 truncate">{item.desc}</span>
+                    </p>
+                  </div>
+                  <p className="w-16 shrink-0 text-[11.2px] leading-normal font-medium text-ink">{money(item.price)}</p>
+                  <div className="flex w-24 shrink-0 items-center gap-[6.4px]">
+                    <span className={`w-[50px] text-[9.6px] leading-normal font-medium ${available ? 'text-[#39ab00]' : 'text-subtle'}`}>{available ? 'In Stock' : 'Sold Out'}</span>
+                    <span className="flex" style={{ zoom: 0.8 }}><ToggleSwitch checked={available} onChange={() => toggle(item)} ariaLabel={`${item.name} in stock`} /></span>
+                  </div>
+                </div>
+              )
+            })}
+            {!visible.length && <p className="p-6 text-center text-[11.2px] text-muted">No items match. Try another search or tab.</p>}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }

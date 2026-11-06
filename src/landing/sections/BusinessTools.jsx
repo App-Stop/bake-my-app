@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
@@ -142,6 +143,7 @@ export function BusinessTools() {
       id="business-tools"
       className="relative mt-[max(80*var(--m),160*var(--u))] scroll-mt-10"
     >
+      <GoldDecorations variant={0} />
       <Deco src="deco-cupcake.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <Deco src="deco-cake.svg" x={1685.79} y={87} size={113.3} rotate={27.5} />
       <div className={`relative flex flex-col items-center ${GAP[40]} ${CONTAINER}`}>

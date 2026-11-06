@@ -1,3 +1,4 @@
+import { GoldDecorations } from './GoldDecorations'
 import { ROUTES } from '../router'
 import { Pill } from './ui'
 import { GAP, TYPE, asset } from './styles'
@@ -16,6 +17,7 @@ export function CheckoutSuccessPage() {
       </header>
 
       <main className={`flex flex-1 flex-col items-center justify-center px-5 py-20 text-center ${GAP[30]}`}>
+        <GoldDecorations variant={2} />
         <img
           src={asset('contact/message-sent.svg')}
           alt=""

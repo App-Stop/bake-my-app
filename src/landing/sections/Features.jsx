@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { ROUTES } from '../../router'
 import { Pill } from '../ui'
 import { GAP, TYPE, asset } from '../styles'
@@ -45,6 +46,7 @@ function CardText({ title, children, align = 'center' }) {
 export function Features() {
   return (
     <section id="features" className="scroll-mt-10 bg-primary-light">
+      <GoldDecorations variant={1} />
       <div
         className={`mx-auto flex max-w-[calc(1920*var(--u))] flex-col items-center px-[max(20*var(--m),200*var(--u))] py-[max(56*var(--m),100*var(--u))] ${GAP[60]}`}
       >

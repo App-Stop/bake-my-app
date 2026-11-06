@@ -88,6 +88,16 @@
     --text-xl: calc(20 * var(--u));
   }
 
+  /*
+   * Pricing: the first fold (nav, title, billing toggle and the full plan cards) is ~1300 Figma px
+   * tall, so the page is sized against a 1400px-tall frame instead of 980, and may shrink to 55% of
+   * the width scale. On 1440p and shorter screens everything scales down with the viewport height.
+   */
+  .landing-page.pricing-page {
+    --u: min(1px, calc(100vw / 1920), max(calc(100vh / 1400), calc(0.55 * 100vw / 1920)));
+    --u: min(1px, calc(100vw / 1920), max(calc(100svh / 1400), calc(0.55 * 100vw / 1920)));
+  }
+
   /* Embedded app UI (the storefront phones) keeps its own 1× sizes; it is scaled as a whole. */
   .landing-page .landing-unscaled {
     --px: 1px;
@@ -314,4 +324,14 @@
   background-image: url('/landing/contact/check.svg');
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* Gold bakery accents remain in the page gutters and never capture clicks. */
+.landing-page section, .landing-page main, .contact-page, .checkout-page,
+main:has(> .gold-decorations) { position: relative; }
+.gold-decorations { position: absolute; inset: 0; overflow: clip; pointer-events: none; user-select: none; }
+.gold-decorations > img { position: absolute; width: clamp(32px, 4.2vw, 80px); height: auto; opacity: .8; }
+@media (max-width: 767px) {
+  .gold-decorations > img { width: 26px; opacity: .3; }
+  .gold-decorations > img:nth-child(n+3) { display: none; }
 }

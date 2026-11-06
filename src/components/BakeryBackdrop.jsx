@@ -1,7 +1,4 @@
-import { useRef } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Pen01Icon } from "@hugeicons/core-free-icons";
-
+import { BRAND_COLORS } from '../lib/brandPalette'
 const DECORATIONS = [
   {
     src: "/landing/demo/deco-croissant.svg",
@@ -29,17 +26,6 @@ const DECORATIONS = [
       "left-[calc(90%-50*var(--d))] top-[calc(800*var(--d))] size-[calc(84*var(--d))]",
   },
 ];
-
-const DEMO_COLORS = [
-  "#FF1FAD",
-  "#903BFF",
-  "#00C064",
-  "#00C9C6",
-  "#F30000",
-  "#F96C00",
-  "#0095FF",
-];
-const LOGO_COLORS = ["#efbb00", "#a7921b", "#8fa200"];
 
 export function BakeryDecorations({ setup = false }) {
   const setupClasses = [
@@ -88,13 +74,13 @@ function Swatch({ color, active, onChange }) {
 }
 
 export function CustomizationRail({ color, onChange }) {
-  const inputRef = useRef(null);
+
 
   return (
     <div className="absolute inset-y-0 left-0 z-20 hidden lg:block">
       <div className="absolute left-[calc(10*var(--d))] top-1/2 flex -translate-y-1/2 flex-col items-center gap-[calc(30*var(--d))] rounded-[calc(80*var(--d))] bg-white px-[calc(30*var(--d))] py-[calc(34*var(--d))] shadow-[0_calc(10*var(--d))_calc(60*var(--d))_rgba(85,76,241,0.1)]">
         <div className="flex flex-col gap-[calc(10*var(--d))]">
-          {DEMO_COLORS.map((swatch) => (
+          {BRAND_COLORS.map(({ hex: swatch }) => (
             <Swatch
               key={swatch}
               color={swatch}
@@ -103,38 +89,7 @@ export function CustomizationRail({ color, onChange }) {
             />
           ))}
         </div>
-        <span className="h-[calc(3*var(--d))] w-[calc(16*var(--d))] rounded-full bg-primary/20" />
-        <div className="flex flex-col gap-[calc(10*var(--d))]">
-          {LOGO_COLORS.map((swatch) => (
-            <Swatch
-              key={swatch}
-              color={swatch}
-              active={color === swatch}
-              onChange={onChange}
-            />
-          ))}
-        </div>
-        <span className="h-[calc(3*var(--d))] w-[calc(16*var(--d))] rounded-full bg-primary/20" />
-        <button
-          type="button"
-          aria-label="Choose a custom preview color"
-          onClick={() => inputRef.current?.click()}
-          className="relative flex size-[calc(40*var(--d))] items-center justify-center rounded-full text-white"
-          style={{
-            background:
-              "conic-gradient(#ff00a6, #6600ff, #006fff, #00e78b, #99db00, #ff7b00, #ff0000, #ff00a6)",
-          }}
-        >
-          <HugeiconsIcon icon={Pen01Icon} size={20} color="currentColor" />
-          <input
-            ref={inputRef}
-            type="color"
-            value={color}
-            onChange={(event) => onChange(event.target.value)}
-            className="pointer-events-none absolute opacity-0"
-            tabIndex={-1}
-          />
-        </button>
+
       </div>
       <img
         src="/landing/demo/customize-arrow.svg"

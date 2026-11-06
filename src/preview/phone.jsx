@@ -42,7 +42,7 @@ export function Star({ size }) {
 }
 
 /** iPhone 17 Pro frame at 60% scale (241.2 × 524.4), matching the Figma mockups. */
-export function PhoneFrame({ label, children, interactive = false }) {
+export function PhoneFrame({ label, children, interactive = false, lightStatusBar = false }) {
   return (
     <div
       role={interactive ? undefined : "img"}
@@ -50,20 +50,20 @@ export function PhoneFrame({ label, children, interactive = false }) {
       className="relative h-[524.4px] w-[241.2px] shrink-0 overflow-clip rounded-[30px] bg-white font-inter shadow-[0_12px_40px_-16px_rgba(17,17,17,0.18)]"
     >
       {children}
-      <StatusBar />
+      <StatusBar light={lightStatusBar} />
     </div>
   )
 }
 
-function StatusBar() {
+function StatusBar({ light = false }) {
   return (
     <div className="absolute inset-x-0 top-0 flex h-[34px] items-center px-[5.4px] pt-[1.4px]">
       <div className="flex min-w-px flex-1 items-center justify-center pr-[3.6px]">
-        <span className="font-sf text-[10.2px] leading-[13.2px] font-semibold text-black">9:41</span>
+        <span className={`font-sf text-[10.2px] leading-[13.2px] font-semibold ${light ? 'text-white' : 'text-black'}`}>9:41</span>
       </div>
       <div className="h-[22.2px] w-[75px] shrink-0 rounded-[60px] bg-black" />
       <div className="flex min-w-px flex-1 items-center justify-center">
-        <img src={statusLevels} alt="" width={51.2} height={7.8} className="h-[7.8px] w-[51.2px]" />
+        <img src={statusLevels} alt="" width={51.2} height={7.8} className={`h-[7.8px] w-[51.2px] ${light ? 'invert' : ''}`} />
       </div>
     </div>
   )

@@ -1,7 +1,9 @@
+import { GoldDecorations } from '../GoldDecorations'
+import { BRAND_COLORS as PRESETS } from '../../lib/brandPalette'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Tick02Icon } from '@hugeicons/core-free-icons'
-import { normalizeHex, readableTextOn } from '../../lib/color'
+import { readableTextOn } from '../../lib/color'
 import { DEFAULT_BRAND_COLOR, INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { CartScreen } from '../../preview/CartScreen'
 import { HomeScreen } from '../../preview/HomeScreen'
@@ -10,18 +12,6 @@ import { DeviceToggle } from '../../preview/PreviewPanel'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { CtaPair, Deco } from '../ui'
 import { GAP, TYPE } from '../styles'
-
-const PRESETS = [
-  { name: 'Pink', hex: '#ff1fad' },
-  { name: 'Violet', hex: '#903bff' },
-  { name: 'Green', hex: '#00c064' },
-  { name: 'Cyan', hex: '#00B4B2' },
-  { name: 'Red', hex: '#f30000' },
-  { name: 'Orange', hex: '#f96c00' },
-  { name: 'Blue', hex: '#0095ff' },
-]
-
-const SUGGESTED = ['#C68100', '#a7921b', '#8fa200']
 
 // The two storefront phones render at 1× as 522.4 × 524.4; Figma shows them at 1.2× (626.84 wide).
 // The desktop (website) preview is fitted to the same stage width.
@@ -78,22 +68,13 @@ function useFitScale(ref, width) {
 
 export function Customize() {
   const [color, setColor] = useState(DEFAULT_BRAND_COLOR)
-  const [draft, setDraft] = useState(null)
   const [device, setDevice] = useState('mobile')
   const stageRef = useRef(null)
-  const colorInputRef = useRef(null)
   const stage = STAGES[device]
   const scale = useFitScale(stageRef, stage.width)
 
-  const hexDraft = draft ?? color.slice(1).toUpperCase()
-  const hexValid = normalizeHex(hexDraft) !== null
   const isSelected = (hex) => hex === color
-  const customSelected = ![...PRESETS.map((p) => p.hex), ...SUGGESTED].some(isSelected)
-
-  const choose = (hex) => {
-    setColor(hex)
-    setDraft(null)
-  }
+  const choose = setColor
 
   const brandVars = {
     '--brand': color,
@@ -103,6 +84,7 @@ export function Customize() {
 
   return (
     <section id="customize" className="relative scroll-mt-10">
+      <GoldDecorations variant={4} />
       <Deco src="deco-donut-2.svg" x={101.34} y={0} size={114.89} rotate={30.26} />
       <Deco src="deco-coffee.svg" x={789} y={880} size={105.93} rotate={-18.09} />
       <div className="relative mx-auto flex max-w-[calc(1920*var(--u))] flex-col lg:flex-row">
@@ -129,59 +111,7 @@ export function Customize() {
                   />
                 ))}
               </ColorGroup>
-              <ColorGroup label="Suggested colors">
-                {SUGGESTED.map((hex) => (
-                  <Swatch key={hex} hex={hex} selected={isSelected(hex)} onSelect={choose} />
-                ))}
-              </ColorGroup>
-              <div className="flex flex-col gap-2.5">
-                <p className="text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-ink">Custom</p>
-                <div className="flex items-start gap-2.5">
-                  <button
-                    type="button"
-                    aria-label="Open color picker"
-                    title="Pick a custom color"
-                    onClick={() => colorInputRef.current?.click()}
-                    style={{ backgroundColor: color }}
-                    className={`relative flex size-[max(48*var(--m),68*var(--u))] shrink-0 items-center justify-center rounded-full shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-transform hover:scale-[1.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                      customSelected ? 'border-2 border-ink' : ''
-                    }`}
-                  >
-                    {customSelected && (
-                      <HugeiconsIcon icon={Tick02Icon} size={32} strokeWidth={2.5} color={readableTextOn(color)} className="size-[47%]" />
-                    )}
-                    <input
-                      ref={colorInputRef}
-                      type="color"
-                      tabIndex={-1}
-                      value={color}
-                      onChange={(e) => choose(e.target.value)}
-                      className="pointer-events-none absolute inset-0 size-full opacity-0"
-                    />
-                  </button>
-                  <label
-                    className={`flex w-[calc(200*var(--px))] flex-col justify-center gap-1 rounded-full border bg-white px-5 pt-2.5 pb-3 leading-normal transition-colors focus-within:border-primary ${
-                      hexValid ? 'border-line' : 'border-[#f30000]'
-                    }`}
-                  >
-                    <span className="text-xs font-medium text-muted">Hex Code</span>
-                    <input
-                      value={hexDraft}
-                      maxLength={7}
-                      spellCheck={false}
-                      aria-invalid={!hexValid}
-                      onChange={(e) => {
-                        const next = e.target.value.replace('#', '').toUpperCase()
-                        setDraft(next)
-                        const hex = normalizeHex(next)
-                        if (hex) setColor(hex)
-                      }}
-                      onBlur={() => setDraft(null)}
-                      className="w-full bg-transparent text-base text-ink outline-none"
-                    />
-                  </label>
-                </div>
-              </div>
+
             </div>
           </div>
           <CtaPair label="Make it look like my cafe" demoLabel="Try it live" />

@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { useState } from 'react'
 import { Link } from '../../components/Link'
 import { DEFAULT_TRIAL_DAYS, INTERVAL, QUOTE_HREF, formatMoney, planHref, priceFor, usePlans } from '../../lib/plans'
@@ -305,6 +306,7 @@ export function Pricing({ standalone = false, showExpert = true }) {
   const planState = usePlans()
   return (
     <section id="pricing" className={`relative scroll-mt-10 ${standalone ? '' : 'mt-[max(80*var(--m),180*var(--u))]'}`}>
+      <GoldDecorations variant={1} />
       <Deco src="deco-biscuit.svg" x={159.03} y={-54.5} size={101.93} rotate={-14.1} />
       <div className={`flex flex-col items-center ${GAP[80]} ${CONTAINER}`}>
         <div className={`flex max-w-[calc(878*var(--px))] flex-col items-center text-center text-ink lg:max-w-none ${GAP[30]}`}>

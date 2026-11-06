@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { useMemo, useState } from 'react'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
@@ -132,6 +133,7 @@ export function CostCalculator() {
       aria-labelledby="cost-calculator-title"
       className="relative mt-[max(110*var(--m),160*var(--u))] mb-[max(96*var(--m),144*var(--u))] scroll-mt-10"
     >
+      <GoldDecorations variant={5} />
       <Deco src="deco-croissant.svg" x={1796} y={-49.5} />
       <div className={CONTAINER}>
         <div className="mx-auto flex w-full max-w-[calc(1308*var(--px))] flex-col items-center gap-[max(32*var(--m),40*var(--u))]">

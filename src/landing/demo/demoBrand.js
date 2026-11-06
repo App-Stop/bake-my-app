@@ -1,10 +1,10 @@
 import { useSyncExternalStore } from 'react'
 import { readableTextOn } from '../../lib/color'
-import { illustrationFilter } from '../../lib/illustrationFilter'
+import { presetColor } from '../../lib/brandPalette'
 import { STORAGE_KEY } from '../../onboarding/useOnboardingState'
 
 // Bake my App purple, for visitors who haven't been through the setup form.
-export const DEMO_BRAND_COLOR = '#554cf1'
+export const DEMO_BRAND_COLOR = '#903BFF'
 
 /*
  * One brand (color + logo) shared by all four demos. It is read from the setup form's saved answers,
@@ -24,7 +24,7 @@ function readSaved() {
 
 function read() {
   const saved = readSaved()
-  return { color: saved.brandColor ?? DEMO_BRAND_COLOR, logo: saved.shop?.logo ?? null }
+  return { color: presetColor(saved.brandColor ?? DEMO_BRAND_COLOR), logo: saved.shop?.logo ?? null }
 }
 
 function getSnapshot() {
@@ -49,6 +49,7 @@ function subscribe(listener) {
 }
 
 export function setDemoBrandColor(color) {
+  color = presetColor(color)
   snapshot = { ...getSnapshot(), color }
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...readSaved(), brandColor: color }))
@@ -64,7 +65,6 @@ export function brandTheme(color) {
   return {
     '--brand': color,
     '--brand-light': light,
-    '--brand-illustration-filter': illustrationFilter(color),
     '--on-brand': readableTextOn(color),
     '--color-primary': color,
     '--color-primary-light': light,

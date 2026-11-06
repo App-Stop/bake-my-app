@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { Composite, CtaPair, Deco, HeartItem } from '../ui'
 import { CONTAINER, GAP, TYPE, asset } from '../styles'
 
@@ -72,6 +73,7 @@ export function KitchenStation() {
       data-nav-theme="dark"
       className="relative -mt-[calc(32*var(--m))] overflow-hidden pt-30 lg:-mt-[calc(153*var(--u))]"
     >
+      <GoldDecorations variant={2} />
       {/* Photo export already includes the 20% brand-purple overlay from Figma. */}
       <img
         src={asset('kitchen-bg.webp')}
@@ -156,6 +158,7 @@ export function Solutions() {
   return (
     <>
       <section id="solution" className="relative mt-[max(64*var(--m),201*var(--u))] scroll-mt-10">
+      <GoldDecorations variant={2} />
         <Deco src="deco-croissant.svg" x={58} y={-142} />
         <Deco src="deco-donut.svg" x={1163} y={-184} />
         <Deco src="deco-biscuit.svg" x={1703} y={700} />

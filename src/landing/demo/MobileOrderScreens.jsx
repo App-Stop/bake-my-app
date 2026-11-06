@@ -1,3 +1,4 @@
+import { BrandImage } from './BrandImage'
 import { useEffect, useRef, useState } from 'react'
 import { Action, Glyph } from './MobileUI'
 import { checkoutAssets } from './mobileCheckoutAssets'
@@ -25,7 +26,7 @@ function SummaryItems({ items }) {
 }
 
 function Divider({ checkout = false }) {
-  return <div className="mo-divider"><img src={checkout ? CHECKOUT.imgVector2 : PLACING.imgVector2} alt="" /></div>
+  return <div className="mo-divider"><BrandImage src={checkout ? CHECKOUT.imgVector2 : PLACING.imgVector2} alt="" /></div>
 }
 
 function OrderSummary({ order, payment = true }) {
@@ -45,11 +46,11 @@ function OrderHero({ kind, title, subtitle }) {
   const assets = kind === 'placing' ? PLACING : kind === 'delivered' ? DELIVERED : PREPARING
   const image = assets.imgImage9 || assets.imgImage10
   return <header className={`mo-hero mo-${kind}`}>
-    {kind === 'delivered' ? <div className="mo-delivered-glow"><img src={assets.imgBgGlow} alt="" /></div> : <>
-      <div className="mo-glow-large"><img src={assets.imgBgGlow} alt="" /></div>
-      <div className="mo-glow-small"><img src={assets.imgBgGlow1} alt="" /></div>
+    {kind === 'delivered' ? <div className="mo-delivered-glow"><BrandImage src={assets.imgBgGlow} alt="" /></div> : <>
+      <div className="mo-glow-large"><BrandImage src={assets.imgBgGlow} alt="" /></div>
+      <div className="mo-glow-small"><BrandImage src={assets.imgBgGlow1} alt="" /></div>
     </>}
-    <div className="mo-hero-image"><div className="mo-hero-motion"><img src={image} alt="" /></div></div>
+    <div className="mo-hero-image"><div className="mo-hero-motion"><BrandImage src={image} alt="" /></div></div>
     <div className="mo-hero-title"><h2>{title}</h2><p>{subtitle}</p></div>
   </header>
 }
@@ -70,18 +71,18 @@ export function MobileCheckout({ cart, account, info, onInfoChange, mode, onMode
         <div className="mo-section-title"><h3>{mode === 'Delivery' ? 'Delivery options' : 'Pickup options'}</h3><Action onClick={() => onModeChange(mode === 'Delivery' ? 'Pickup' : 'Delivery')}>{mode === 'Delivery' ? 'Pickup instead' : 'Delivery instead'}</Action></div>
         <div className="mo-card mo-delivery-options">
           <Action className="mo-address-button" aria-label={mode === 'Delivery' ? 'Change delivery address' : 'Change pickup shop'} onClick={onAddress}>
-            <img className="mo-small-illustration mo-flipped" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211211} alt="" /><span><small>{mode === 'Delivery' ? 'Deliver to' : 'Pickup from'}</small><span>{address}</span></span><Glyph src={CHECKOUT.imgArrowDown01} className="mo-chevron" />
+            <BrandImage className="mo-small-illustration mo-flipped" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211211} alt="" /><span><small>{mode === 'Delivery' ? 'Deliver to' : 'Pickup from'}</small><span>{address}</span></span><Glyph src={CHECKOUT.imgArrowDown01} className="mo-chevron" />
           </Action>
           <label className="mo-field mo-instructions"><span>Instructions (Optional)</span><input aria-label="Delivery instructions" value={info.instructions} onChange={(e) => update('instructions', e.target.value)} placeholder="Please ring the bell twice" /></label>
         </div>
         {mode === 'Delivery' ? <>
-          <div className="mo-card mo-leave-door"><img className="mo-small-illustration" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211212} alt="" /><span>Leave at the door</span><Action role="switch" aria-label="Leave at the door" aria-checked={info.leaveAtDoor} className={`mo-switch ${info.leaveAtDoor ? 'mo-switch-on' : ''}`} onClick={() => update('leaveAtDoor', !info.leaveAtDoor)}><span /></Action></div>
+          <div className="mo-card mo-leave-door"><BrandImage className="mo-small-illustration" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211212} alt="" /><span>Leave at the door</span><Action role="switch" aria-label="Leave at the door" aria-checked={info.leaveAtDoor} className={`mo-switch ${info.leaveAtDoor ? 'mo-switch-on' : ''}`} onClick={() => update('leaveAtDoor', !info.leaveAtDoor)}><span /></Action></div>
           <div className="mo-delivery-speeds" role="radiogroup" aria-label="Delivery speed">
             {[false, true].map((priority) => <label className="mo-card mo-speed" key={String(priority)}><input type="radio" name="delivery-speed" checked={info.priority === priority} onChange={() => update('priority', priority)} /><strong>{priority ? 'Priority' : 'Standard'}</strong>{priority && <Glyph src={CHECKOUT.imgZap} />}<span>{priority ? '15–25 min' : '30–40 min'}</span>{priority && <b>+$2</b>}</label>)}
           </div>
         </> : <p className="mo-pickup-note">Collect from the bakery in 20–30 minutes.</p>}
       </section>
-      <section className="mo-checkout-section"><h3>Payment method</h3><Action className="mo-card mo-payment" onClick={onPayment}><img className="mo-small-illustration" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211213} alt="" /><span><strong>Cash</strong><small>Pay {money(total)} {mode === 'Delivery' ? 'in cash to the rider' : 'at pickup'}</small></span><Glyph src={CHECKOUT.imgArrowDown01} className="mo-chevron" /></Action></section>
+      <section className="mo-checkout-section"><h3>Payment method</h3><Action className="mo-card mo-payment" onClick={onPayment}><BrandImage className="mo-small-illustration" src={CHECKOUT.imgCreatingDeliveryBoyIcon2K2026090211213} alt="" /><span><strong>Cash</strong><small>Pay {money(total)} {mode === 'Delivery' ? 'in cash to the rider' : 'at pickup'}</small></span><Glyph src={CHECKOUT.imgArrowDown01} className="mo-chevron" /></Action></section>
       <section className="mo-checkout-section mo-checkout-summary"><h3>Order summary</h3><SummaryItems items={cart} /><Divider checkout />
         <p className="mo-summary-row"><span>Subtotal</span><span>{money(subtotal)}</span></p>
         {discount > 0 && <p className="mo-summary-row"><span>Discount</span><span>−{money(discount)}</span></p>}
@@ -124,17 +125,17 @@ export function OrderTracking({ order, stage, onNext, onBack, onHelp, onUpdate }
   return <FocusScreen label="Order tracking" className={`mo-tracking ${map ? `mo-map-tracking ${arrived ? 'mo-arrival' : 'mo-transit'}` : delivered ? 'mo-complete' : 'mo-preparation'}`}>
     <main className="mo-tracking-scroll">
       {map ? <header className="mo-map-header">
-        <img className="mo-map" src={mapAssets.imgHeader} alt="Demo delivery map" /><div className="mo-map-fade" />
+        <BrandImage className="mo-map" src={mapAssets.imgHeader} alt="Demo delivery map" /><div className="mo-map-fade" />
         {!arrived && <div className="mo-route"><Glyph src={TRANSIT.imgVector2} /></div>}
         <div className="mo-scooter"><Glyph src={mapAssets.imgScooter02} /></div>
         <div className="mo-map-home"><Glyph src={mapAssets.imgLocation02} /></div>
-        <Action className="mo-map-title mo-card" aria-label={nextLabel} onClick={onNext}><span><h2>{title}</h2><p>{subtitle}</p></span><span className={arrived ? '' : 'mo-rider-motion'}><img className="mo-map-illustration mo-flipped" src={mapAssets.imgImage9} alt="" /></span></Action>
+        <Action className="mo-map-title mo-card" aria-label={nextLabel} onClick={onNext}><span><h2>{title}</h2><p>{subtitle}</p></span><span className={arrived ? '' : 'mo-rider-motion'}><BrandImage className="mo-map-illustration mo-flipped" src={mapAssets.imgImage9} alt="" /></span></Action>
       </header> : <OrderHero kind={delivered ? 'delivered' : 'preparing'} title={title} subtitle={subtitle} />}
       <div className="mo-tracking-cards">
         {!delivered && <AddressCard order={order} />}
         {map && <section className="mo-card mo-tip-card">
-          <div className="mo-tip-heading"><img src={TRANSIT.imgCreatingDeliveryBoyIcon2K2026090211211} alt="" /><Action className="ma-glass" aria-expanded={!hideTips} onClick={() => setHideTips(!hideTips)}>{hideTips ? 'Show tips' : 'Hide'}</Action></div>
-          {!hideTips && <><div><h3>Would you like to tip the rider?</h3><p>Your tips go directly to the rider.</p></div><div className="mo-tip-options" aria-label="Rider tip">{[1, 2, 5, 10, 15, 20, 25, 30, 50].map((value) => <Action key={value} aria-label={`Tip $${value}`} aria-pressed={order.tip === value * 100} className={order.tip === value * 100 ? 'mo-tip-selected' : ''} onClick={() => onUpdate({ tip: order.tip === value * 100 ? 0 : value * 100 })}>${value}</Action>)}</div><Action className="mo-tip-payment" onClick={onHelp}><img className="mo-small-illustration" src={TRANSIT.imgCreatingDeliveryBoyIcon2K2026090211212} alt="" /><span><strong>Cash</strong><small>{order.tip ? `Pay ${money(order.tip)} tip in cash to the rider` : 'Select an optional cash tip'}</small></span><Glyph className="mo-chevron" src={TRANSIT.imgArrowDown01} /></Action></>}
+          <div className="mo-tip-heading"><BrandImage src={TRANSIT.imgCreatingDeliveryBoyIcon2K2026090211211} alt="" /><Action className="ma-glass" aria-expanded={!hideTips} onClick={() => setHideTips(!hideTips)}>{hideTips ? 'Show tips' : 'Hide'}</Action></div>
+          {!hideTips && <><div><h3>Would you like to tip the rider?</h3><p>Your tips go directly to the rider.</p></div><div className="mo-tip-options" aria-label="Rider tip">{[1, 2, 5, 10, 15, 20, 25, 30, 50].map((value) => <Action key={value} aria-label={`Tip $${value}`} aria-pressed={order.tip === value * 100} className={order.tip === value * 100 ? 'mo-tip-selected' : ''} onClick={() => onUpdate({ tip: order.tip === value * 100 ? 0 : value * 100 })}>${value}</Action>)}</div><Action className="mo-tip-payment" onClick={onHelp}><BrandImage className="mo-small-illustration" src={TRANSIT.imgCreatingDeliveryBoyIcon2K2026090211212} alt="" /><span><strong>Cash</strong><small>{order.tip ? `Pay ${money(order.tip)} tip in cash to the rider` : 'Select an optional cash tip'}</small></span><Glyph className="mo-chevron" src={TRANSIT.imgArrowDown01} /></Action></>}
         </section>}
         {delivered && <><div className="mo-points"><span><Glyph src={DELIVERED.imgCroissant} /></span><strong>+50</strong> Bake Points</div><section className="mo-card mo-rating"><h3>How was your experience?</h3><div role="radiogroup" aria-label="Rate your order" className="mo-stars" onKeyDown={(event) => {
           if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return

@@ -1,3 +1,4 @@
+import { GoldDecorations } from './GoldDecorations'
 import { ROUTES } from '../router'
 import { DemoPill, Pill } from './ui'
 import { GAP, TYPE } from './styles'
@@ -12,6 +13,7 @@ export function ComingSoonPage() {
       </header>
 
       <main className={`flex flex-1 flex-col items-center justify-center px-5 py-20 text-center ${GAP[30]}`}>
+        <GoldDecorations variant={1} />
         <h1 className={TYPE.display}>
           fresh out
           <br />

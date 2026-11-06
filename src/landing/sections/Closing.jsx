@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
 import { Facebook01Icon, InstagramIcon, Linkedin01Icon, TwitterIcon } from '@hugeicons/core-free-icons'
@@ -7,6 +8,7 @@ import { CONTAINER, GAP, TYPE, WAVE, asset } from '../styles'
 export function Ready() {
   return (
     <section aria-labelledby="ready-title" className="relative mt-[max(80*var(--m),131*var(--u))]">
+      <GoldDecorations variant={3} />
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className={WAVE} />
       <div data-nav-theme="dark" className="relative -mt-[2px] overflow-hidden bg-primary">
         <div

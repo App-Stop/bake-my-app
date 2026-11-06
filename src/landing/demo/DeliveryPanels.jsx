@@ -1,9 +1,10 @@
+import { BrandImage } from './BrandImage'
 import { useEffect, useRef } from 'react';
 import { brandIllustrationProps } from './brandIllustrations';
 import './delivery-panels.css';
 const ASSETS = '/figma/customer-website/';
 const money = value => `$${value.toFixed(2)}`;
-const image = (file, alt = '', props = {}) => <img src={ASSETS + file} alt={alt} {...brandIllustrationProps(file, props)} />;
+const image = (file, alt = '', props = {}) => <BrandImage src={ASSETS + file} alt={alt} {...brandIllustrationProps(file, props)} />;
 const EXTRAS = [{
   name: 'Chocolate Syrup',
   price: 3,

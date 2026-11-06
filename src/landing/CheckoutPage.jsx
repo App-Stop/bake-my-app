@@ -1,3 +1,4 @@
+import { GoldDecorations } from './GoldDecorations'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
@@ -276,6 +277,7 @@ export function CheckoutPage() {
 
   return (
     <main className="checkout-page flex min-h-dvh flex-col bg-white font-inter lg:flex-row">
+        <GoldDecorations variant={4} />
       <SummaryPanel name={name} terms={terms} loading={!plans && !failed} />
       <div className="flex justify-center px-6 py-12 lg:w-1/2 lg:justify-start lg:pt-[calc(96*var(--u))] lg:pl-[calc(120*var(--u))]">
         {unavailable ? <CheckoutUnavailable /> : <CheckoutForm planKey={planKey} interval={interval} terms={terms} />}

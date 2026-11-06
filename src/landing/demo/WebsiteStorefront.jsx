@@ -1,3 +1,4 @@
+import { BrandImage } from './BrandImage'
 import { useEffect, useRef, useState } from 'react';
 import { DesktopScreen, DESKTOP_WIDTH } from '../../preview/DesktopScreen';
 import { CROISSANTS, CAKES, WEBSITE_PRODUCTS } from './storefrontCatalog';
@@ -12,6 +13,7 @@ import play from '../../assets/desktop/store-play.svg';
 import playWordmark from '../../assets/desktop/store-play-wordmark.svg';
 import apple from '../../assets/desktop/store-apple.svg';
 import './website-storefront.css';
+import { LocationDialog } from './WebsiteLocationDialogs';
 import { DeliveryCheckout, DeliveryTracking, DeliveryCart, DeliveredDialog, DELIVERY_STAGES, DELIVERY_DELAYS, PICKUP_STAGES, PICKUP_DELAYS, deliveryTotals, useDeliveryDialogFocus } from './DeliveryPanels';
 const A = '/figma/customer-website/';
 const SCALE = DESKTOP_WIDTH / 1920;
@@ -31,7 +33,7 @@ const existingAssets = {
   '6965d.png': qr,
   '1bd10.png': film
 };
-const asset = (name, alt = '', props = {}) => <img src={existingAssets[name] || A + name} alt={alt} {...brandIllustrationProps(name, props)} />;
+const asset = (name, alt = '', props = {}) => <BrandImage src={existingAssets[name] || A + name} alt={alt} {...brandIllustrationProps(name, props)} />;
 function Button({
   children,
   secondary,
@@ -47,7 +49,7 @@ function ProductImage({
   const crop = product.crop;
   return <div className={`ws-product-image ${className}`} style={{
     transform: product.flip ? 'scaleX(-1)' : undefined
-  }}><img src={product.image} alt={product.name} style={crop ? {
+  }}><BrandImage src={product.image} alt={product.name} style={crop ? {
       width: crop.width ?? crop.size,
       height: crop.height ?? crop.size,
       left: crop.left,
@@ -60,10 +62,10 @@ function Header({
   browse,
   query,
   setQuery,
-  address
+  locationLabel
 }) {
   return <header className="ws-header">
-    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>Deliver to</small><b>{address === '742 Evergreen Terrace, Texas' ? 'Select your address' : address}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
+    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>{locationLabel.small}</small><b>{locationLabel.text}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
     <form className="ws-search" onSubmit={event => {
       event.preventDefault();
       browse();
@@ -83,7 +85,7 @@ function Footer({
   go,
   notify
 }) {
-  return <footer className="ws-footer"><div className="ws-footer-top"><div className="ws-footer-brand">{logo ? <img className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-white" />}<p>Freshly baked, delivered to your door. From classic butter to seasonal specials — every bite is made with care.</p><div className="ws-social">{['80d03.svg', 'b0d7a.svg', '48f8a.svg'].map((src, i) => <span key={src} aria-label={['Instagram', 'Facebook', 'Twitter'][i]}>{asset(src)}</span>)}</div></div><div className="ws-footer-links">{Object.entries(columns).map(([title, links]) => <div key={title}><b>{title}</b>{links.map(link => <button key={link} onClick={() => title === 'Menu' ? browse(link) : go(title === 'Locations' ? 'address' : 'support')}>{link}</button>)}</div>)}</div><div className="ws-newsletter"><b>Newsletter</b><p>Get new drops, seasonal specials, and early access to limited batches.</p><form onSubmit={event => {
+  return <footer className="ws-footer"><div className="ws-footer-top"><div className="ws-footer-brand">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-white" />}<p>Freshly baked, delivered to your door. From classic butter to seasonal specials — every bite is made with care.</p><div className="ws-social">{['80d03.svg', 'b0d7a.svg', '48f8a.svg'].map((src, i) => <span key={src} aria-label={['Instagram', 'Facebook', 'Twitter'][i]}>{asset(src)}</span>)}</div></div><div className="ws-footer-links">{Object.entries(columns).map(([title, links]) => <div key={title}><b>{title}</b>{links.map(link => <button key={link} onClick={() => title === 'Menu' ? browse(link) : go(title === 'Locations' ? 'address' : 'support')}>{link}</button>)}</div>)}</div><div className="ws-newsletter"><b>Newsletter</b><p>Get new drops, seasonal specials, and early access to limited batches.</p><form onSubmit={event => {
           event.preventDefault();
           notify('Thanks for subscribing to our demo newsletter.');
         }}><label>{asset('a4efb.svg')}<input type="email" required placeholder="Email address" aria-label="Newsletter email address" /></label><Button className="ws-subscribe" onClick={event => event.currentTarget.form.requestSubmit()}>Subscribe</Button></form><small>By subscribing, you agree to our Terms and Privacy Policy.</small></div></div><div className="ws-footer-bottom"><span>© 2026 Bake My App. All rights reserved.</span><div>{['Privacy', 'Terms', 'Cookies'].map(label => <button key={label} onClick={() => go('support')}>{label}</button>)}</div></div></footer>;
@@ -91,7 +93,7 @@ function Footer({
 function AppPromo({
   wide = false
 }) {
-  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><img src={play} alt="" /><div><small>GET IT ON</small><img className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><img src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{asset('app-phone-hand.png')}</div></aside>;
+  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><BrandImage src={play} alt="" /><div><small>GET IT ON</small><BrandImage className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><BrandImage src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{asset('app-phone-hand.png')}</div></aside>;
   return <aside className="ws-app-promo"><h3>Get 20% OFF on the app</h3><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-qr"><div>{asset('6965d.png', 'Scan to download the app')}</div><span>SCAN TO DOWNLOAD!</span></div><div className="ws-phone-hand">{asset('checkout-phone-hand.png')}</div></aside>;
 }
 function ProductCard({
@@ -191,6 +193,9 @@ export function WebsiteStorefront({
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('Croissants');
   const [address, setAddress] = useState('742 Evergreen Terrace, Texas');
+  const [addresses, setAddresses] = useState(['742 Evergreen Terrace, Texas', '125 Main Street, Texas', '28 Oak Avenue, Texas']);
+  const [addressChosen, setAddressChosen] = useState(false);
+  const [locationDialog, setLocationDialog] = useState(null);
   const [fulfillment, setFulfillment] = useState('delivery');
   const [pickupAddress, setPickupAddress] = useState('742 Bake Cafe, Texas');
   const [pickupInstructions, setPickupInstructions] = useState('Please give paper bag');
@@ -227,6 +232,13 @@ export function WebsiteStorefront({
     if (next === 'cart') {
       setCartOpen(true);
       setNotice('');
+      return;
+    }
+    // The navbar's "Deliver to" and "Track your order" open dialogs over the current page.
+    if (next === 'address' || next === 'orders') {
+      setCartOpen(false);
+      setNotice('');
+      setLocationDialog(next === 'orders' ? 'track' : fulfillment === 'pickup' ? 'pickup' : 'delivery');
       return;
     }
     setCartOpen(false);
@@ -272,9 +284,9 @@ export function WebsiteStorefront({
     } : current);
     setDeliveredOpen(false);
   }
-  const dialog = placing ? 'placing' : deliveredOpen ? 'delivered' : cartOpen ? 'cart' : null;
+  const dialog = placing ? 'placing' : deliveredOpen ? 'delivered' : cartOpen ? 'cart' : locationDialog ? 'location' : null;
   useDeliveryDialogFocus(dialog, placingRef, () => {
-    if (placing) setPlacing(false);else if (deliveredOpen) saveFeedback();else setCartOpen(false);
+    if (placing) setPlacing(false);else if (deliveredOpen) saveFeedback();else if (cartOpen) setCartOpen(false);else setLocationDialog(null);
   });
   function browse(next = 'Croissants') {
     setCategory(next);
@@ -306,6 +318,13 @@ export function WebsiteStorefront({
     favorites,
     count,
     address,
+    locationLabel: fulfillment === 'pickup' ? {
+      small: 'Pickup from',
+      text: pickupAddress
+    } : {
+      small: 'Deliver to',
+      text: addressChosen ? address : 'Select your address'
+    },
     browse,
     go,
     query,
@@ -441,10 +460,6 @@ export function WebsiteStorefront({
           } : current);
         }} tipHidden={tipHidden} setTipHidden={setTipHidden} reopenDelivered={() => setDeliveredOpen(true)} />}
         {(screen === 'menu' || screen === 'favorites') && <main className="ws-menu"><h1>{screen === 'favorites' ? 'Your favorites' : 'Our menu'}</h1>{screen === 'menu' && <div className="ws-categories">{['Croissants', 'Cakes', 'Coffee', 'Bread', 'Cupcakes', 'Cookies', 'Donuts'].map(name => <Button secondary={category !== name} key={name} onClick={() => setCategory(name)}>{name}</Button>)}</div>}<div className="ws-product-grid">{WEBSITE_PRODUCTS.filter(item => screen === 'favorites' ? favorites.includes(item.name) : item.category === category && item.name.toLowerCase().includes(query.toLowerCase())).map(item => <ProductCard key={item.name} product={item} {...actions} />)}</div>{!WEBSITE_PRODUCTS.some(item => screen === 'favorites' ? favorites.includes(item.name) : item.category === category && item.name.toLowerCase().includes(query.toLowerCase())) && <p>No items found.</p>}</main>}
-        {screen === 'address' && <main className="ws-simple"><h1>Delivery address</h1><form onSubmit={event => {
-            event.preventDefault();
-            go('home');
-          }}><label className="ws-field ws-shadow">Street address<input required value={address} onChange={event => setAddress(event.target.value)} /></label><button className="ws-button">Save address</button></form></main>}
         {(screen === 'login' || screen === 'signup') && <main className="ws-simple"><h1>{screen === 'login' ? 'Log in' : 'Sign up for free delivery'}</h1><form onSubmit={event => {
             event.preventDefault();
             go('home');
@@ -460,7 +475,21 @@ export function WebsiteStorefront({
       height: height / SCALE,
       transform: `scale(${SCALE})`
     }}>
-      {placing ? <PlacingOrder {...{
+      {locationDialog && !placing && !deliveredOpen && !cartOpen ? <LocationDialog type={locationDialog} setType={setLocationDialog} close={() => setLocationDialog(null)} addresses={addresses} setAddresses={setAddresses} address={address} chooseAddress={(value, message) => {
+        setAddress(value);
+        setAddressChosen(true);
+        setFulfillment('delivery');
+        setLocationDialog(null);
+        setNotice(message || `Delivering to ${value}`);
+      }} pickupAddress={pickupAddress} saveShop={shop => {
+        setPickupAddress(shop);
+        setFulfillment('pickup');
+        setLocationDialog(null);
+        setNotice(`Pickup from ${shop}`);
+      }} order={order} onTrack={() => {
+        setLocationDialog(null);
+        go('tracking');
+      }} /> : placing ? <PlacingOrder {...{
         fulfillment,
         cart,
         address,

@@ -1,8 +1,9 @@
+import { DEFAULT_COLOR, presetColor } from '../lib/brandPalette'
 import { useEffect, useState } from 'react'
 
 export const STORAGE_KEY = 'bake-my-app:onboarding:v1'
 
-export const DEFAULT_BRAND_COLOR = '#c15400'
+export const DEFAULT_BRAND_COLOR = DEFAULT_COLOR
 
 export const DEFAULT_SETTINGS = {
   businessHours: [
@@ -78,6 +79,7 @@ function load() {
     return {
       ...INITIAL_STATE,
       ...saved,
+      brandColor: presetColor(saved.brandColor),
       shop: { ...INITIAL_STATE.shop, ...saved.shop },
       menu: {
         ...INITIAL_STATE.menu,
@@ -134,7 +136,7 @@ export function useOnboardingState({ persist = true, initial = INITIAL_STATE } =
 
   const actions = {
     updateShop: (patch) => setState((s) => ({ ...s, shop: { ...s.shop, ...patch } })),
-    setBrandColor: (brandColor) => setState((s) => ({ ...s, brandColor })),
+    setBrandColor: (brandColor) => setState((s) => ({ ...s, brandColor: presetColor(brandColor) })),
     setCategory: (category) => setState((s) => ({ ...s, menu: { ...s.menu, category } })),
     updateItem: (patch) =>
       setState((s) => ({ ...s, menu: { ...s.menu, item: { ...s.menu.item, ...patch } } })),

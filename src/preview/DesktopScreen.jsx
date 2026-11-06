@@ -1,4 +1,5 @@
-import { CROISSANTS, CAKES } from '../landing/demo/storefrontCatalog'
+import { useState } from 'react'
+import { CROISSANTS, CAKES, WEBSITE_PRODUCTS } from '../landing/demo/storefrontCatalog'
 import {
   ArrowDown01Icon,
   BiscuitIcon,
@@ -12,9 +13,7 @@ import {
   FavouriteIcon,
   FilterVerticalIcon,
   Globe02Icon,
-  Gps01Icon,
   InstagramIcon,
-  Location01Icon,
   Mail01Icon,
   Search01Icon,
   ShoppingBasket03Icon,
@@ -61,6 +60,11 @@ function BrandButton({ children, onClick }) {
   )
 }
 
+/** Figma navbar icon (location-01 / gps-01), masked so it follows --on-brand like the text. */
+function NavIcon({ src }) {
+  return <span aria-hidden="true" className="block size-[8.015px] shrink-0 bg-current" style={{ WebkitMask: `url("${src}") center / contain no-repeat`, mask: `url("${src}") center / contain no-repeat` }} />
+}
+
 function Divider() {
   return <span className="w-[0.334px] self-stretch bg-current opacity-30" />
 }
@@ -81,15 +85,15 @@ function Navbar({ logo, actions }) {
         <div className="flex items-center gap-[3.34px]">
           <Divider />
           <button type="button" onClick={() => actions?.go("address")} className="flex items-center gap-[2.672px]">
-            <Icon icon={Location01Icon} size={8.015} />
-            <div className="flex flex-col gap-[0.668px] leading-normal whitespace-nowrap">
-              <span className="text-[4.007px] opacity-80">Deliver to</span>
-              <span className="text-[5.343px] font-semibold">{actions?.address || "Select your address"}</span>
+            <NavIcon src="/figma/customer-website/d72bf.svg" />
+            <div className="flex flex-col gap-[0.668px] text-left leading-normal whitespace-nowrap">
+              <span className="text-[4.007px] opacity-80">{actions?.locationLabel?.small ?? "Deliver to"}</span>
+              <span className="max-w-[70px] truncate text-[5.343px] font-semibold">{actions?.locationLabel?.text ?? "Select your address"}</span>
             </div>
           </button>
           <Divider />
           <button type="button" onClick={() => actions?.go("orders")} className="flex items-center gap-[2.672px]">
-            <Icon icon={Gps01Icon} size={8.015} />
+            <NavIcon src="/figma/customer-website/8d074.svg" />
             <span className={PILL_TEXT}>Track your order</span>
           </button>
         </div>
@@ -138,26 +142,32 @@ function Hero({ actions }) {
   )
 }
 
-function CategoryTabs({ firstLabel, firstCount, actions }) {
+// Figma's sample counts for the static preview; the interactive demo shows the real counts.
+const CATEGORY_TABS = [
+  { icon: CakeIcon, label: 'Cakes', count: 8, title: 'Freshly Baked Cakes' },
+  { icon: Coffee02Icon, label: 'Coffee', count: 16, title: 'Freshly Brewed Coffee' },
+  { icon: Bread04Icon, label: 'Bread', count: 4, title: 'Artisan Bread' },
+  { icon: Cupcake02Icon, label: 'Cupcakes', count: 10, title: 'Cupcakes' },
+  { icon: BiscuitIcon, label: 'Cookies', count: 8, title: 'Cookies' },
+  { icon: DonutIcon, label: 'Donuts', count: 6, title: 'Donuts' },
+]
+
+/** Category tabs switch the product section below in place (no page change). */
+function CategoryTabs({ firstLabel, firstCount, selected, onSelect, actions }) {
   const tabs = [
     { icon: CroissantIcon, label: firstLabel, count: firstCount },
-    { icon: CakeIcon, label: 'Cakes', count: 8 },
-    { icon: Coffee02Icon, label: 'Coffee', count: 16 },
-    { icon: Bread04Icon, label: 'Bread', count: 4 },
-    { icon: Cupcake02Icon, label: 'Cupcakes', count: 10 },
-    { icon: BiscuitIcon, label: 'Cookies', count: 8 },
-    { icon: DonutIcon, label: 'Donuts', count: 6 },
+    ...CATEGORY_TABS.map((tab) => ({ ...tab, count: actions ? WEBSITE_PRODUCTS.filter((p) => p.category === tab.label).length : tab.count })),
   ]
   return (
     <div className="flex items-center justify-between bg-white px-[66.792px] py-[3.34px]">
       {tabs.map(({ icon, label, count }, i) => (
-        <button type="button" onClick={() => actions?.browse(label)}
+        <button type="button" onClick={() => onSelect(i === 0 ? null : label)} aria-pressed={actions ? (i === 0 ? !selected : selected === label) : undefined}
           key={label + i}
-          className={`flex min-w-px flex-1 items-start justify-center gap-[1.336px] rounded-[20.037px] p-[4.007px] ${i === 0 ? 'bg-brand-light' : ''}`}
+          className={`flex min-w-px flex-1 items-start justify-center gap-[1.336px] rounded-[20.037px] p-[4.007px] ${(i === 0 ? !selected : selected === label) ? 'bg-brand-light' : ''}`}
         >
-          <div className={`flex items-center gap-[1.336px] ${i === 0 ? 'text-brand' : 'text-muted'}`}>
+          <div className={`flex items-center gap-[1.336px] ${(i === 0 ? !selected : selected === label) ? 'text-brand' : 'text-muted'}`}>
             <Icon icon={icon} size={8.015} />
-            <span className={`max-w-[60px] truncate text-[6.679px] leading-normal ${i === 0 ? 'font-medium' : ''}`}>{label}</span>
+            <span className={`max-w-[60px] truncate text-[6.679px] leading-normal ${(i === 0 ? !selected : selected === label) ? 'font-medium' : ''}`}>{label}</span>
           </div>
           <span className="text-[4.007px] leading-normal text-black opacity-40">{count}</span>
         </button>
@@ -202,7 +212,7 @@ function ProductCard({ product, actions }) {
             <span className="text-[6.679px]">{money(product.price)}</span>
             <span className="text-[4.675px] opacity-40">/{product.unit ?? 'piece'}</span>
           </p>
-          <div className="flex items-start gap-[3.34px] text-[4.675px] whitespace-nowrap">
+          {product.kcal != null && <div className="flex items-start gap-[3.34px] text-[4.675px] whitespace-nowrap">
             <span className="flex items-center gap-[0.668px]">
               <img src={fire} alt="" width={6.011} height={6.011} className="size-[6.011px]" />
               {product.kcal}kCal
@@ -212,7 +222,7 @@ function ProductCard({ product, actions }) {
               {product.rating}
               <span className="text-black opacity-40">({product.reviews})</span>
             </span>
-          </div>
+          </div>}
         </div>
         <button type="button" onClick={() => actions?.add(product)} className="flex h-[14.694px] w-[46.086px] shrink-0 items-center justify-center gap-[2.004px] rounded-full border-[0.334px] border-white bg-white/80 text-ink backdrop-blur-[3.34px]">
           <Icon icon={ShoppingBasketAdd03Icon} size={8.015} />
@@ -385,6 +395,10 @@ function croissantsFor(summary) {
 
 /** `framed` draws the preview window; the website demo passes `framed={false}` and its own height. */
 export function DesktopScreen({ summary, logo, height = DESKTOP_HEIGHT, framed = true, actions }) {
+  // null = the first (croissant) tab, which keeps the onboarding answers in the preview.
+  const [category, setCategory] = useState(null)
+  const croissants = croissantsFor(summary)
+  const tab = CATEGORY_TABS.find((t) => t.label === category)
   return (
     <div
       role={actions ? undefined : "img"}
@@ -395,8 +409,8 @@ export function DesktopScreen({ summary, logo, height = DESKTOP_HEIGHT, framed =
       <div className="h-full overflow-x-clip overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <Navbar logo={logo} actions={actions} />
         <Hero actions={actions} />
-        <CategoryTabs actions={actions} firstLabel={summary?.categoryLabel ?? 'Croissants'} firstCount={summary?.products?.length ?? 5} />
-        <ProductSection actions={actions} title="Original Hand-Tossed Croissants" products={croissantsFor(summary)} className="mt-[9.017px]" />
+        <CategoryTabs actions={actions} selected={category} onSelect={setCategory} firstLabel={summary?.categoryLabel ?? 'Croissants'} firstCount={actions ? croissants.length : summary?.products?.length ?? 5} />
+        <ProductSection key={category ?? 'first'} actions={actions} title={tab ? tab.title : 'Original Hand-Tossed Croissants'} products={tab ? WEBSITE_PRODUCTS.filter((p) => p.category === tab.label) : croissants} className="mt-[9.017px]" />
         <AppPromo />
         <ProductSection actions={actions} title="Freshly Baked Cakes" products={CAKES} className="mt-[8.126px]" />
         <BrandFilm actions={actions} />

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { BRAND_COLORS as PRESETS, presetColor } from '../../lib/brandPalette'
+import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   SmartPhone01Icon,
@@ -9,22 +10,9 @@ import {
   ShoppingBasket03Icon,
   StarIcon,
 } from '@hugeicons/core-free-icons'
-import { extractPalette, normalizeHex, readableTextOn } from '../../lib/color'
+import { readableTextOn } from '../../lib/color'
 import { HomeScreen } from '../../preview/HomeScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
-
-const PRESETS = [
-  { name: 'Pink', hex: '#ff1fad' },
-  { name: 'Violet', hex: '#903bff' },
-  { name: 'Green', hex: '#00c064' },
-  { name: 'Cyan', hex: '#00c9c6' },
-  { name: 'Red', hex: '#f30000' },
-  { name: 'Orange', hex: '#f96c00' },
-  { name: 'Blue', hex: '#0095ff' },
-  { name: 'Yellow', hex: '#edba00' },
-]
-
-const DEFAULT_SUGGESTIONS = ['#efbb00', '#a7921b', '#8fa200']
 
 export function EditBrandColorModal({
   isOpen,
@@ -34,32 +22,13 @@ export function EditBrandColorModal({
   onSave,
   onClose,
 }) {
-  const [draftColor, setDraftColor] = useState(initialColor)
-  const [hexInput, setHexInput] = useState(initialColor.replace('#', '').toUpperCase())
+  const [draftColor, setDraftColor] = useState(presetColor(initialColor))
   const [prevColor, setPrevColor] = useState(initialColor)
-  const [device, setDevice] = useState('mobile')
-  const [logoColors, setLogoColors] = useState(DEFAULT_SUGGESTIONS)
-  const colorPickerRef = useRef(null)
-
   if (prevColor !== initialColor) {
     setPrevColor(initialColor)
-    setDraftColor(initialColor)
-    setHexInput(initialColor.replace('#', '').toUpperCase())
+    setDraftColor(presetColor(initialColor))
   }
-
-  useEffect(() => {
-    if (!shop.logo) return
-    let cancelled = false
-    extractPalette(shop.logo, 3).then((colors) => {
-      if (!cancelled && colors && colors.length > 0) {
-        setLogoColors(colors)
-      }
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [shop.logo])
-
+  const [device, setDevice] = useState('mobile')
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
@@ -72,22 +41,7 @@ export function EditBrandColorModal({
 
   if (!isOpen) return null
 
-  const handleSelectColor = (hex) => {
-    const norm = normalizeHex(hex)
-    if (norm) {
-      setDraftColor(norm)
-      setHexInput(norm.replace('#', '').toUpperCase())
-    }
-  }
-
-  const handleHexChange = (e) => {
-    const val = e.target.value.replace('#', '').toUpperCase().slice(0, 6)
-    setHexInput(val)
-    const norm = normalizeHex(val)
-    if (norm && val.length === 6) {
-      setDraftColor(norm)
-    }
-  }
+  const handleSelectColor = setDraftColor
 
   const isCurrent = (hex) => hex.toLowerCase() === draftColor.toLowerCase()
 
@@ -152,75 +106,7 @@ export function EditBrandColorModal({
               </div>
             </div>
 
-            {/* Suggested color based from your logo */}
-            <div className="flex flex-col gap-2.5">
-              <p className="text-sm sm:text-base font-medium text-ink">
-                Suggested color based from your logo
-              </p>
-              <div className="flex flex-wrap gap-2.5">
-                {logoColors.map((hex, idx) => {
-                  const selected = isCurrent(hex)
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      aria-label={`Suggested color ${hex}`}
-                      onClick={() => handleSelectColor(hex)}
-                      style={{ backgroundColor: hex }}
-                      className={`size-14 sm:size-[68px] rounded-[10px] transition-transform hover:scale-105 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
-                        selected ? 'border-2 border-ink ring-2 ring-black/10' : ''
-                      }`}
-                    />
-                  )
-                })}
-              </div>
-            </div>
 
-            {/* Custom Hex & Native Picker */}
-            <div className="flex flex-col gap-2.5">
-              <p className="text-sm sm:text-base font-medium text-ink">Custom</p>
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  aria-label="Pick custom color"
-                  onClick={() => colorPickerRef.current?.click()}
-                  style={{ backgroundColor: draftColor }}
-                  className="relative size-14 sm:size-[68px] shrink-0 rounded-[10px] border-2 border-ink shadow-xs cursor-pointer hover:scale-105 transition-transform"
-                >
-                  <input
-                    ref={colorPickerRef}
-                    type="color"
-                    value={draftColor}
-                    onChange={(e) => handleSelectColor(e.target.value)}
-                    className="pointer-events-none absolute inset-0 size-full opacity-0"
-                  />
-                </button>
-
-                <div className="flex flex-col justify-center gap-1 rounded-[10px] border border-line bg-white px-3.5 py-2 w-[180px] sm:w-[200px] shadow-xs focus-within:border-brand">
-                  <span className="text-xs font-medium text-muted">Hex Code</span>
-                  <div className="flex items-center text-ink text-base font-normal">
-                    <span className="text-muted mr-0.5">#</span>
-                    <input
-                      type="text"
-                      maxLength={6}
-                      value={hexInput}
-                      onChange={handleHexChange}
-                      onBlur={() => {
-                        const norm = normalizeHex(hexInput)
-                        if (norm) {
-                          setDraftColor(norm)
-                          setHexInput(norm.replace('#', '').toUpperCase())
-                        } else {
-                          setHexInput(draftColor.replace('#', '').toUpperCase())
-                        }
-                      }}
-                      className="w-full bg-transparent uppercase outline-none font-medium"
-                      placeholder="C15400"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Action Buttons */}

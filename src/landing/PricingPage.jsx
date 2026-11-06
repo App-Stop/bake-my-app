@@ -1,3 +1,4 @@
+import { GoldDecorations } from './GoldDecorations'
 import { useId, useState } from 'react'
 import { Link } from '../components/Link'
 import { DEFAULT_TRIAL_DAYS, QUOTE_HREF, formatMoney, planHref, priceForInterval, usePlans } from '../lib/plans'
@@ -179,9 +180,10 @@ function PricingFaq() {
 export function PricingPage() {
   const planState = usePlans()
   return (
-    <div className="landing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
+    <div className="landing-page pricing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       <SiteNav forceLight />
       <main className="flex flex-col gap-[calc(140*var(--u))] pt-[calc(134*var(--u))]">
+        <GoldDecorations variant={3} />
         <Pricing standalone showExpert={false} />
         <ComparePlans planState={planState} />
         <GetStarted planState={planState} />

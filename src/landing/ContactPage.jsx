@@ -1,3 +1,4 @@
+import { GoldDecorations } from './GoldDecorations'
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ArrowDown01Icon, ArrowRight02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
@@ -516,6 +517,7 @@ export function ContactPage() {
 
       {/* Text-size floors apply to the page content only; the nav and footer keep the landing scale. */}
       <main className="contact-page">
+        <GoldDecorations variant={0} />
         <section
           aria-labelledby="contact-intro-title"
           className="mx-auto flex max-w-[calc(1920*var(--u))] flex-col gap-12 px-[max(20*var(--m),160*var(--u))] py-[max(56*var(--m),80*var(--u))] lg:flex-row lg:items-start lg:gap-[calc(200*var(--u))]"

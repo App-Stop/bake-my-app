@@ -1,3 +1,4 @@
+import { GoldDecorations } from '../GoldDecorations'
 import { CtaPair } from '../ui'
 import { GAP, TYPE, WAVE, asset } from '../styles'
 
@@ -26,6 +27,7 @@ export function Values() {
   return (
     // The top wave overlaps the bottom of the customize panel by 102px, as in Figma.
     <section aria-label="Why Bake my App" className="relative mt-20">
+      <GoldDecorations variant={0} />
       <img src={asset('wave-top.svg')} alt="" aria-hidden="true" width={1920} height={371} loading="lazy" className={WAVE} />
       <div data-nav-theme="dark" className="relative -mt-[2px] bg-primary">
         <div
