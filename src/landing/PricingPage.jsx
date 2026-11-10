@@ -48,11 +48,11 @@ function CellValue({ value }) {
 
 function ComparePlans({ planState }) {
   return (
-    <section aria-labelledby="compare-title" className="mx-auto h-[calc(967*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
+    <section aria-labelledby="compare-title" className="pricing-comparison mx-auto h-[calc(967*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
       <h2 id="compare-title" className="text-center font-malibu text-[length:calc(36*var(--u))] leading-[calc(54*var(--u))] text-primary">
         compare plans at a glance
       </h2>
-      <div className="mt-[calc(40*var(--u))] overflow-hidden rounded-[calc(24*var(--u))] border border-line bg-white">
+      <div className="pricing-comparison-scroll mt-[calc(40*var(--u))] overflow-hidden rounded-[calc(24*var(--u))] border border-line bg-white">
         <div className="grid h-[calc(100*var(--u))] grid-cols-[35%_21.666%_21.666%_21.668%] bg-primary-light text-[length:calc(16*var(--u))] leading-normal text-ink">
           <div className="flex items-center px-[calc(32*var(--u))] font-semibold">Features</div>
           {PLANS.map(([key, name, fallback, note]) => (
@@ -106,7 +106,7 @@ const STEPS = [
 function GetStarted({ planState }) {
   const trialDays = trialDaysOf(planState.plans)
   return (
-    <section aria-labelledby="steps-title" className="mx-auto flex h-[calc(545*var(--u))] w-full max-w-[calc(1920*var(--u))] flex-col items-center px-[calc(160*var(--u))]">
+    <section aria-labelledby="steps-title" className="pricing-steps mx-auto flex h-[calc(545*var(--u))] w-full max-w-[calc(1920*var(--u))] flex-col items-center px-[calc(160*var(--u))]">
       <h2 id="steps-title" className="font-malibu text-[length:calc(56*var(--u))] leading-[calc(71*var(--u))] text-primary">live in 3 easy steps</h2>
       <p className="mt-[calc(12*var(--u))] text-[length:calc(18*var(--u))] leading-normal text-ink">No developers, no new hardware. We do the techy part.</p>
       <div className="mt-[calc(48*var(--u))] grid h-[calc(248*var(--u))] w-full grid-cols-3 gap-[calc(24*var(--u))]">
@@ -144,7 +144,7 @@ const FAQS = [
 function PricingFaqItem({ item, open, onToggle }) {
   const answerId = useId()
   return (
-    <button type="button" aria-expanded={open} aria-controls={answerId} onClick={onToggle} className={`flex w-full items-start gap-[calc(20*var(--u))] rounded-[calc(40*var(--u))] bg-primary-light p-[calc(30*var(--u))] text-left ${open ? 'h-[calc(142*var(--u))]' : 'h-[calc(92*var(--u))]'}`}>
+    <button type="button" aria-expanded={open} aria-controls={answerId} onClick={onToggle} className={`pricing-faq-item flex w-full items-start gap-[calc(20*var(--u))] rounded-[calc(40*var(--u))] bg-primary-light p-[calc(30*var(--u))] text-left ${open ? 'h-[calc(142*var(--u))]' : 'h-[calc(92*var(--u))]'}`}>
       <span className="flex min-w-0 flex-1 flex-col gap-[calc(10*var(--u))] text-ink">
         <strong className="text-[length:calc(16*var(--u))] leading-normal">{item[0]}</strong>
         {open && <span id={answerId} className="text-[length:calc(16*var(--u))] leading-[1.5] opacity-80">{item[1]}</span>}
@@ -157,7 +157,7 @@ function PricingFaqItem({ item, open, onToggle }) {
 function PricingFaq() {
   const [open, setOpen] = useState(0)
   return (
-    <section className="mx-auto grid h-[calc(590*var(--u))] w-full max-w-[calc(1920*var(--u))] grid-cols-[630fr_900fr] gap-[calc(70*var(--u))] px-[calc(160*var(--u))]">
+    <section className="pricing-faq mx-auto grid h-[calc(590*var(--u))] w-full max-w-[calc(1920*var(--u))] grid-cols-[630fr_900fr] gap-[calc(70*var(--u))] px-[calc(160*var(--u))]">
       <div className="flex flex-col gap-[calc(60*var(--u))] text-ink">
         <div className="flex flex-col gap-[calc(10*var(--u))]">
           <h2 className="font-malibu text-[length:calc(36*var(--u))] leading-[calc(50*var(--u))]">frequently baked questions</h2>
@@ -182,21 +182,23 @@ export function PricingPage() {
   return (
     <div className="landing-page pricing-page min-w-80 overflow-x-clip bg-white font-sans text-ink">
       <SiteNav forceLight />
-      <main className="flex flex-col gap-[calc(140*var(--u))] pt-[calc(134*var(--u))]">
-        <GoldDecorations variant={3} />
-        <Pricing standalone showExpert={false} />
-        <ComparePlans planState={planState} />
-        <GetStarted planState={planState} />
-        <div className="mx-auto h-[calc(211.2*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
-          <ContactExpert mascot="pricing-page/expert-mascot.svg" />
+      <div className="pricing-content">
+        <main className="pricing-main flex flex-col gap-[calc(140*var(--u))] pt-[calc(134*var(--u))]">
+          <GoldDecorations variant={3} />
+          <Pricing standalone showExpert={false} />
+          <ComparePlans planState={planState} />
+          <GetStarted planState={planState} />
+          <div className="pricing-expert mx-auto h-[calc(211.2*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
+            <ContactExpert mascot="pricing-page/expert-mascot.svg" />
+          </div>
+          <PricingFaq />
+        </main>
+        {/* The export is the Figma group before its vertical flip: purple wave rising into the footer. */}
+        <div className="mt-[calc(6*var(--u))]">
+          <img src={asset('pricing-page/footer-wave.svg')} alt="" aria-hidden="true" width={1920} height={371} className="block h-auto w-full max-w-none -scale-y-100" />
         </div>
-        <PricingFaq />
-      </main>
-      {/* The export is the Figma group before its vertical flip: purple wave rising into the footer. */}
-      <div className="mt-[calc(6*var(--u))]">
-        <img src={asset('pricing-page/footer-wave.svg')} alt="" aria-hidden="true" width={1920} height={371} className="block h-auto w-full max-w-none -scale-y-100" />
+        <Footer figmaPricingAssets />
+        </div>
       </div>
-      <Footer figmaPricingAssets />
-    </div>
-  )
-}
+    )
+  }

@@ -67,7 +67,7 @@
   }
 
   /* Pricing keeps the full 1x rhythm on mobile: its plan cards read too small at 0.85x. */
-  .landing-page.pricing-page {
+  .landing-page .pricing-content {
     --px: 1px;
     --m: 1px;
     --spacing: 0.25rem;
@@ -105,9 +105,16 @@
    * tall. The page is sized against a 1200px-tall frame, so it stays larger than a strict fit and the
    * cards' bottom edge may fall just below the fold. It never shrinks below 65% of the width scale.
    */
-  .landing-page.pricing-page {
+  .landing-page .pricing-content {
     --u: min(1px, calc(100vw / 1920), max(calc(100vh / 1200), calc(0.65 * 100vw / 1920)));
     --u: min(1px, calc(100vw / 1920), max(calc(100svh / 1200), calc(0.65 * 100vw / 1920)));
+    --px: var(--u);
+    --spacing: calc(4 * var(--u));
+    --text-xs: calc(12 * var(--u));
+    --text-sm: calc(14 * var(--u));
+    --text-base: calc(16 * var(--u));
+    --text-lg: calc(18 * var(--u));
+    --text-xl: calc(20 * var(--u));
   }
 
   /* Embedded app UI (the storefront phones) keeps its own 1× sizes; it is scaled as a whole. */
@@ -119,6 +126,92 @@
     --text-base: 1rem;
     --text-lg: 1.125rem;
     --text-xl: 1.25rem;
+  }
+}
+
+/* Let sections grow when copy wraps or an FAQ opens. */
+.pricing-comparison,
+.pricing-steps,
+.pricing-expert,
+.pricing-faq,
+.pricing-faq-item {
+  height: auto;
+}
+
+.pricing-steps > div:nth-of-type(1) {
+  height: auto;
+}
+
+.pricing-faq-item {
+  min-height: calc(92 * var(--u));
+}
+
+@media (max-width: 63.999rem) {
+  .pricing-content .pricing-main {
+    padding-top: 112px;
+    gap: 64px;
+  }
+
+  .pricing-comparison,
+  .pricing-steps,
+  .pricing-expert,
+  .pricing-faq {
+    --u: 1px;
+    padding-inline: 20px;
+  }
+
+  .pricing-comparison h2,
+  .pricing-faq h2 {
+    font-size: 30px;
+    line-height: 1.3;
+  }
+
+  .pricing-steps > h2 {
+    font-size: 36px;
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .pricing-steps > p {
+    text-align: center;
+  }
+
+  .pricing-comparison-scroll {
+    overflow-x: auto;
+  }
+
+  .pricing-comparison-scroll > div {
+    min-width: 800px;
+  }
+
+  .pricing-comparison-scroll a {
+    max-width: calc(100% - 16px);
+  }
+
+  .pricing-faq {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .pricing-faq > div:first-child {
+    gap: 24px;
+  }
+
+  .pricing-faq-item {
+    padding: 24px;
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .pricing-steps > div:nth-of-type(1) {
+    grid-template-columns: 1fr;
+    margin-top: 32px;
+  }
+
+  .pricing-steps > div:nth-of-type(2) > div {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
