@@ -174,7 +174,7 @@ export function DemoWindow({ width, height, contentWidth = width, mobileZoom = 1
  * tall, with the demo bar at its Figma position below. On phones the page is exactly one screen
  * tall: the color bar on top, the demo inset below it, and the mobile demo bar at the bottom.
  */
-export function DemoPage({ title, active, top, height, children }) {
+export function DemoPage({ title, active, top, height, children, widePreview = false }) {
   const { color } = useDemoBrand()
 
   return (
@@ -187,7 +187,7 @@ export function DemoPage({ title, active, top, height, children }) {
       <div className="relative z-10 w-full px-4 pt-3 lg:hidden">
         <MobileCustomizationBar color={color} onChange={setDemoBrandColor} />
       </div>
-      <main className="relative flex flex-1 flex-col items-center max-lg:min-h-0 max-lg:w-full max-lg:px-7 max-lg:pt-4 max-lg:pb-5 lg:mt-(--top)">
+      <main className={`relative flex flex-1 flex-col items-center max-lg:min-h-0 max-lg:w-full ${widePreview ? 'max-lg:px-2' : 'max-lg:px-7'} max-lg:pt-4 max-lg:pb-5 lg:mt-(--top)`}>
         <h1 className="sr-only">{title}</h1>
         <div className="brand-scope max-lg:flex max-lg:min-h-0 max-lg:w-full max-lg:flex-1 max-lg:items-center max-lg:justify-center" style={brandTheme(color)}>
           {children}

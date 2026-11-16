@@ -25,7 +25,7 @@ function MobileWebsiteDemo() {
   const { logo } = useDemoBrand()
 
   return (
-    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850}>
+    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850} widePreview>
       <div ref={ref} className="relative size-full overflow-hidden rounded-[20px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
         {height > 0 && <WebsiteStorefront mobile summary={SUMMARY} logo={logo} height={height} />}
       </div>

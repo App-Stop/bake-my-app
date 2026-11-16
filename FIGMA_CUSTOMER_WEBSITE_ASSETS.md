@@ -107,3 +107,25 @@ The website cart uses the new 540 × 1058 design with 20px rounded corners on al
 `cart-panel-close.svg` was exported directly from Figma node `1:7438` and retains its 30 × 30 root dimensions. Other icons and add-on images match the assets already exported from the linked cart designs. Product imagery, counts and monetary values remain connected to the demo cart.
 
 Croissants receive the demonstrated 10% quantity offer when at least two of the same item are added. The offer hint changes when eligible and is removed when the quantity drops below the threshold. Add-ons retain their usual prices. Promo codes apply after the quantity offer, then VAT is rounded in cents; all checkout, tracking and confirmation totals use the same calculation. Product-specific original-price badges are displayed only when the product supplies an original price.
+
+## Responsive website — 246 mobile frames
+
+The website demo now follows the mobile Home (`246:2508`), Product (`246:3296`), delivery and pickup Checkout (`246:4009`, `246:4231`), five Tracking states (`246:4435`, `246:4694`, `246:4953`, `246:5258`, `246:5526`), and five Profile states (`246:5830`, `246:6110`, `246:6347`, `246:6609`, `246:6870`). Figma MCP design context and screenshots were used for these screens. Device status bars are supplied by the browser/device rather than simulated in the website.
+
+`website-mobile.css` contains the responsive storefront styles. The menu opens Profile, My Orders, Favourites, Loyalty Wallet and tracking. Profile reuses the existing app wallet and points components in normal document flow. Favourites, reorder, order summaries, checkout totals and submitted feedback use the website session data. Sample historical orders use catalog prices and the shared totals calculation. The mobile Place order button stays within the preview, submits the checkout form and preserves native field validation.
+
+Existing product photos, category data, hero, film, footer logo, checkout illustrations, map, QR codes, ratings and palette-specific 3D assets are reused. The following missing mobile assets were downloaded into `public/figma/customer-website/mobile/` from Figma:
+
+| Assets | Source |
+| --- | --- |
+| `1ac85.svg`, `52256.svg` | Navbar `246:3254` |
+| `e99c0.svg`, `a9aa3.svg`, `a0e8d.svg`, `cf8af.svg`, `aad42.svg`, `5da12.svg`, `0c068.svg` | Category tabs `246:2517` |
+| `78437.svg`, `8e725.svg` | Product card `246:2585` and detail `246:3306` |
+| `177b8.svg`, `03b31.svg` | Preparing glows `246:4435` |
+| `3f3f2.svg` | Profile glow `246:5830` |
+| `3f5f7.svg`, `708cc.svg`, `d8506.svg` | Favourites and order history `246:6870`, `246:6609` |
+| `app-phone-hand.png` | Masked phone/hand group `246:2890` |
+
+`BrandImage` now recolors local website SVG primary and light colors as well as mobile-app SVGs. `useBrandedRaster` tints only blue/violet brand pixels in the existing phone mockups and pickup timing icon, preserving photography and transparency. Other illustrations use their existing ten-color palette exports. The leave-at-door illustration correctly maps to the door artwork rather than the shop. Preparing glows and bag motion retain Figma's 5-second loop; enroute rider motion uses its supplied timing, with reduced-motion support.
+
+Validation: production build; browser flows for delivery and pickup through tracking and completion, profile, wallet withdrawal, points, order history, favourites and reorder; layout/image checks at 320, 375, 402 and 768 viewport pixels; ten brand colors; desktop preview smoke check. Changed files pass targeted ESLint. Full ESLint retains the eight pre-existing `DeliveryPanels.jsx` errors concerning mixed component/helper exports and a ref assignment during render.

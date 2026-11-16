@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useDemoBrand } from './demoBrand'
 import { presetColor } from '../../lib/brandPalette'
+import { useBrandedRaster } from './useBrandedRaster'
 
 const boy = 'Creating_delivery_boy_icon_2K_202609021121 '
 const files = {
   '4c52b.png': 'image 10.png',
   '5be80.png': 'image 10.png',
   'f4a92.png': 'image 10-2.png', 'cart-delivery.png': 'image 10-2.png',
-  'ba908.png': boy + '2-7.png', 'pickup-store.png': boy + '2-7.png', '966b9.png': boy + '2-7.png',
+  'ba908.png': boy + '3.png', 'pickup-store.png': boy + '2-7.png', '966b9.png': boy + '2-7.png',
   '74b7e.png': boy + '2-6.png', '13cd8.png': 'image 10-1.png',
   '0874f.png': 'image 11.png', 'edec3.png': 'image 11.png',
   '49aee.png': 'image 10-4.png', 'delivered-check.png': 'image 10-4.png',
@@ -20,6 +21,7 @@ const files = {
 // Figma exported the mobile SVGs (header glows etc.) with the Figma purple baked in;
 // they're fetched once and re-filled with the demo's brand color.
 const FIGMA_PURPLE = /#554CF1/gi
+const FIGMA_LIGHT = /#EEF0FD/gi
 const svgText = new Map() // src -> SVG markup ('' when it has nothing to recolor or failed to load)
 const pending = new Map() // src -> in-flight fetch
 
@@ -28,13 +30,13 @@ function loadSvg(src) {
     pending.set(src, fetch(src)
       .then((r) => (r.ok ? r.text() : ''))
       .catch(() => '')
-      .then((text) => { svgText.set(src, /#554CF1/i.test(text) ? text : '') }))
+      .then((text) => { svgText.set(src, /#554CF1|#EEF0FD/i.test(text) ? text : '') }))
   }
   return pending.get(src)
 }
 
 function useBrandSvg(src, color) {
-  const recolorable = typeof src === 'string' && src.startsWith('/assets/mobile/') && src.endsWith('.svg')
+  const recolorable = typeof src === 'string' && (src.startsWith('/assets/mobile/') || src.startsWith('/figma/customer-website/')) && src.endsWith('.svg')
   const [, loaded] = useState(0)
   useEffect(() => {
     if (!recolorable || svgText.has(src)) return
@@ -47,13 +49,16 @@ function useBrandSvg(src, color) {
   if (!svgText.has(src)) return undefined
   const text = svgText.get(src)
   if (!text) return src
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(text.replace(FIGMA_PURPLE, color))}`
+  // SVG presentation attributes need concrete colors (CSS custom properties do not cross img boundaries).
+  const light = `color-mix(in oklab, ${color} 8%, white)`
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(text.replace(FIGMA_PURPLE, color).replace(FIGMA_LIGHT, light))}`
 }
 
 export function BrandImage({ src, alt = '', ...props }) {
   const { color } = useDemoBrand()
   const file = files[src?.split('/').at(-1)]
   const svg = useBrandSvg(src, color)
-  const themed = file ? `/assets/3d/${presetColor(color).slice(1)}/${encodeURIComponent(file)}` : svg
+  const promo = useBrandedRaster(svg, color)
+  const themed = file ? `/assets/3d/${presetColor(color).slice(1)}/${encodeURIComponent(file)}` : promo
   return <img {...props} src={themed} alt={alt} />
 }

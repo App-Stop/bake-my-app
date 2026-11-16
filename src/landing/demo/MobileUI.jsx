@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { mobileAssets } from './mobileAssets'
+import { BrandImage } from './BrandImage'
 
 const D = mobileAssets.detail
 
-export function Glyph({ src, className = '' }) { return <img className={`ma-glyph ${className}`} src={src} alt="" /> }
+export function Glyph({ src, className = '' }) { return <BrandImage className={`ma-glyph ${className}`} src={src} alt="" /> }
 export function Action({ children, onClick, className = '', ...props }) { return <button type="button" className={`ma-action ${className}`} onClick={onClick} {...props}>{children}</button> }
 
 export function Sheet({ title, onClose, children, className = '' }) {

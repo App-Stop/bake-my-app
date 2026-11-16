@@ -1,5 +1,5 @@
 import { BrandImage } from './BrandImage'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DesktopScreen, DESKTOP_WIDTH } from '../../preview/DesktopScreen';
 import { CROISSANTS, CAKES, WEBSITE_PRODUCTS } from './storefrontCatalog';
 import { brandIllustrationProps } from './brandIllustrations';
@@ -14,9 +14,12 @@ import play from '../../assets/desktop/store-play.svg';
 import playWordmark from '../../assets/desktop/store-play-wordmark.svg';
 import apple from '../../assets/desktop/store-apple.svg';
 import './website-storefront.css';
+import './website-mobile.css';
+import { WebsiteAccount } from './WebsiteAccount';
 import { LocationDialog } from './WebsiteLocationDialogs';
 import { DeliveryCheckout, DeliveryTracking, DeliveryCart, DeliveredDialog, DELIVERY_STAGES, DELIVERY_DELAYS, PICKUP_STAGES, PICKUP_DELAYS, deliveryTotals, useDeliveryDialogFocus } from './DeliveryPanels';
 const A = '/figma/customer-website/';
+const mobileAsset = (name, props = {}) => <BrandImage src={`${A}mobile/${name}`} alt="" {...props} />;
 const SCALE = DESKTOP_WIDTH / 1920;
 const money = value => `$${value.toFixed(2)}`;
 const signature = {
@@ -63,8 +66,20 @@ function Header({
   browse,
   query,
   setQuery,
-  locationLabel
+  locationLabel,
+  mobile,
+  count
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  if (mobile) return <header className="ws-header ws-mobile-header">
+    <div className="ws-mobile-top"><button onClick={() => go('home')} aria-label="Store home">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-current" />}</button>
+      <div className="ws-mobile-actions"><button className="ws-header-cart" onClick={() => go('cart')}>{mobileAsset('1ac85.svg')}Cart ({count})</button><button className="ws-search-toggle" aria-label="Search menu" aria-expanded={searchOpen} onClick={() => setSearchOpen(!searchOpen)}>{asset('cca3c.svg')}</button><button aria-label="Open menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{mobileAsset('52256.svg')}</button></div>
+    </div>
+    <div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>{locationLabel.small}</small><b>{locationLabel.text}</b></span></button></div>
+    {searchOpen && <form className="ws-search" onSubmit={event => { event.preventDefault(); browse(); setSearchOpen(false); }}><input autoFocus aria-label="Search products" placeholder="Search croissants, cakes…" value={query} onChange={event => setQuery(event.target.value)} /><button type="submit" aria-label="Submit search">{asset('cca3c.svg')}</button></form>}
+    {menuOpen && <nav className="ws-mobile-menu" aria-label="Store navigation">{[['home', 'Home'], ['menu', 'Our menu'], ['profile', 'My profile'], ['history', 'My Orders'], ['favorites', 'Favourites'], ['wallet', 'Loyalty Wallet'], ['tracking', 'Track your order'], ['login', 'Log in']].map(([to, label]) => <button key={to} onClick={() => { setMenuOpen(false); go(to); }}>{label}</button>)}</nav>}
+  </header>;
   return <header className="ws-header">
     <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-current" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>{locationLabel.small}</small><b>{locationLabel.text}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
     <form className="ws-search" onSubmit={event => {
@@ -92,9 +107,10 @@ function Footer({
         }}><label>{asset('a4efb.svg')}<input type="email" required placeholder="Email address" aria-label="Newsletter email address" /></label><Button className="ws-subscribe" onClick={event => event.currentTarget.form.requestSubmit()}>Subscribe</Button></form><small>By subscribing, you agree to our Terms and Privacy Policy.</small></div></div><div className="ws-footer-bottom"><span>© 2026 Bake My App. All rights reserved.</span><div>{['Privacy', 'Terms', 'Cookies'].map(label => <button key={label} onClick={() => go('support')}>{label}</button>)}</div></div></footer>;
 }
 function AppPromo({
-  wide = false
+  wide = false,
+  mobile = false
 }) {
-  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><BrandImage src={play} alt="" /><div><small>GET IT ON</small><BrandImage className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><BrandImage src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{asset('app-phone-hand.png')}</div></aside>;
+  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><BrandImage src={play} alt="" /><div><small>GET IT ON</small><BrandImage className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><BrandImage src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{mobile ? mobileAsset('app-phone-hand.png') : asset('app-phone-hand.png')}</div></aside>;
   return <aside className="ws-app-promo"><h3>Get 20% OFF on the app</h3><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-qr"><div>{asset('6965d.png', 'Scan to download the app')}</div><span>SCAN TO DOWNLOAD!</span></div><div className="ws-phone-hand">{asset('checkout-phone-hand.png')}</div></aside>;
 }
 function ProductCard({
@@ -103,12 +119,13 @@ function ProductCard({
   add,
   openProduct,
   favorites,
-  toggleFavorite
+  toggleFavorite,
+  mobile
 }) {
   return <article className={`ws-card ${compact ? 'ws-compact' : ''}`}><div className="ws-card-glow"><ProductImage product={{
         ...product,
         image: product.glow || product.image
-      }} /></div><button aria-label={`View ${product.name}`} onClick={() => openProduct(product)}><ProductImage product={product} /></button><div className="ws-card-bottom"><div><button className="ws-product-title" onClick={() => openProduct(product)}>{product.name}</button><p>{money(product.price)} <span>/{product.unit || 'piece'}</span></p>{!compact && <div className="ws-card-stats">{asset('f3b69.svg')}{product.kcal}kCal {asset('b9e64.svg')}{product.rating}<span>({product.reviews})</span></div>}</div><Button secondary onClick={() => add(product)}>{asset('b1c88.svg')}Add to cart</Button></div>{product.isNew && <span className="ws-new">NEW</span>}<button className="ws-heart" aria-label={`Save ${product.name}`} aria-pressed={favorites.includes(product.name)} onClick={() => toggleFavorite(product)}>{asset(favorites.includes(product.name) ? '6ff4e.svg' : '8ff2b.svg')}</button></article>;
+      }} /></div><button aria-label={`View ${product.name}`} onClick={() => openProduct(product)}><ProductImage product={product} /></button><div className="ws-card-bottom"><div><button className="ws-product-title" onClick={() => openProduct(product)}>{product.name}</button><p>{money(product.price)} <span>/{product.unit || 'piece'}</span></p>{!compact && product.kcal && <div className="ws-card-stats"><span>{asset('f3b69.svg')}{product.kcal}kCal</span><span>{asset('b9e64.svg')}{product.rating}<em>({product.reviews})</em></span></div>}</div><Button secondary onClick={() => add(product)}>{asset('b1c88.svg')}Add to cart</Button></div>{product.isNew && <span className="ws-new">NEW</span>}<button className="ws-heart" aria-label={`Save ${product.name}`} aria-pressed={favorites.includes(product.name)} onClick={() => toggleFavorite(product)}>{mobile ? mobileAsset(favorites.includes(product.name) ? '3f5f7.svg' : '78437.svg') : asset(favorites.includes(product.name) ? '6ff4e.svg' : '8ff2b.svg')}</button></article>;
 }
 function ProductSection({
   title,
@@ -134,7 +151,7 @@ function ProductDetail({
   return <><section className="ws-detail"><ProductImage className="ws-detail-image" product={product} /><div className="ws-detail-info"><div><h1>{product.name}</h1><p className="ws-description">Savor our {product.name}, a buttery masterpiece with a flaky exterior and soft interior. Handcrafted with premium ingredients, it’s perfect fresh from the oven, whether paired with rich chocolate spread or creamy butter. Ideal for breakfast or a delightful snack!</p></div><div className="ws-badges"><span>{asset('bff8b.svg')}{product.kcal}kCal</span><span>{asset('a2d88.svg')}{product.rating} <em>({product.reviews})</em></span></div><div className="ws-buy"><div><p>{money(product.price)} <span>/{product.unit || 'piece'}</span></p><Quantity value={quantity} onChange={setQuantity} /></div><div><Button onClick={() => {
               actions.add(product, quantity);
               extras.forEach(extra => actions.add(extra, quantity));
-            }}>Add to cart</Button><button className="ws-detail-heart" aria-label="Save product" aria-pressed={actions.favorites.includes(product.name)} onClick={() => actions.toggleFavorite(product)}>{asset('29c53.svg')}</button></div></div><div><h3>Frequently bought together</h3><div className="ws-extras">{[{
+            }}>Add to cart</Button><button className="ws-detail-heart" aria-label="Save product" aria-pressed={actions.favorites.includes(product.name)} onClick={() => actions.toggleFavorite(product)}>{actions.mobile ? mobileAsset('8e725.svg') : asset('29c53.svg')}</button></div></div><div><h3>Frequently bought together</h3><div className="ws-extras">{[{
               name: 'Chocolate Syrup',
               price: 3,
               file: 'b64da.png'
@@ -149,7 +166,7 @@ function ProductDetail({
             }].map(extra => <div className="ws-extra" key={extra.name}>{asset(extra.file)}<p>{extra.name}</p><b>+{money(extra.price).replace('.00', '')}</b><button aria-label={`Add ${extra.name}`} aria-pressed={extras.some(item => item.name === extra.name)} onClick={() => setExtras(items => items.some(item => item.name === extra.name) ? items.filter(item => item.name !== extra.name) : [...items, {
                 ...extra,
                 image: existingAssets[extra.file] || A + extra.file
-              }])}>{extras.some(item => item.name === extra.name) ? '✓' : asset('08df2.svg')}</button></div>)}</div></div><div className="ws-ingredients"><h3>Ingredients</h3>{['50g white wheat', '20ml mineral water', '10ml cow milk', '1 whole egg'].map(text => <p key={text}>{text}</p>)}</div><div><h3>Allergens</h3><div className="ws-allergens">{[['f990a.svg', 'Glutten'], ['e92c1.svg', 'Eggs'], ['6e1d2.svg', 'Milk']].map(([src, label]) => <div key={label}>{asset(src)}<span>{label}</span></div>)}</div></div></div></section><ProductSection title="More like this" products={CROISSANTS} {...actions} /><AppPromo wide /><ProductSection title="You may also want to try" products={CAKES.slice(0, 6)} {...actions} /><section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section></>;
+              }])}>{extras.some(item => item.name === extra.name) ? '✓' : asset('08df2.svg')}</button></div>)}</div></div><div className="ws-ingredients"><h3>Ingredients</h3>{['50g white wheat', '20ml mineral water', '10ml cow milk', '1 whole egg'].map(text => <p key={text}>{text}</p>)}</div><div><h3>Allergens</h3><div className="ws-allergens">{[['f990a.svg', 'Glutten'], ['e92c1.svg', 'Eggs'], ['6e1d2.svg', 'Milk']].map(([src, label]) => <div key={label}>{asset(src)}<span>{label}</span></div>)}</div></div></div></section><ProductSection title="More like this" products={CROISSANTS} {...actions} /><AppPromo wide mobile={actions.mobile} /><ProductSection title="You may also want to try" products={CAKES.slice(0, 6)} {...actions} /><section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section></>;
 }
 function OrderLines({
   cart,
@@ -161,8 +178,10 @@ function OrderLines({
   return <div className="ws-order-lines">{cart.map(item => <p key={item.name}><span>{item.qty}x {item.name}</span><span>{money(item.price * item.qty)}</span></p>)}<hr /><p><span>{compact ? 'Total' : 'Subtotal'}</span><span>{compact ? `${money(total)}${payment ? ` (${payment})` : ''}` : money(subtotal)}</span></p></div>;
 }
 function Glow({
-  tracking
+  tracking,
+  mobile = false
 }) {
+  if (mobile && tracking) return <div className="ws-glows ws-mobile-glows" aria-hidden="true"><div className="ws-glow-one">{mobileAsset('177b8.svg')}</div><div className="ws-glow-two">{mobileAsset('03b31.svg')}</div></div>;
   return <div className="ws-glows" aria-hidden="true"><div className="ws-glow-one">{asset(tracking ? '6252b.svg' : '6a563.svg')}</div><div className="ws-glow-two">{asset(tracking ? '70bc1.svg' : 'a4fb5.svg')}</div></div>;
 }
 function PlacingOrder({
@@ -188,6 +207,8 @@ const HOME_SECTIONS = {
   Cookies: 'Cookies',
   Donuts: 'Donuts'
 };
+const CATEGORY_ICONS = ['e99c0.svg', 'a9aa3.svg', 'a0e8d.svg', 'cf8af.svg', 'aad42.svg', '5da12.svg', '0c068.svg'];
+const CATEGORY_COUNTS = [5, 8, 16, 4, 10, 8, 6];
 /** Phone home page: the desktop home's sections (hero, category tabs, products, app promo, film) in one column. */
 function MobileHome({
   actions
@@ -195,10 +216,10 @@ function MobileHome({
   const [category, setCategory] = useState('Croissants');
   const products = category === 'Croissants' ? CROISSANTS : WEBSITE_PRODUCTS.filter(item => item.category === category);
   return <>
-    <section className="ws-m-hero"><BrandImage src={hero} alt="" /><div><h1>Oven baked freshness, at your home</h1><Button onClick={() => actions.browse()}>Browse Menu</Button></div></section>
-    <div className="ws-categories ws-m-tabs" role="group" aria-label="Categories">{Object.keys(HOME_SECTIONS).map(name => <Button secondary={category !== name} aria-pressed={category === name} key={name} onClick={() => setCategory(name)}>{name}</Button>)}</div>
+    <section className="ws-m-hero"><BrandImage src={hero} alt="" /><div><h1>Oven baked freshness,<br />at your home</h1><div className="ws-hero-actions"><Button onClick={() => actions.browse()}>Browse Menu</Button><button onClick={() => document.getElementById('ws-home-menu')?.scrollIntoView({ block: 'start' })}>or scroll down</button></div></div></section>
+    <div id="ws-home-menu" className="ws-categories ws-m-tabs" role="group" aria-label="Categories">{Object.keys(HOME_SECTIONS).map((name, index) => <button aria-pressed={category === name} key={name} onClick={() => setCategory(name)}><span className="ws-category-icon" style={{ maskImage: `url(${A}mobile/${CATEGORY_ICONS[index]})` }} />{name}<sup>{CATEGORY_COUNTS[index]}</sup></button>)}</div>
     <ProductSection key={category} title={HOME_SECTIONS[category]} products={products} {...actions} />
-    <AppPromo wide />
+    <AppPromo wide mobile={actions.mobile} />
     <ProductSection title="Freshly Baked Cakes" products={CAKES} {...actions} />
     <section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section>
   </>;
@@ -248,11 +269,12 @@ export function WebsiteStorefront({
   const [placing, setPlacing] = useState(false);
   const [seconds, setSeconds] = useState(5);
   const [order, setOrder] = useState(null);
+  const [orderHistory, setOrderHistory] = useState([]);
   const [notice, setNotice] = useState('');
   const scroll = useRef(null);
   const placingRef = useRef(null);
   const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  const totals = deliveryTotals(cart, priority, promoApplied, fulfillment);
+  const totals = useMemo(() => deliveryTotals(cart, priority, promoApplied, fulfillment), [cart, priority, promoApplied, fulfillment]);
   const {
     subtotal,
     total
@@ -301,16 +323,15 @@ export function WebsiteStorefront({
     if (next === 'delivered' || next === 'complete') setDeliveredOpen(true);
   }
   function saveFeedback() {
-    setOrder(current => current ? {
-      ...current,
-      feedback: {
-        rating,
-        comment
-      },
-      ...(current.fulfillment === 'pickup' ? {} : {
-        riderTip
-      })
-    } : current);
+    if (order) {
+      const reviewed = {
+        ...order,
+        feedback: { rating, comment },
+        ...(order.fulfillment === 'pickup' ? {} : { riderTip })
+      };
+      setOrder(reviewed);
+      setOrderHistory(items => [reviewed, ...items.filter(item => item.id !== reviewed.id)]);
+    }
     setDeliveredOpen(false);
   }
   const dialog = placing ? 'placing' : deliveredOpen ? 'delivered' : cartOpen ? 'cart' : locationDialog ? 'location' : null;
@@ -341,6 +362,7 @@ export function WebsiteStorefront({
     setFavorites(items => items.includes(item.name) ? items.filter(name => name !== item.name) : [...items, item.name]);
   }
   const actions = {
+    mobile,
     add,
     openProduct,
     toggleFavorite,
@@ -364,48 +386,52 @@ export function WebsiteStorefront({
   };
   useEffect(() => {
     if (!placing) return;
-    const timer = window.setInterval(() => setSeconds(value => Math.max(0, value - 1)), 1000);
+    let remaining = 5;
+    const timer = window.setInterval(() => {
+      remaining -= 1;
+      setSeconds(remaining);
+      if (remaining > 0) return;
+      clearInterval(timer);
+      if (order) setOrderHistory(items => [order, ...items.filter(item => item.id !== order.id)]);
+      setOrder({
+        cart: cart.map(item => ({
+          ...item
+        })),
+        id: `DEMO-${Date.now()}`,
+        stage: 'preparing',
+        subtotal,
+        total,
+        address: fulfillment === 'pickup' ? pickupAddress : address,
+        fulfillment,
+        pickupAddress,
+        payment,
+        customer: {
+          ...customer
+        },
+        instructions: fulfillment === 'pickup' ? pickupInstructions : instructions,
+        leaveAtDoor: fulfillment === 'delivery' && leave,
+        priority: fulfillment === 'delivery' && priority,
+        totals: {
+          ...totals
+        }
+      });
+      setCart([]);
+      setPlacing(false);
+      setScreen('tracking');
+      setPromoApplied(false);
+      setPromoError('');
+      setRiderTip(10);
+      setTipHidden(false);
+      setRating(4);
+      setComment('Really loved the croissant!');
+      setPromo('');
+      setNotice('');
+      scroll.current?.scrollTo({
+        top: 0
+      });
+    }, 1000);
     return () => clearInterval(timer);
-  }, [placing]);
-  useEffect(() => {
-    if (!placing || seconds > 0) return;
-    setOrder({
-      cart: cart.map(item => ({
-        ...item
-      })),
-      id: `DEMO-${Date.now()}`,
-      stage: 'preparing',
-      subtotal,
-      total,
-      address: fulfillment === 'pickup' ? pickupAddress : address,
-      fulfillment,
-      pickupAddress,
-      payment,
-      customer: {
-        ...customer
-      },
-      instructions: fulfillment === 'pickup' ? pickupInstructions : instructions,
-      leaveAtDoor: fulfillment === 'delivery' && leave,
-      priority: fulfillment === 'delivery' && priority,
-      totals: {
-        ...totals
-      }
-    });
-    setCart([]);
-    setPlacing(false);
-    setScreen('tracking');
-    setPromoApplied(false);
-    setPromoError('');
-    setRiderTip(10);
-    setTipHidden(false);
-    setRating(4);
-    setComment('Really loved the croissant!');
-    setPromo('');
-    setNotice('');
-    scroll.current?.scrollTo({
-      top: 0
-    });
-  }, [placing, seconds, cart, subtotal, total, address, payment, customer, instructions, leave, priority, fulfillment, pickupAddress, pickupInstructions]);
+  }, [placing, cart, subtotal, total, totals, order, address, payment, customer, instructions, leave, priority, fulfillment, pickupAddress, pickupInstructions]);
   useEffect(() => {
     if (!order || screen !== 'tracking' || placing || cartOpen) return;
     const stages = order.fulfillment === 'pickup' ? PICKUP_STAGES : DELIVERY_STAGES;
@@ -424,7 +450,7 @@ export function WebsiteStorefront({
       if (next === 'delivered' || next === 'complete') setDeliveredOpen(true);
     }, delays[stage]);
     return () => clearTimeout(timer);
-  }, [order?.id, order?.stage, order?.fulfillment, screen, placing, cartOpen]);
+  }, [order, screen, placing, cartOpen]);
   useEffect(() => {
     if (!notice) return;
     const timer = setTimeout(() => setNotice(''), 4000);
@@ -437,24 +463,27 @@ export function WebsiteStorefront({
     notify: setNotice
   };
   const deliveryUI = {
+    mobile,
     Button,
     asset,
     ProductImage,
     OrderLines,
     AppPromo,
-    Glow,
+    Glow: props => <Glow {...props} mobile={mobile} />,
     ProductCard,
     extraImage: file => existingAssets[file] || A + file,
     recommendations: [CROISSANTS[0], CROISSANTS[1], CROISSANTS[2], CROISSANTS[7]]
   };
-  return <div className={`ws-viewport ${mobile ? 'ws-mobile' : ''}`} style={{
+  const accountScreen = ['profile', 'wallet', 'points', 'history', 'favorites'].includes(screen);
+  return <div className={`ws-viewport ${mobile ? 'ws-mobile' : ''} ${screen === 'checkout' ? 'ws-checkout-page' : ''}`} data-screen={screen} style={{
     width: mobile ? '100%' : DESKTOP_WIDTH,
     height
   }}>
     <div ref={scroll} className="ws-scroll" inert={!!dialog || undefined}>
       {screen === 'home' && !mobile ? <DesktopScreen summary={summary} logo={logo} height={height} framed={false} actions={actions} /> : <div className="ws-site" style={mobile ? undefined : {
         zoom: SCALE
-      }}><Header {...actions} logo={logo} />{screen === 'home' ? <MobileHome actions={actions} /> : <nav className="ws-breadcrumb" aria-label="Breadcrumb"><button onClick={() => go('home')}>Home</button>{asset('08aa1.svg')}{screen === 'product' ? <><button onClick={() => browse()}>Croissant</button>{asset('08aa1.svg')}<span>{product.name}</span></> : <span>{screen === 'tracking' ? `Tracking　 ›　 Order#${order?.id?.replace('DEMO-', '') || '—'}` : screen[0].toUpperCase() + screen.slice(1)}</span>}</nav>}
+      }}><Header {...actions} logo={logo} />{screen === 'home' ? <MobileHome actions={actions} /> : accountScreen ? null : <nav className="ws-breadcrumb" aria-label="Breadcrumb"><button onClick={() => go('home')}>Home</button>{asset('08aa1.svg')}{screen === 'product' ? <><button onClick={() => browse()}>Croissant</button>{asset('08aa1.svg')}<span>{product.name}</span></> : screen === 'tracking' ? <><button onClick={() => go('orders')}>Tracking</button>{asset('08aa1.svg')}<span>Order#{order?.id?.replace('DEMO-', '') || '—'}</span></> : <span>{screen[0].toUpperCase() + screen.slice(1)}</span>}</nav>}
+        <div hidden={!accountScreen}><WebsiteAccount screen={screen} actions={actions} customer={customer} setCustomer={setCustomer} order={order} orders={orderHistory} ui={deliveryUI} notify={setNotice} reorder={items => { items.forEach(item => add(item, item.qty)); go('cart'); }} /></div>
         {screen === 'product' && <ProductDetail product={product} quantity={quantity} setQuantity={setQuantity} extras={extras} setExtras={setExtras} {...actions} />}
         {screen === 'checkout' && <DeliveryCheckout {...{
           fulfillment,
@@ -488,17 +517,18 @@ export function WebsiteStorefront({
             riderTip: value
           } : current);
         }} tipHidden={tipHidden} setTipHidden={setTipHidden} reopenDelivered={() => setDeliveredOpen(true)} />}
-        {(screen === 'menu' || screen === 'favorites') && <main className="ws-menu"><h1>{screen === 'favorites' ? 'Your favorites' : 'Our menu'}</h1>{screen === 'menu' && <div className="ws-categories">{['Croissants', 'Cakes', 'Coffee', 'Bread', 'Cupcakes', 'Cookies', 'Donuts'].map(name => <Button secondary={category !== name} key={name} onClick={() => setCategory(name)}>{name}</Button>)}</div>}<div className="ws-product-grid">{WEBSITE_PRODUCTS.filter(item => screen === 'favorites' ? favorites.includes(item.name) : item.category === category && item.name.toLowerCase().includes(query.toLowerCase())).map(item => <ProductCard key={item.name} product={item} {...actions} />)}</div>{!WEBSITE_PRODUCTS.some(item => screen === 'favorites' ? favorites.includes(item.name) : item.category === category && item.name.toLowerCase().includes(query.toLowerCase())) && <p>No items found.</p>}</main>}
+        {screen === 'menu' && <main className="ws-menu"><h1>Our menu</h1><div className="ws-categories">{Object.keys(HOME_SECTIONS).map(name => <Button secondary={category !== name} key={name} onClick={() => setCategory(name)}>{name}</Button>)}</div><div className="ws-product-grid">{WEBSITE_PRODUCTS.filter(item => item.category === category && item.name.toLowerCase().includes(query.toLowerCase())).map(item => <ProductCard key={item.name} product={item} {...actions} />)}</div>{!WEBSITE_PRODUCTS.some(item => item.category === category && item.name.toLowerCase().includes(query.toLowerCase())) && <p>No items found.</p>}</main>}
         {(screen === 'login' || screen === 'signup') && <main className="ws-simple"><h1>{screen === 'login' ? 'Log in' : 'Sign up for free delivery'}</h1><form onSubmit={event => {
             event.preventDefault();
-            go('home');
+            go('profile');
             setNotice('You’re signed in to the demo');
           }}>{screen === 'signup' && <label className="ws-field ws-shadow">Name<input required autoComplete="name" /></label>}<label className="ws-field ws-shadow">Email<input required type="email" autoComplete="email" /></label><label className="ws-field ws-shadow">Password<input required minLength={6} type="password" autoComplete={screen === 'signup' ? 'new-password' : 'current-password'} /></label><button className="ws-button">{screen === 'login' ? 'Log in' : 'Create demo account'}</button></form></main>}
         {screen === 'support' && <main className="ws-simple"><h1>How can we help?</h1><p>This is a local website demo. No payment is collected.</p><Button onClick={() => go('tracking')}>View your order</Button><Button secondary onClick={() => browse()}>Browse menu</Button></main>}
         {screen === 'tracking' && <button className="ws-chat" aria-label="Contact support" onClick={() => go('support')}>{asset('f1fa3.svg')}<span>1</span></button>}<Footer {...footerActions} />
       </div>}
     </div>
-    {(mobile || screen !== 'home') && !['checkout', 'tracking'].includes(screen) && <button className="ws-cart-tab" onClick={() => go('cart')}>{asset('cart-basket.svg')}Cart ({count})</button>}
+    {mobile && screen === 'checkout' && <div className="ws-mobile-place-order ws-place-order" inert={!!dialog || undefined}><p>Total <strong>{money(totals.total)}</strong></p><button className="ws-button" form="ws-checkout-form" disabled={!cart.length} type="submit">Place order</button></div>}
+    {!mobile && screen !== 'home' && !['checkout', 'tracking'].includes(screen) && <button className="ws-cart-tab" onClick={() => go('cart')}>{asset('cart-basket.svg')}Cart ({count})</button>}
     {notice && !dialog && <div className="ws-notice" role="status"><span>{notice}</span><button onClick={() => go('cart')}>View cart</button><button aria-label="Dismiss notification" onClick={() => setNotice('')}>×</button></div>}
     {dialog && <div ref={placingRef} className="ws-modal-scale" style={mobile ? {
       height

@@ -113,7 +113,7 @@ export function DeliveryCheckout({
   } = ui;
   const pickup = fulfillment === 'pickup';
   return <main className={`ws-checkout ${pickup ? 'pu-checkout' : ''}`}><h1>Checkout</h1>
-    <form className="ws-two-columns" onSubmit={event => {
+    <form id="ws-checkout-form" className="ws-two-columns" onSubmit={event => {
       event.preventDefault();
       placeOrder();
     }}>
@@ -150,7 +150,7 @@ export function DeliveryCheckout({
             applyPromo,
             ui
           }} error={promoError} /><small>By placing the order, I agree to all <b>terms &amp; conditions</b></small></section>
-        <div className="ws-place-order"><p>Total <strong>{money(totals.total)}</strong></p><button className="ws-button" disabled={!cart.length} type="submit">Place order</button></div>
+        {!ui.mobile && <div className="ws-place-order"><p>Total <strong>{money(totals.total)}</strong></p><button className="ws-button" disabled={!cart.length} type="submit">Place order</button></div>}
         <AppPromo />
       </div>
     </form>
@@ -268,7 +268,7 @@ export function DeliveryTracking({
       {image('delivery-map.png', pickup ? 'Pickup location map' : 'Delivery map', {
           className: 'dv-map-image'
         })}<span className="dv-map-shade" />
-      {stage === 'enroute' ? <span className="dv-map-route">{image('delivery-route.svg')}</span> : <><span className="dv-home-marker">{image('delivery-home.svg')}</span><span className="dv-scooter-marker">{image('rider-scooter.svg')}</span><span className="dv-arrival-card"><span><strong aria-live="polite">{pickup ? 'Your order is ready!' : 'Rider is at your address'}</strong><small>{pickup ? 'Pickup from the shop' : 'Collect your order from the rider'}</small></span>{image('rider-arrived.png')}</span></>}
+      {stage === 'enroute' ? <><span className="dv-map-route">{image('delivery-route.svg')}</span>{ui.mobile && <><span className="dv-home-marker dv-route-home">{image('delivery-home.svg')}</span><span className="dv-scooter-marker dv-route-scooter">{image('rider-scooter.svg')}</span><span className="dv-arrival-card dv-enroute-card"><span><strong aria-live="polite">Rider is on the way</strong><small>Reaching in 30-40 minutes</small></span>{image('cart-delivery.png')}</span></>}</> : <><span className="dv-home-marker">{image('delivery-home.svg')}</span><span className="dv-scooter-marker">{image('rider-scooter.svg')}</span><span className="dv-arrival-card"><span><strong aria-live="polite">{pickup ? 'Your order is ready!' : 'Rider is at your address'}</strong><small>{pickup ? 'Pickup from the shop' : 'Collect your order from the rider'}</small></span>{image(pickup ? 'pickup-store.png' : 'rider-arrived.png')}</span></>}
     </button>}
     {order && <div className="ws-tracking-info"><section className="ws-shadow"><h3>{pickup ? 'Pickup from' : 'Delivery address'}</h3><p>{pickup ? order.pickupAddress : order.address || address}</p></section>
       {!pickup && (stage === 'enroute' || stage === 'arrived') && <RiderTip amount={tip} hidden={tipHidden} setAmount={setTip} setHidden={setTipHidden} ui={ui} />}

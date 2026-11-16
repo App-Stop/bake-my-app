@@ -37,11 +37,11 @@ function HistoryRow({ item, reward = false }) {
 }
 
 /** Figma "Profile" (230:1555). */
-export function ProfileScreen({ name, email, balance, onEditProfile, onOrders, onFavorites, onWallet, onAddresses, onPayment, onNotifications, onHelp, onLogout }) {
+export function ProfileScreen({ name, email, balance, onEditProfile, onOrders, onFavorites, onWallet, onAddresses, onPayment, onNotifications, onHelp, onLogout, headerGlow, children }) {
   const rows = [['Addresses', P.location, onAddresses], ['Payment Method', P.money, onPayment], ['Notifications', P.notification, onNotifications]]
   return <>
     <header className="mp-profile-header">
-      <div className="mp-profile-glow" aria-hidden="true" />
+      <div className="mp-profile-glow" aria-hidden="true">{headerGlow && <BrandImage src={headerGlow} alt="" />}</div>
       <div className="mp-user"><div><h2>{name}</h2><p>{email}</p></div><Action className="mp-pill ma-glass" onClick={onEditProfile}>Edit profile</Action></div>
     </header>
     <main className="mp-scroll mp-profile-scroll">
@@ -63,6 +63,7 @@ export function ProfileScreen({ name, email, balance, onEditProfile, onOrders, o
         <Action className="mp-row" onClick={onHelp}><span><Glyph src={P.help} />Help &amp; Support</span><Chevron /></Action>
         <Action className="mp-row mp-logout" onClick={onLogout}><span><Glyph src={P.logout} />Log out</span></Action>
       </section>
+      {children}
     </main>
   </>
 }
