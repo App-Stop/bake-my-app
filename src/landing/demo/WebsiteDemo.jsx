@@ -3,18 +3,37 @@ import { INITIAL_STATE } from '../../onboarding/useOnboardingState'
 import { DESKTOP_WIDTH } from '../../preview/DesktopScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { WebsiteStorefront } from './WebsiteStorefront'
-import { DemoBar } from './DemoShell'
+import { DemoBar, DemoPage } from './DemoShell'
 import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
+import { useElementSize, useIsDesktop } from './demoScale'
 
 const SUMMARY = getStoreSummary(INITIAL_STATE)
 
 /**
  * Customer website demo (Figma "Landing" 123:3947): the storefront website fills the viewport —
  * the same screen as the desktop preview, scaled from its 641.2px design width — with the demo bar
- * floating over it.
+ * floating over it. Phones get the website's own mobile layout above the mobile demo bar.
  */
 export function WebsiteDemo() {
+  return useIsDesktop() ? <DesktopWebsiteDemo /> : <MobileWebsiteDemo />
+}
+
+function MobileWebsiteDemo() {
+  const ref = useRef(null)
+  const { height } = useElementSize(ref)
+  const { logo } = useDemoBrand()
+
+  return (
+    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850}>
+      <div ref={ref} className="relative size-full overflow-hidden rounded-[20px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
+        {height > 0 && <WebsiteStorefront mobile summary={SUMMARY} logo={logo} height={height} />}
+      </div>
+    </DemoPage>
+  )
+}
+
+function DesktopWebsiteDemo() {
   const ref = useRef(null)
   const [size, setSize] = useState({ scale: 1, height: 0 })
   const { color, logo } = useDemoBrand()

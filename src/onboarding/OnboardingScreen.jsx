@@ -91,21 +91,22 @@ export function OnboardingScreen({ state, actions }) {
   }
 
   return (
-    <div className="onboarding-page relative mx-auto min-h-[calc(1024*var(--px))] w-full max-w-[1440px] px-6">
-      <header>
-        <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="absolute left-1/2 top-12 h-[calc(73.04*var(--px))] w-[calc(100.25*var(--px))] -translate-x-1/2" />
+    // Phones stack the header and card in the page flow; from md up they sit at their Figma positions.
+    <div className="onboarding-page relative mx-auto w-full max-w-[1440px] px-4 pt-5 pb-10 md:min-h-[calc(1024*var(--px))] md:px-6 md:py-0">
+      <header className="relative flex h-14 items-center justify-center md:static md:block md:h-auto">
+        <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="h-[52px] w-auto md:absolute md:left-1/2 md:top-12 md:h-[calc(73.04*var(--px))] md:w-[calc(100.25*var(--px))] md:-translate-x-1/2" />
         <button
           type="button"
           onClick={openExitOffer}
-          className="absolute left-1/2 top-14 -translate-x-[calc(410*var(--px))] rounded-full px-5 py-4 text-base text-ink/50 transition-colors hover:bg-white/50 hover:text-ink focus-visible:outline-2 focus-visible:outline-primary"
+          className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full px-3 py-2.5 text-sm text-ink/60 transition-colors hover:bg-white/50 hover:text-ink focus-visible:outline-2 focus-visible:outline-primary md:left-1/2 md:top-14 md:translate-y-0 md:-translate-x-[calc(410*var(--px))] md:px-5 md:py-4 md:text-base md:text-ink/50"
         >
-          Back to Home
+          <span aria-hidden="true" className="md:hidden">← </span>Back<span className="max-md:hidden"> to Home</span>
         </button>
       </header>
 
-      <section className="absolute left-1/2 top-[calc(162*var(--px))] flex w-[min(calc(820*var(--px)),calc(100%-48px))] -translate-x-1/2 flex-col gap-10 rounded-[calc(40*var(--px))] bg-white p-10" aria-labelledby="onboarding-title">
+      <section className="relative mt-5 flex w-full flex-col gap-7 rounded-[28px] bg-white p-5 sm:p-8 md:absolute md:left-1/2 md:mt-0 md:top-[calc(162*var(--px))] md:w-[min(calc(820*var(--px)),calc(100%-48px))] md:-translate-x-1/2 md:gap-10 md:rounded-[calc(40*var(--px))] md:p-10" aria-labelledby="onboarding-title">
         <div className="flex flex-col gap-2.5">
-          <h1 id="onboarding-title" className="text-[length:calc(32*var(--px))] leading-normal font-semibold text-ink min-[1200px]:text-4xl">
+          <h1 id="onboarding-title" className="text-[26px] leading-tight font-semibold text-ink md:text-[length:calc(32*var(--px))] md:leading-normal min-[1200px]:text-4xl">
             Tell us about your shop
           </h1>
           <p className="text-base leading-normal text-muted">
@@ -113,7 +114,7 @@ export function OnboardingScreen({ state, actions }) {
           </p>
         </div>
 
-        <div className="flex items-start gap-6 min-[1200px]:gap-10">
+        <div className="flex flex-col items-start gap-6 sm:flex-row min-[1200px]:gap-10">
           <div className="w-[calc(140*var(--px))] shrink-0 min-[1200px]:w-40">
             <SectionLabel>Company Logo</SectionLabel>
             <UploadBox
@@ -140,7 +141,7 @@ export function OnboardingScreen({ state, actions }) {
             autoComplete="organization"
             required
           />
-          <div className="grid grid-cols-2 gap-3 min-[1200px]:gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-3 min-[1200px]:gap-5">
             <TextField
               label="Email"
               type="email"
@@ -160,8 +161,8 @@ export function OnboardingScreen({ state, actions }) {
 
         <Honeypot value={trap} onChange={setTrap} />
 
-        <div className="flex flex-col items-end gap-2.5">
-          <div className="flex items-center justify-end gap-2.5">
+        <div className="flex flex-col items-stretch gap-2.5 text-center sm:items-end sm:text-right">
+          <div className="flex items-center justify-end gap-2.5 max-sm:[&>*]:w-full">
             <PrimaryButton className="py-4" onClick={launch} disabled={!shop.name.trim()}>
               Launch my Store
             </PrimaryButton>

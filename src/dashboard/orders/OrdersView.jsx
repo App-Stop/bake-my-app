@@ -216,7 +216,7 @@ export function OrdersView() {
       </div>
 
       {/* Top 3 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="dash-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60">
           <p className="text-sm font-medium text-muted">Total Revenue</p>
           <div className="flex items-center justify-between">

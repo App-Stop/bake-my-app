@@ -284,7 +284,7 @@ export function CustomersView() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 w-full">
+      <div className="dash-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 w-full">
         {/* Stat Card 1: Total Customers */}
         <div className="bg-white rounded-[16px] p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3">
           <p className="text-xs sm:text-sm font-medium text-muted">

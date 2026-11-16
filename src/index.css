@@ -138,6 +138,10 @@
   height: auto;
 }
 
+.pricing-comparison-mobile {
+  display: none;
+}
+
 .pricing-steps > div:nth-of-type(1) {
   height: auto;
 }
@@ -204,6 +208,109 @@
 }
 
 @media (max-width: 47.999rem) {
+  .pricing-comparison-scroll {
+    display: none;
+  }
+
+  .pricing-comparison-mobile {
+    display: block;
+    margin-top: 24px;
+  }
+
+  .pricing-comparison-picker {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 4px;
+    border-radius: 16px;
+    background: var(--color-primary-light);
+  }
+
+  .pricing-comparison-picker button {
+    min-height: 48px;
+    padding: 8px 4px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .pricing-comparison-picker button[aria-pressed='true'] {
+    color: white;
+    background: var(--color-primary);
+  }
+
+  .pricing-comparison-picker button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .pricing-comparison-card {
+    overflow: hidden;
+    margin-top: 16px;
+    border: 1px solid var(--color-line);
+    border-radius: 24px;
+    background: white;
+  }
+
+  .pricing-comparison-card-heading {
+    padding: 24px;
+    text-align: center;
+    background: var(--color-primary-light);
+  }
+
+  .pricing-comparison-card-heading h3 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .pricing-comparison-card-heading p {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+
+  .pricing-comparison-card-heading > span {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .pricing-comparison-card dl > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+    min-height: 64px;
+    padding: 16px;
+    border-top: 1px solid var(--color-line);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .pricing-comparison-card dt {
+    font-weight: 500;
+  }
+
+  .pricing-comparison-card dd {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .pricing-comparison-card > div:last-child {
+    padding: 20px 16px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .pricing-comparison-card a {
+    width: 100%;
+    min-height: 48px;
+  }
+
   .pricing-steps > div:nth-of-type(1) {
     grid-template-columns: 1fr;
     margin-top: 32px;
@@ -228,6 +335,13 @@
   --text-sm: calc(14 * var(--u));
   --text-base: calc(16 * var(--u));
   --text-4xl: calc(36 * var(--u));
+}
+
+/* Phones: the setup card sits in the page flow at the plain 1× scale. */
+@media (max-width: 47.999rem) {
+  .onboarding-page {
+    --u: 1px;
+  }
 }
 
 /*
@@ -439,4 +553,33 @@ main:has(> .gold-decorations) { position: relative; }
 @media (max-width: 767px) {
   .gold-decorations > img { width: 26px; opacity: .3; }
   .gold-decorations > img:nth-child(n+3) { display: none; }
+}
+
+/* Dashboard stat cards: two per row on phones, with tighter padding and figures that fit. */
+@media (max-width: 39.999rem) {
+  .dash-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .dash-stats > * {
+    min-width: 0;
+    min-height: 0;
+    padding: 14px;
+    gap: 8px;
+  }
+
+  .dash-stats > :last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  .dash-stats :is(p, span)[class*='text-[28px]'],
+  .dash-stats :is(p, span)[class*='text-2xl'] {
+    font-size: 21px;
+    overflow-wrap: anywhere;
+  }
+
+  .dash-stats p[class*='text-sm'] {
+    font-size: 12px;
+  }
 }

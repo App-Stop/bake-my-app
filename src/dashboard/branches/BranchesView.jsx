@@ -187,7 +187,7 @@ export function BranchesView({ onNavigateToOrders }) {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="dash-stats grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {/* Total Branches */}
         <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
           <p className="text-sm font-medium text-muted">Total Branches</p>

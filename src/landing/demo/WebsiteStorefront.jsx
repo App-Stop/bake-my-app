@@ -9,6 +9,7 @@ import caramelSauce from '../../assets/addons/caramel-sauce.webp';
 import whippedCream from '../../assets/addons/whipped-cream.webp';
 import qr from '../../assets/desktop/qr.webp';
 import film from '../../assets/desktop/brand-film.webp';
+import hero from '../../assets/desktop/hero.webp';
 import play from '../../assets/desktop/store-play.svg';
 import playWordmark from '../../assets/desktop/store-play-wordmark.svg';
 import apple from '../../assets/desktop/store-apple.svg';
@@ -65,7 +66,7 @@ function Header({
   locationLabel
 }) {
   return <header className="ws-header">
-    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>{locationLabel.small}</small><b>{locationLabel.text}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
+    <div className="ws-header-left"><button onClick={() => go('home')} aria-label="Store home">{logo ? <BrandImage className="ws-logo" src={logo} alt="Bakery" /> : <DemoLogo className="ws-logo" tint="bg-current" />}</button><div className="ws-location"><button onClick={() => go('address')}>{asset('d72bf.svg')}<span><small>{locationLabel.small}</small><b>{locationLabel.text}</b></span></button><button onClick={() => go('tracking')}>{asset('8d074.svg')}<b>Track your order</b></button></div></div>
     <form className="ws-search" onSubmit={event => {
       event.preventDefault();
       browse();
@@ -178,11 +179,39 @@ function PlacingOrder({
             className: 'ws-receipt'
           })}<h2 id="ws-placing-title">Placing order...</h2><p>Make sure everything looks right</p></div><div className="ws-progress"><div /></div></div><div className="ws-placing-info"><section className="ws-shadow"><h3>{fulfillment === 'pickup' ? 'Pickup from' : 'Delivery address'}</h3><p>{address}</p></section><section className="ws-shadow"><h3>Payment method</h3><p>{payment}</p></section><section className="ws-shadow"><h3>Your order</h3><OrderLines cart={cart} subtotal={subtotal} total={total} compact /></section></div><div className="ws-placing-footer"><Button secondary onClick={cancel} autoFocus>I would like to change ({seconds})</Button></div></section></div>;
 }
-/** Desktop-only demo session. The mobile demo keeps its existing implementation. */
+const HOME_SECTIONS = {
+  Croissants: 'Original Hand-Tossed Croissants',
+  Cakes: 'Freshly Baked Cakes',
+  Coffee: 'Freshly Brewed Coffee',
+  Bread: 'Artisan Bread',
+  Cupcakes: 'Cupcakes',
+  Cookies: 'Cookies',
+  Donuts: 'Donuts'
+};
+/** Phone home page: the desktop home's sections (hero, category tabs, products, app promo, film) in one column. */
+function MobileHome({
+  actions
+}) {
+  const [category, setCategory] = useState('Croissants');
+  const products = category === 'Croissants' ? CROISSANTS : WEBSITE_PRODUCTS.filter(item => item.category === category);
+  return <>
+    <section className="ws-m-hero"><BrandImage src={hero} alt="" /><div><h1>Oven baked freshness, at your home</h1><Button onClick={() => actions.browse()}>Browse Menu</Button></div></section>
+    <div className="ws-categories ws-m-tabs" role="group" aria-label="Categories">{Object.keys(HOME_SECTIONS).map(name => <Button secondary={category !== name} aria-pressed={category === name} key={name} onClick={() => setCategory(name)}>{name}</Button>)}</div>
+    <ProductSection key={category} title={HOME_SECTIONS[category]} products={products} {...actions} />
+    <AppPromo wide />
+    <ProductSection title="Freshly Baked Cakes" products={CAKES} {...actions} />
+    <section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section>
+  </>;
+}
+/**
+ * Website demo session. Desktop draws the 1920px Figma site scaled into the demo window; `mobile`
+ * renders the same pages at the phone's own width with the phone layout (website-storefront.css).
+ */
 export function WebsiteStorefront({
   summary,
   logo,
-  height
+  height,
+  mobile = false
 }) {
   const [screen, setScreen] = useState('home');
   const [product, setProduct] = useState(signature);
@@ -418,14 +447,14 @@ export function WebsiteStorefront({
     extraImage: file => existingAssets[file] || A + file,
     recommendations: [CROISSANTS[0], CROISSANTS[1], CROISSANTS[2], CROISSANTS[7]]
   };
-  return <div className="ws-viewport" style={{
-    width: DESKTOP_WIDTH,
+  return <div className={`ws-viewport ${mobile ? 'ws-mobile' : ''}`} style={{
+    width: mobile ? '100%' : DESKTOP_WIDTH,
     height
   }}>
     <div ref={scroll} className="ws-scroll" inert={!!dialog || undefined}>
-      {screen === 'home' ? <DesktopScreen summary={summary} logo={logo} height={height} framed={false} actions={actions} /> : <div className="ws-site" style={{
+      {screen === 'home' && !mobile ? <DesktopScreen summary={summary} logo={logo} height={height} framed={false} actions={actions} /> : <div className="ws-site" style={mobile ? undefined : {
         zoom: SCALE
-      }}><Header {...actions} logo={logo} /><nav className="ws-breadcrumb" aria-label="Breadcrumb"><button onClick={() => go('home')}>Home</button>{asset('08aa1.svg')}{screen === 'product' ? <><button onClick={() => browse()}>Croissant</button>{asset('08aa1.svg')}<span>{product.name}</span></> : <span>{screen === 'tracking' ? `Tracking　 ›　 Order#${order?.id?.replace('DEMO-', '') || '—'}` : screen[0].toUpperCase() + screen.slice(1)}</span>}</nav>
+      }}><Header {...actions} logo={logo} />{screen === 'home' ? <MobileHome actions={actions} /> : <nav className="ws-breadcrumb" aria-label="Breadcrumb"><button onClick={() => go('home')}>Home</button>{asset('08aa1.svg')}{screen === 'product' ? <><button onClick={() => browse()}>Croissant</button>{asset('08aa1.svg')}<span>{product.name}</span></> : <span>{screen === 'tracking' ? `Tracking　 ›　 Order#${order?.id?.replace('DEMO-', '') || '—'}` : screen[0].toUpperCase() + screen.slice(1)}</span>}</nav>}
         {screen === 'product' && <ProductDetail product={product} quantity={quantity} setQuantity={setQuantity} extras={extras} setExtras={setExtras} {...actions} />}
         {screen === 'checkout' && <DeliveryCheckout {...{
           fulfillment,
@@ -469,9 +498,11 @@ export function WebsiteStorefront({
         {screen === 'tracking' && <button className="ws-chat" aria-label="Contact support" onClick={() => go('support')}>{asset('f1fa3.svg')}<span>1</span></button>}<Footer {...footerActions} />
       </div>}
     </div>
-    {screen !== 'home' && !['checkout', 'tracking'].includes(screen) && <button className="ws-cart-tab" onClick={() => go('cart')}>{asset('cart-basket.svg')}Cart ({count})</button>}
+    {(mobile || screen !== 'home') && !['checkout', 'tracking'].includes(screen) && <button className="ws-cart-tab" onClick={() => go('cart')}>{asset('cart-basket.svg')}Cart ({count})</button>}
     {notice && !dialog && <div className="ws-notice" role="status"><span>{notice}</span><button onClick={() => go('cart')}>View cart</button><button aria-label="Dismiss notification" onClick={() => setNotice('')}>×</button></div>}
-    {dialog && <div ref={placingRef} className="ws-modal-scale" style={{
+    {dialog && <div ref={placingRef} className="ws-modal-scale" style={mobile ? {
+      height
+    } : {
       height: height / SCALE,
       transform: `scale(${SCALE})`
     }}>

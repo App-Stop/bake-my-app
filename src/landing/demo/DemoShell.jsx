@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
-import { DEMO_UNIT, useScaleTo } from './demoScale'
-import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
+import { DEMO_UNIT, useElementSize, useIsDesktop, useScaleTo } from './demoScale'
+import { BakeryDecorations, CustomizationRail, MobileCustomizationBar } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
 
 const DEMO_TABS = [
-  { label: 'Customer Website', to: ROUTES.demoWebsite },
-  { label: 'Admin Portal', to: ROUTES.demoAdmin },
-  { label: 'Staff Portal', to: ROUTES.demoStaff },
-  { label: 'Customer Mobile App', to: ROUTES.demoMobile },
+  { label: 'Customer Website', short: 'Website', to: ROUTES.demoWebsite },
+  { label: 'Admin Portal', short: 'Admin', to: ROUTES.demoAdmin },
+  { label: 'Staff Portal', short: 'Staff', to: ROUTES.demoStaff },
+  { label: 'Customer Mobile App', short: 'Mobile App', to: ROUTES.demoMobile },
 ]
 
 // Where the bar sits in the 1920×1174 demo frames (76 tall, 40 from the bottom).
@@ -84,21 +84,86 @@ export function DemoBar({ active }) {
 }
 
 /**
- * Rounded app window (admin and staff demos), `width` × `height` Figma px. `children` render
- * `contentWidth` px wide (default: the window's width) and are scaled to fit, so an app designed
- * for a wider screen keeps its own layout.
+ * Phone version of the demo bar: a sheet along the bottom of the screen with the demo switcher
+ * (scrolls sideways when it doesn't fit) above the offer and checkout button.
  */
-export function DemoWindow({ width, height, contentWidth = width, children }) {
+export function MobileDemoBar({ active }) {
+  const timeLeft = useMidnightCountdown()
+  const tabs = useRef(null)
+
+  // Keep the current demo's tab in view when the switcher scrolls.
+  useEffect(() => {
+    const nav = tabs.current
+    const tab = nav?.querySelector('[aria-current="page"]')
+    if (tab) nav.scrollLeft = tab.offsetLeft - (nav.clientWidth - tab.offsetWidth) / 2
+  }, [active])
+
+  const pill = 'shrink-0 rounded-full px-3.5 py-2 text-[13px] leading-normal whitespace-nowrap transition-colors'
+
+  return (
+    <div className="w-full rounded-t-[24px] bg-white px-3 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.12)]">
+      <nav ref={tabs} aria-label="Demos" className="relative -mx-3 flex gap-1.5 overflow-x-auto px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <Link to={ROUTES.home} className={`${pill} border border-line font-medium text-ink hover:bg-surface`}>
+          Home
+        </Link>
+        {DEMO_TABS.map((tab) => {
+          const current = tab.label === active
+          return (
+            <Link
+              key={tab.label}
+              to={tab.to}
+              aria-current={current ? 'page' : undefined}
+              aria-label={tab.label}
+              className={`${pill} ${current ? 'bg-primary-light font-semibold text-primary' : 'bg-surface font-medium text-ink hover:bg-line'}`}
+            >
+              {tab.short}
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="mt-2.5 flex items-center justify-between gap-3">
+        <div className="min-w-0 leading-tight">
+          <p className="text-[13px] font-semibold text-ink">1st MONTH FREE</p>
+          <p className="mt-0.5 text-[11px] whitespace-nowrap text-body">
+            LIMITED TIME <span className="font-bold tracking-[0.02em] text-primary">{timeLeft}</span>
+          </p>
+        </div>
+        <Link
+          to={ROUTES.checkout}
+          className="shrink-0 rounded-full bg-primary px-5 py-3 text-sm leading-normal font-bold whitespace-nowrap text-white transition hover:brightness-110"
+        >
+          Continue to Checkout
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Rounded app window (admin and staff demos), `width` × `height` Figma px. On desktop `children`
+ * render `contentWidth` px wide (default: the window's width) and are scaled to fit, so an app
+ * designed for a wider screen keeps its own layout. On phones the window fills the space it is
+ * given and the app renders at that size (magnified by `mobileZoom`), so it uses its phone layout.
+ */
+export function DemoWindow({ width, height, contentWidth = width, mobileZoom = 1, children }) {
   const ref = useRef(null)
+  const desktop = useIsDesktop()
   const scale = useScaleTo(ref, contentWidth)
+  const size = useElementSize(ref)
+
+  const content = desktop
+    ? { width: contentWidth, height: (height * contentWidth) / width, transform: `scale(${scale})` }
+    : { width: size.width / mobileZoom, height: size.height / mobileZoom, transform: mobileZoom === 1 ? undefined : `scale(${mobileZoom})` }
+
   return (
     <div
       ref={ref}
-      className="relative shrink-0 overflow-clip rounded-[calc(32*var(--d))] bg-surface shadow-[0_calc(3.2*var(--d))_calc(24*var(--d))_rgba(0,0,0,0.1)]"
-      style={{ width: `calc(${width} * var(--d))`, height: `calc(${height} * var(--d))` }}
+      className="relative overflow-clip bg-surface shadow-[0_calc(3.2*var(--d))_calc(24*var(--d))_rgba(0,0,0,0.1)] max-lg:size-full max-lg:rounded-[20px] lg:h-(--h) lg:w-(--w) lg:shrink-0 lg:rounded-[calc(32*var(--d))]"
+      style={{ '--w': `calc(${width} * var(--d))`, '--h': `calc(${height} * var(--d))` }}
     >
-      <div className="absolute top-0 left-0 origin-top-left" style={{ width: contentWidth, height: (height * contentWidth) / width, transform: `scale(${scale})` }}>
-        {children}
+      <div className="absolute top-0 left-0 origin-top-left" style={content}>
+        {(desktop || size.width > 0) && children}
       </div>
     </div>
   )
@@ -106,25 +171,32 @@ export function DemoWindow({ width, height, contentWidth = width, children }) {
 
 /**
  * A demo frame: `children` (e.g. a phone or app window) placed `top` Figma px down and `height`
- * tall, with the demo bar at its Figma position below.
+ * tall, with the demo bar at its Figma position below. On phones the page is exactly one screen
+ * tall: the color bar on top, the demo inset below it, and the mobile demo bar at the bottom.
  */
 export function DemoPage({ title, active, top, height, children }) {
   const { color } = useDemoBrand()
 
   return (
-    <div className={`relative flex min-h-dvh flex-col items-center overflow-hidden bg-primary-light px-4 font-sans text-ink ${DEMO_UNIT}`}>
+    <div
+      className={`relative flex flex-col items-center overflow-hidden bg-primary-light font-sans text-ink max-lg:h-dvh lg:min-h-dvh lg:px-4 ${DEMO_UNIT}`}
+      style={{ '--top': `calc(${top} * var(--d))`, '--gap': `calc(${BAR_TOP - top - height} * var(--d))` }}
+    >
       <BakeryDecorations />
       <CustomizationRail color={color} onChange={setDemoBrandColor} />
-      <main className="flex flex-1 flex-col items-center" style={{ marginTop: `calc(${top} * var(--d))` }}>
+      <div className="relative z-10 w-full px-4 pt-3 lg:hidden">
+        <MobileCustomizationBar color={color} onChange={setDemoBrandColor} />
+      </div>
+      <main className="relative flex flex-1 flex-col items-center max-lg:min-h-0 max-lg:w-full max-lg:px-7 max-lg:pt-4 max-lg:pb-5 lg:mt-(--top)">
         <h1 className="sr-only">{title}</h1>
-        <div className="brand-scope" style={brandTheme(color)}>
+        <div className="brand-scope max-lg:flex max-lg:min-h-0 max-lg:w-full max-lg:flex-1 max-lg:items-center max-lg:justify-center" style={brandTheme(color)}>
           {children}
         </div>
       </main>
-      <div
-        className="mb-[calc(40*var(--d))] flex max-w-full justify-center"
-        style={{ marginTop: `calc(${BAR_TOP - top - height} * var(--d))` }}
-      >
+      <div className="relative z-10 w-full lg:hidden">
+        <MobileDemoBar active={active} />
+      </div>
+      <div className="mb-[calc(40*var(--d))] flex max-w-full justify-center max-lg:hidden lg:mt-(--gap)">
         <DemoBar active={active} />
       </div>
     </div>

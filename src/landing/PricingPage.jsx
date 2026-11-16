@@ -47,11 +47,49 @@ function CellValue({ value }) {
 }
 
 function ComparePlans({ planState }) {
+  const [selectedPlan, setSelectedPlan] = useState('growth')
+  const selectedIndex = PLANS.findIndex(([key]) => key === selectedPlan)
+  const [key, name, fallback] = PLANS[selectedIndex]
+
   return (
     <section aria-labelledby="compare-title" className="pricing-comparison mx-auto h-[calc(967*var(--u))] w-full max-w-[calc(1920*var(--u))] px-[calc(160*var(--u))]">
       <h2 id="compare-title" className="text-center font-malibu text-[length:calc(36*var(--u))] leading-[calc(54*var(--u))] text-primary">
         compare plans at a glance
       </h2>
+      <div className="pricing-comparison-mobile">
+        <div className="pricing-comparison-picker" role="group" aria-label="Choose a plan to compare">
+          {PLANS.map(([planKey, planName]) => (
+            <button
+              key={planKey}
+              type="button"
+              aria-pressed={selectedPlan === planKey}
+              onClick={() => setSelectedPlan(planKey)}
+            >
+              {planName}
+            </button>
+          ))}
+        </div>
+        <div className="pricing-comparison-card">
+          <div className="pricing-comparison-card-heading">
+            <h3>{name}</h3>
+            <p>{headerPrice(planState.plans, key, fallback)}</p>
+            {key === 'growth' && <span>Most popular</span>}
+          </div>
+          <dl>
+            {COMPARISON.map(([feature, ...values]) => (
+              <div key={feature}>
+                <dt>{feature}</dt>
+                <dd><CellValue value={values[selectedIndex]} /></dd>
+              </div>
+            ))}
+          </dl>
+          <CompareCta
+            to={key === 'business_suite' ? QUOTE_HREF : planHref(planState, key, 'year')}
+            label={key === 'business_suite' ? 'Get a quote' : 'Start for Free'}
+            primary
+          />
+        </div>
+      </div>
       <div className="pricing-comparison-scroll mt-[calc(40*var(--u))] overflow-hidden rounded-[calc(24*var(--u))] border border-line bg-white">
         <div className="grid h-[calc(100*var(--u))] grid-cols-[35%_21.666%_21.666%_21.668%] bg-primary-light text-[length:calc(16*var(--u))] leading-normal text-ink">
           <div className="flex items-center px-[calc(32*var(--u))] font-semibold">Features</div>

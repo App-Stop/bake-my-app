@@ -16,6 +16,8 @@ import {
   CroissantIcon,
   ArrowLeft02Icon,
   SmartPhone01Icon,
+  Menu01Icon,
+  Cancel01Icon,
 } from '@hugeicons/core-free-icons'
 
 import userAvatarImg from '../assets/dashboard/user-avatar.webp'
@@ -49,6 +51,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
   const [activeNav, setActiveNav] = useState('overview')
   const [activeTimeRange, setActiveTimeRange] = useState('7d')
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
 
   const shopName = state.shop?.name?.trim() || 'Ross Bakers Co.'
   const shopTagline = state.shop?.tagline?.trim() || 'Freshly baked goods'
@@ -115,10 +118,56 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
     },
   ].slice(0, 5)
 
+  const activeLabel = NAV_ITEMS.find((item) => item.id === activeNav)?.label
+  const goTo = (id) => {
+    setActiveNav(id)
+    setNavOpen(false)
+  }
+
   return (
-    <div className={`brand-scope flex w-full overflow-hidden bg-[#f5f5f5] font-sans text-ink ${className}`}>
+    <div className={`brand-scope relative flex w-full overflow-hidden bg-[#f5f5f5] font-sans text-ink max-lg:flex-col ${className}`}>
+      {/* Phones and tablets: a top bar whose menu button slides the sidebar in as a drawer. */}
+      <header className="flex shrink-0 items-center gap-3 border-b border-[#f0ece9] bg-white px-4 py-3 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setNavOpen(true)}
+          aria-label="Open navigation"
+          aria-expanded={navOpen}
+          aria-controls="dashboard-sidebar"
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-[#e8e8e8] text-ink transition-colors hover:bg-[#f5f5f5]"
+        >
+          <HugeiconsIcon icon={Menu01Icon} size={20} color="currentColor" />
+        </button>
+        <p className="min-w-0 flex-1 truncate text-base font-semibold text-ink">{activeLabel}</p>
+        <div className="flex size-9 shrink-0 overflow-hidden rounded-full bg-[#f0ece9]">
+          <img src={state.shop?.logo || userAvatarImg} alt="" className="size-full object-cover" />
+        </div>
+      </header>
+
+      {navOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation"
+          onClick={() => setNavOpen(false)}
+          className="absolute inset-0 z-30 bg-black/30 lg:hidden"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="flex w-[230px] lg:w-[260px] min-w-[230px] lg:min-w-[260px] flex-col justify-between border-r border-[#f0ece9] bg-white px-3.5 lg:px-5 py-5 lg:py-8 shrink-0">
+      <aside
+        id="dashboard-sidebar"
+        className={`flex w-[260px] min-w-[260px] flex-col justify-between overflow-y-auto border-r border-[#f0ece9] bg-white px-5 py-5 shrink-0 transition-transform duration-300 max-lg:absolute max-lg:inset-y-0 max-lg:left-0 max-lg:z-40 max-lg:max-w-[85%] max-lg:min-w-0 max-lg:shadow-2xl lg:py-8 ${
+          navOpen ? '' : 'max-lg:invisible max-lg:-translate-x-full'
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => setNavOpen(false)}
+          aria-label="Close navigation"
+          className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-full text-muted hover:bg-[#f5f5f5] lg:hidden"
+        >
+          <HugeiconsIcon icon={Cancel01Icon} size={18} color="currentColor" />
+        </button>
         <div className="flex flex-col gap-6 lg:gap-10">
           {/* Shop branding */}
           {sidebarLogo ? (
@@ -156,7 +205,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActiveNav(item.id)}
+                  onClick={() => goTo(item.id)}
                   className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-colors ${
                     isActive
                       ? 'bg-brand-light text-brand font-medium'
@@ -203,7 +252,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
                 type="button"
                 onClick={() => {
                   setShowUserMenu(false)
-                  setActiveNav('settings')
+                  goTo('settings')
                 }}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-[#f5f5f5] cursor-pointer"
               >
@@ -238,7 +287,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10">
+      <main className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10">
         {activeNav === 'orders' ? (
           <OrdersView />
         ) : activeNav === 'settings' ? (
@@ -287,7 +336,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="dash-stats grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {/* Stat 1: Gross Revenue */}
             <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
               <p className="text-sm font-medium text-muted">Gross Revenue</p>

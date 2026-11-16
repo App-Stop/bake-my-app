@@ -383,7 +383,7 @@ export function AnalyticsView() {
       </div>
 
       {/* Highlights Row (4 Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5">
+      <div className="dash-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5">
         {currentData.highlights.map((item, index) => (
           <div
             key={index}

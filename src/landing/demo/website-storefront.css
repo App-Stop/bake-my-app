@@ -271,3 +271,126 @@
 .ws-chat > span { position: absolute; top: 0; left: 40px; width: 20px; height: 20px; background: var(--brand-light); border-radius: 100px; color: var(--brand); font-size: 12px; font-weight: 700; display: grid; place-items: center; }
 .ws-cart-tab { display: flex; align-items: center; gap: 2.004px; }
 .ws-cart-tab img { zoom: .3339583333; }
+
+/*
+ * Phone layout (`.ws-mobile`, the website demo below lg): the same pages at the phone's own width
+ * and 1x scale, one column, 16px gutters. Product art is drawn with fixed crops, so it is resized
+ * with `zoom` to keep each crop intact.
+ */
+.ws-mobile .ws-site { width: 100%; overflow-x: clip; }
+.ws-mobile .ws-site h1 { font-size: 26px; line-height: 1.2; }
+.ws-mobile .ws-site h2 { font-size: 22px; line-height: 1.25; }
+.ws-mobile .ws-button { min-height: 46px; padding: 12px 18px; font-size: 15px; }
+
+/* Header: logo, location and log in on one row, search below. */
+.ws-mobile .ws-header { height: auto; flex-wrap: wrap; gap: 10px 12px; padding: 12px 16px; }
+.ws-mobile .ws-header-left { flex: 1; min-width: 0; gap: 12px; }
+.ws-mobile .ws-header-left > button { flex: 0 0 auto; }
+.ws-mobile .ws-logo { width: 52px; height: 34px; }
+.ws-mobile .ws-location { min-width: 0; gap: 8px; }
+.ws-mobile .ws-location button { min-width: 0; }
+.ws-mobile .ws-location span { min-width: 0; }
+.ws-mobile .ws-location b { max-width: 100%; font-size: 14px; }
+.ws-mobile .ws-location small { font-size: 11px; }
+.ws-mobile .ws-location button + button b { display: none; }
+.ws-mobile .ws-location button + button { flex-shrink: 0; }
+.ws-mobile .ws-header-right { order: 2; gap: 8px; }
+.ws-mobile .ws-language, .ws-mobile .ws-signup { display: none; }
+.ws-mobile .ws-login { min-height: 36px; padding: 6px 14px; font-size: 14px; }
+.ws-mobile .ws-search { order: 3; width: 100%; height: 44px; }
+.ws-mobile .ws-breadcrumb { height: auto; padding: 10px 16px; font-size: 13px; white-space: nowrap; overflow: hidden; }
+.ws-mobile .ws-breadcrumb span { overflow: hidden; text-overflow: ellipsis; }
+
+/* Home hero and category tabs. */
+.ws-m-hero { position: relative; height: 300px; overflow: hidden; }
+.ws-m-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; }
+.ws-m-hero > div { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 16px; padding: 24px 16px; background: linear-gradient(to top, #000a, #0000 70%); color: white; }
+.ws-mobile .ws-m-hero h1 { font-size: 30px; font-weight: 500; letter-spacing: -.5px; max-width: 280px; text-shadow: 0 0 40px #000; }
+.ws-mobile .ws-categories { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 16px; padding: 0 16px; }
+.ws-mobile .ws-categories::-webkit-scrollbar { display: none; }
+.ws-mobile .ws-categories .ws-button { flex-shrink: 0; min-height: 40px; padding: 8px 16px; font-size: 14px; }
+.ws-mobile .ws-m-tabs { margin: 16px 0 0; }
+
+/* Product cards: two per row. */
+.ws-mobile .ws-product-section { margin: 28px 16px 0; }
+.ws-mobile .ws-product-section h2 { margin-bottom: 14px; }
+.ws-mobile .ws-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ws-mobile .ws-card { justify-content: flex-start; gap: 6px; padding: 0 10px 10px; border-radius: 16px; }
+.ws-mobile .ws-card > button > .ws-product-image { zoom: .72; }
+.ws-mobile .ws-card-glow { zoom: .72; }
+.ws-mobile .ws-card-bottom { flex: 1; flex-direction: column; align-items: stretch; justify-content: space-between; gap: 8px; }
+.ws-mobile .ws-product-title, .ws-mobile .ws-card-bottom p { font-size: 15px; }
+.ws-mobile .ws-card-bottom p span { font-size: 12px; }
+.ws-mobile .ws-card-stats { flex-wrap: wrap; font-size: 12px; }
+.ws-mobile .ws-card .ws-button { height: 38px; min-height: 38px; padding: 8px 10px; font-size: 13px; }
+.ws-mobile .ws-card .ws-heart { top: 6px; right: 6px; width: 36px; height: 36px; }
+.ws-mobile .ws-new { top: 10px; left: 10px; }
+.ws-mobile .ws-menu { margin: 16px 16px 40px; min-height: 0; }
+.ws-mobile .ws-menu h1 { margin-bottom: 14px; }
+
+/* Product page. */
+.ws-mobile .ws-detail { flex-direction: column; align-items: stretch; gap: 8px; min-height: 0; padding: 0 16px; border-radius: 0; background: linear-gradient(180deg, var(--brand-light, #eef0fd) 0, transparent 360px); }
+.ws-mobile .ws-detail > .ws-detail-image { align-self: center; zoom: .55; }
+.ws-mobile .ws-detail-info { gap: 22px; padding: 0 0 8px; }
+.ws-mobile .ws-description { font-size: 15px; }
+.ws-mobile .ws-buy .ws-button { flex: 1; width: auto; }
+.ws-mobile .ws-buy > div:first-child { justify-content: space-between; }
+.ws-mobile .ws-extras { overflow-x: auto; scrollbar-width: none; margin: 10px -16px 0; padding: 0 16px; }
+.ws-mobile .ws-extra { flex-shrink: 0; width: 150px; }
+
+/* App promo, brand film and footer. */
+.ws-mobile .ws-wide-promo { flex-direction: column; height: auto; margin-top: 40px; padding: 32px 16px 0; }
+.ws-mobile .ws-wide-promo h2 { font-size: 24px; line-height: 1.25; }
+.ws-mobile .ws-wide-promo p { font-size: 15px; }
+.ws-mobile .ws-store-badges { flex-wrap: wrap; margin-top: 24px; }
+.ws-mobile .ws-wide-qr { display: none; }
+.ws-mobile .ws-wide-promo .ws-phone-hand { position: relative; right: auto; align-self: center; width: 100%; max-width: 320px; height: 300px; margin-top: 20px; }
+.ws-mobile .ws-film { height: 380px; margin-top: 40px; }
+.ws-mobile .ws-film > img { width: auto; min-width: 100%; height: 100%; top: 0; left: 50%; transform: translateX(-50%); object-fit: cover; }
+.ws-mobile .ws-film h2 { width: auto; max-width: 320px; font-size: 32px; letter-spacing: -1px; }
+.ws-mobile .ws-footer { gap: 32px; padding: 40px 16px 24px; }
+.ws-mobile .ws-footer-top { flex-direction: column; gap: 32px; }
+.ws-mobile .ws-footer-brand, .ws-mobile .ws-newsletter { width: 100%; }
+.ws-mobile .ws-footer-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; width: 100%; }
+.ws-mobile .ws-footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 24px; }
+
+/* Cart tab, notices and the support button. */
+.ws-mobile .ws-cart-tab { top: auto; bottom: 16px; right: 16px; z-index: 10; gap: 6px; padding: 10px 16px 10px 12px; border-radius: 100px; font-size: 14px; box-shadow: 0 4px 20px #0003; }
+.ws-mobile .ws-cart-tab img { zoom: 1; width: 22px; height: 22px; }
+.ws-mobile .ws-notice { bottom: 72px; width: calc(100% - 32px); justify-content: space-between; padding: 10px 14px; font-size: 13px; white-space: normal; }
+.ws-mobile .ws-chat { display: none; }
+
+/* Checkout, tracking, sign in and support pages. */
+.ws-mobile .ws-two-columns { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+.ws-mobile .ws-checkout, .ws-mobile .ws-tracking { padding: 16px 16px 40px; }
+.ws-mobile .ws-checkout h1 { margin-bottom: 20px; }
+.ws-mobile .ws-cart, .ws-mobile .ws-simple { min-height: 0; padding: 16px 16px 48px; }
+.ws-mobile .ws-simple form { width: 100%; }
+.ws-mobile .ws-simple > .ws-button { width: 100%; margin-bottom: 10px; }
+.ws-mobile .ws-option { flex-wrap: wrap; }
+.ws-mobile .ws-app-promo > p { width: 60%; }
+.ws-mobile .ws-app-promo .ws-phone-hand { width: 150px; right: -20px; }
+.ws-mobile .ws-preparing { height: 300px; padding-bottom: 48px; }
+.ws-mobile .ws-support { flex-direction: column; align-items: flex-start; gap: 14px; }
+.ws-mobile .ws-recommendations { gap: 10px; }
+.ws-mobile .dv-delivery-map { height: 380px; }
+.ws-mobile .dv-map-route { left: 50%; transform: translateX(-50%); }
+
+/* Dialogs and the cart drawer fill the phone screen. */
+.ws-mobile .ws-modal-scale { width: 100%; }
+.ws-mobile .ws-modal-backdrop { align-items: flex-start; padding: 12px; }
+.ws-mobile .ws-placing, .ws-mobile .dv-delivered, .ws-mobile .wl-dialog { width: 100%; margin: auto 0; }
+.ws-mobile .wl-dialog { gap: 20px; padding: 20px; border-radius: 24px; }
+.ws-mobile .wl-hero { width: 72px; height: 72px; }
+.ws-mobile .wl-map { height: 200px; }
+.ws-mobile .wl-modes button { font-size: 14px; }
+.ws-mobile .ws-placing-header, .ws-mobile .dv-delivered-header { height: 280px; }
+.ws-mobile .ws-progress > div { animation-name: ws-progress-fill; }
+@keyframes ws-progress-fill { from { width: 0; } to { width: 100%; } }
+.ws-mobile .dv-drawer-backdrop { padding: 0; }
+.ws-mobile .dv-cart-drawer { width: 100%; height: 100%; border-radius: 0; }
+.ws-mobile .dv-cart-top { padding: 20px 16px 16px; }
+.ws-mobile .dv-cart-summary { padding: 16px; }
+.ws-mobile .dv-cart-footer { padding: 14px 16px 16px; }
+.ws-mobile .dv-cart-item-main { gap: 12px; }
+.ws-mobile .dv-app-points h3 { white-space: normal; }

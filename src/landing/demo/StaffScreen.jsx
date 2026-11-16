@@ -114,22 +114,22 @@ function useClock() {
 function TopBar({ screen, onNavigate }) {
   const { time, date } = useClock()
   return (
-    <header className="flex w-full items-center gap-8 border-[0.8px] border-[#f0ece9] bg-white p-4">
-      <div className="flex min-w-px flex-1">
-        <DemoLogo className="h-[38.307px] w-[53.04px]" />
+    <header className="flex w-full items-center gap-8 border-[0.8px] border-[#f0ece9] bg-white p-4 max-lg:gap-2 max-lg:py-2.5 max-lg:pr-4 max-lg:pl-3">
+      <div className="flex min-w-px flex-1 max-lg:flex-none max-lg:shrink-0">
+        <DemoLogo className="h-[38.307px] w-[53.04px] max-lg:h-[30px] max-lg:w-[41.5px]" />
       </div>
-      <nav className="flex w-[480px] items-center justify-center gap-[6.4px] text-[11.2px] leading-normal">
-        <button type="button" onClick={() => onNavigate("orders")} aria-pressed={screen === "orders"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] font-medium ${screen === "orders" ? "bg-primary-light text-primary" : "text-body"}`}>
+      <nav className="flex w-[480px] items-center max-lg:w-auto max-lg:min-w-0 max-lg:flex-1 justify-center gap-[6.4px] text-[11.2px] leading-normal">
+        <button type="button" onClick={() => onNavigate("orders")} aria-pressed={screen === "orders"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] font-medium max-lg:gap-[4.8px] max-lg:px-[6.4px] ${screen === "orders" ? "bg-primary-light text-primary" : "text-body"}`}>
           <Icon icon={ShoppingBasket03Icon} />
           Orders
         </button>
-        <button type="button" onClick={() => onNavigate("menu")} aria-pressed={screen === "menu"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] ${screen === "menu" ? "bg-primary-light text-primary" : "text-body"}`}>
+        <button type="button" onClick={() => onNavigate("menu")} aria-pressed={screen === "menu"} className={`flex min-w-px flex-1 items-center justify-center gap-[9.6px] rounded-[9.6px] p-[9.6px] max-lg:gap-[4.8px] max-lg:px-[6.4px] ${screen === "menu" ? "bg-primary-light text-primary" : "text-body"}`}>
           <Icon icon={MenuRestaurantIcon} />
           Menu
         </button>
       </nav>
-      <div className="flex min-w-px flex-1 items-center gap-4">
-        <div className="flex min-w-px flex-1 flex-col items-end gap-[3.2px] text-right leading-normal">
+      <div className="flex min-w-px flex-1 items-center gap-4 max-lg:flex-none max-lg:shrink-0">
+        <div className="flex min-w-px flex-1 flex-col items-end gap-[3.2px] text-right leading-normal max-lg:hidden">
           <p className="w-full text-[12.8px] font-semibold text-ink">{time}</p>
           <p className="w-full text-[9.6px] text-muted">{date}</p>
         </div>
@@ -143,7 +143,7 @@ function TopBar({ screen, onNavigate }) {
 
 function Tabs({ tabs, tab, onChange }) {
   return (
-    <div role="tablist" className="flex h-9 w-[528px] items-start gap-[6.4px] border-b-[0.8px] border-line-strong">
+    <div role="tablist" className="flex h-9 w-[528px] items-start max-lg:h-auto max-lg:w-full max-lg:shrink-0 max-lg:gap-1 max-lg:overflow-x-auto max-lg:[scrollbar-width:none] gap-[6.4px] border-b-[0.8px] border-line-strong">
       {tabs.map(({ id, label, count }) => {
         const active = tab === id
         return (
@@ -153,13 +153,13 @@ function Tabs({ tabs, tab, onChange }) {
             role="tab"
             aria-selected={active}
             onClick={() => onChange(id)}
-            className={`flex min-w-px flex-1 items-center justify-center gap-[6.4px] px-[12.8px] py-[9.6px] text-[11.2px] leading-normal ${
+            className={`flex min-w-px flex-1 items-center justify-center gap-[6.4px] px-[12.8px] py-[9.6px] max-lg:min-w-max max-lg:flex-none max-lg:gap-2 max-lg:px-3.5 max-lg:py-2.5 whitespace-nowrap text-[11.2px] leading-normal ${
               active ? 'border-b-[1.6px] border-primary font-semibold text-primary' : 'font-medium text-muted hover:text-ink'
             }`}
           >
             {label}
             <span
-              className={`flex size-4 items-center justify-center rounded-full text-[8px] font-semibold ${
+              className={`flex size-4 shrink-0 items-center justify-center rounded-full text-[8px] font-semibold max-lg:size-[17px] max-lg:text-[9px] ${
                 active ? 'bg-primary text-white' : 'bg-line text-subtle'
               }`}
             >
@@ -252,15 +252,19 @@ function Row({ label, value, className = '' }) {
   )
 }
 
-function OrderDetails({ order, onAdvance }) {
+function OrderDetails({ order, onAdvance, onBack, className = '' }) {
   const next = NEXT[order.status]?.(order)
   return (
-    <section className="flex h-full min-w-px flex-1 flex-col gap-4 rounded-2xl bg-white p-[19.2px]" aria-label={`Order ${order.number}`}>
+    <section className={`flex h-full min-w-px flex-1 flex-col gap-4 rounded-2xl bg-white p-[19.2px] max-lg:overflow-y-auto max-lg:p-[14.4px] ${className}`} aria-label={`Order ${order.number}`}>
+      {/* Phones show the order list and one order at a time; this returns to the list. */}
+      <button type="button" onClick={onBack} className="flex items-center gap-[4.8px] self-start text-[11.2px] font-medium text-primary lg:hidden">
+        <span aria-hidden="true">←</span> All orders
+      </button>
       <div className="flex flex-col gap-[1.6px] leading-normal whitespace-nowrap">
         <p className="text-[14.4px] font-semibold text-ink">Order {order.number}</p>
         <p className="text-[9.6px] text-muted">Received at {order.received}</p>
       </div>
-      <div className="flex w-full flex-col gap-[9.6px] rounded-[9.6px] bg-surface p-[12.8px] leading-normal whitespace-nowrap">
+      <div className="flex w-full flex-col gap-[9.6px] rounded-[9.6px] bg-surface p-[12.8px] leading-normal max-lg:[&_p]:break-words whitespace-nowrap max-lg:whitespace-normal">
         <p className="text-[10.4px] font-semibold text-ink">{order.type} Details</p>
         <div className="flex flex-col gap-[3.2px] text-[10.4px] text-muted">
           <p className="text-[11.2px] font-semibold text-ink">{order.customer}</p>
@@ -323,6 +327,7 @@ export function StaffScreen() {
   const [tab, setTab] = useState('active')
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState(INITIAL_ORDERS[0].id)
+  const [detailOpen, setDetailOpen] = useState(false) // phones: showing one order instead of the list
 
   const q = query.trim().toLowerCase()
   const visible = orders.filter(
@@ -347,11 +352,11 @@ export function StaffScreen() {
     <div className="flex size-full flex-col overflow-clip bg-surface font-sans text-ink">
       <TopBar screen={screen} onNavigate={setScreen} />
       {screen === "menu" ? <StaffMenu unavailable={unavailable} setUnavailable={setUnavailable} /> : <>
-        <div className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4">
-          <div className="flex w-full items-center justify-between">
-            <Tabs tabs={TABS.map((t) => ({ ...t, count: orders.filter(t.match).length }))} tab={tab} onChange={setTab} />
-            <div className="flex items-center justify-end gap-2">
-              <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
+        <div className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4 max-lg:gap-3 max-lg:px-3 max-lg:py-3">
+          <div className="flex w-full items-center justify-between max-lg:flex-col max-lg:items-stretch max-lg:gap-2.5">
+            <Tabs tabs={TABS.map((t) => ({ ...t, count: orders.filter(t.match).length }))} tab={tab} onChange={(id) => { setTab(id); setDetailOpen(false) }} />
+            <div className="flex items-center justify-end gap-2 max-lg:justify-stretch">
+              <label className="flex w-64 items-center gap-[6.4px] max-lg:w-auto max-lg:min-w-0 max-lg:flex-1 rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
                 <Icon icon={Search01Icon} />
                 <input
                   value={query}
@@ -368,19 +373,19 @@ export function StaffScreen() {
             </div>
           </div>
           <div className="flex min-h-px w-full flex-1 items-start gap-6">
-            <div className="flex max-h-full min-w-px flex-1 flex-col gap-[4.8px] overflow-y-auto rounded-2xl bg-white p-2">
+            <div className={`flex max-h-full min-w-px flex-1 flex-col gap-[4.8px] overflow-y-auto rounded-2xl bg-white p-2 ${detailOpen && selected ? 'max-lg:hidden' : ''}`}>
               {visible.length ? (
                 visible.map((order, i) => (
                   <div key={order.id} className="flex flex-col gap-[4.8px]">
                     {i > 0 && <div className="h-[0.8px] w-full bg-line" />}
-                    <OrderRow order={order} selected={order.id === selected?.id} onSelect={() => setSelectedId(order.id)} />
+                    <OrderRow order={order} selected={order.id === selected?.id} onSelect={() => { setSelectedId(order.id); setDetailOpen(true) }} />
                   </div>
                 ))
               ) : (
                 <p className="p-6 text-center text-[11.2px] text-muted">No orders here right now.</p>
               )}
             </div>
-            {selected && <OrderDetails order={selected} onAdvance={advance} />}
+            {selected && <OrderDetails order={selected} onAdvance={advance} onBack={() => setDetailOpen(false)} className={detailOpen ? '' : 'max-lg:hidden'} />}
           </div>
         </div>
       </>}
@@ -444,11 +449,11 @@ function StaffMenu({ unavailable, setUnavailable }) {
   const toggle = (item) => setUnavailable((names) => isAvailable(item) ? [...names, item.name] : names.filter((name) => name !== item.name))
 
   return (
-    <section className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4" aria-label="Staff menu">
-      <div className="flex w-full items-center justify-between">
+    <section className="flex min-h-px w-full flex-1 flex-col gap-4 px-6 py-4 max-lg:gap-3 max-lg:px-3 max-lg:py-3" aria-label="Staff menu">
+      <div className="flex w-full items-center justify-between max-lg:flex-col max-lg:items-stretch max-lg:gap-2.5">
         <Tabs tabs={STOCK_TABS.map((t) => ({ ...t, count: STAFF_ITEMS.filter((item) => t.match(isAvailable(item))).length }))} tab={stock} onChange={setStock} />
-        <div className="flex items-center justify-end gap-2">
-          <label className="flex w-64 items-center gap-[6.4px] rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
+        <div className="flex items-center justify-end gap-2 max-lg:justify-stretch">
+          <label className="flex w-64 items-center gap-[6.4px] max-lg:w-auto max-lg:min-w-0 max-lg:flex-1 rounded-full border-[0.8px] border-[#f0ece9] bg-white p-[9.6px] text-muted">
             <Icon icon={Search01Icon} />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search items.." aria-label="Search menu items" className="min-w-px flex-1 bg-transparent text-[10.4px] leading-normal text-ink outline-none placeholder:text-muted" />
           </label>
@@ -460,14 +465,14 @@ function StaffMenu({ unavailable, setUnavailable }) {
           </label>
         </div>
       </div>
-      <div className="flex min-h-px w-full flex-1 items-start gap-[19.2px]">
-        <nav aria-label="Menu categories" className="flex w-[224px] shrink-0 flex-col gap-4 rounded-2xl bg-white px-2 py-4">
-          <h2 className="px-2 text-[12.8px] leading-normal font-semibold text-ink">Categories</h2>
-          <div className="flex flex-col gap-[3.2px]">
+      <div className="flex min-h-px w-full flex-1 items-start gap-[19.2px] max-lg:flex-col max-lg:items-stretch max-lg:gap-2.5">
+        <nav aria-label="Menu categories" className="flex w-[224px] shrink-0 flex-col gap-4 rounded-2xl bg-white px-2 py-4 max-lg:w-full max-lg:overflow-x-auto max-lg:p-[6.4px] max-lg:[scrollbar-width:none]">
+          <h2 className="px-2 max-lg:sr-only text-[12.8px] leading-normal font-semibold text-ink">Categories</h2>
+          <div className="flex flex-col gap-[3.2px] max-lg:flex-row">
             {STAFF_CATEGORIES.map(([name, icon]) => {
               const active = name === category
               return (
-                <button key={name} type="button" aria-pressed={active} onClick={() => setCategory(name)} className={`flex w-full items-center gap-[9.6px] rounded-[9.6px] py-[9.6px] pr-[9.6px] pl-[6.4px] text-left text-[11.2px] leading-normal ${active ? 'bg-primary-light font-semibold text-primary' : 'text-body hover:bg-surface'}`}>
+                <button key={name} type="button" aria-pressed={active} onClick={() => setCategory(name)} className={`flex w-full items-center gap-[9.6px] max-lg:w-auto max-lg:shrink-0 max-lg:gap-[6.4px] max-lg:whitespace-nowrap rounded-[9.6px] py-[9.6px] pr-[9.6px] pl-[6.4px] text-left text-[11.2px] leading-normal ${active ? 'bg-primary-light font-semibold text-primary' : 'text-body hover:bg-surface'}`}>
                   <Icon icon={icon} size={19.2} className={active ? '' : 'text-muted'} />
                   <span className="min-w-px flex-1">{name}</span>
                   <CountBadge active={active}>{matches.filter((item) => item.category === name).length}</CountBadge>
@@ -476,7 +481,7 @@ function StaffMenu({ unavailable, setUnavailable }) {
             })}
           </div>
         </nav>
-        <div className="flex max-h-full min-w-px flex-1 flex-col gap-4 overflow-y-auto rounded-2xl bg-white px-[11.2px] py-[19.2px]">
+        <div className="flex max-h-full min-w-px flex-1 flex-col gap-4 overflow-y-auto rounded-2xl bg-white px-[11.2px] py-[19.2px] max-lg:min-h-0 max-lg:flex-1 max-lg:gap-2 max-lg:px-[6.4px] max-lg:py-[12.8px]">
           <div className="flex items-center gap-[11.2px] px-[9.6px]">
             <span className="flex size-[36.8px] shrink-0 items-center justify-center rounded-full border-[0.74px] border-line bg-surface text-primary"><Icon icon={CategoryGlyph} size={23.55} /></span>
             <div className="flex flex-col gap-[1.6px] leading-normal">
@@ -488,22 +493,24 @@ function StaffMenu({ unavailable, setUnavailable }) {
             {visible.map((item) => {
               const available = isAvailable(item)
               return (
-                <div key={item.name} className="flex items-center gap-[12.8px] rounded-[9.6px] p-[12.8px] transition-colors hover:bg-primary-light focus-within:bg-primary-light">
+                <div key={item.name} className="flex items-center gap-[12.8px] rounded-[9.6px] p-[12.8px] max-lg:gap-[9.6px] max-lg:p-[8px] transition-colors hover:bg-primary-light focus-within:bg-primary-light">
                   <span className="size-[51.2px] shrink-0 overflow-hidden rounded-[6.4px] border-[0.8px] border-line bg-white">
                     <img src={item.image} alt="" className={`size-full object-cover ${available ? '' : 'opacity-60 grayscale'}`} />
                   </span>
                   <div className="flex min-w-px flex-1 flex-col gap-[3.2px] leading-normal">
                     <p className="truncate text-[11.2px] font-medium text-ink">{item.name}</p>
                     <p className="flex items-center gap-[3.2px] text-[9.6px] text-muted">
+                      <span className="font-medium text-ink lg:hidden">{money(item.price)}</span>
+                      <span aria-hidden="true" className="size-[1.6px] shrink-0 rounded-full bg-muted lg:hidden" />
                       <Icon icon={Clock05Icon} size={12.8} />
                       <span className="shrink-0">{item.prep}</span>
-                      <span aria-hidden="true" className="size-[1.6px] shrink-0 rounded-full bg-muted" />
-                      <span className="min-w-px flex-1 truncate">{item.desc}</span>
+                      <span aria-hidden="true" className="size-[1.6px] shrink-0 rounded-full bg-muted max-lg:hidden" />
+                      <span className="min-w-px flex-1 truncate max-lg:hidden">{item.desc}</span>
                     </p>
                   </div>
-                  <p className="w-16 shrink-0 text-[11.2px] leading-normal font-medium text-ink">{money(item.price)}</p>
-                  <div className="flex w-24 shrink-0 items-center gap-[6.4px]">
-                    <span className={`w-[50px] text-[9.6px] leading-normal font-medium ${available ? 'text-[#39ab00]' : 'text-subtle'}`}>{available ? 'In Stock' : 'Sold Out'}</span>
+                  <p className="w-16 shrink-0 max-lg:hidden text-[11.2px] leading-normal font-medium text-ink">{money(item.price)}</p>
+                  <div className="flex w-24 shrink-0 items-center gap-[6.4px] max-lg:w-auto">
+                    <span className={`w-[50px] max-lg:hidden text-[9.6px] leading-normal font-medium ${available ? 'text-[#39ab00]' : 'text-subtle'}`}>{available ? 'In Stock' : 'Sold Out'}</span>
                     <span className="flex" style={{ zoom: 0.8 }}><ToggleSwitch checked={available} onChange={() => toggle(item)} ariaLabel={`${item.name} in stock`} /></span>
                   </div>
                 </div>
