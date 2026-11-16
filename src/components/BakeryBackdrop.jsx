@@ -1,4 +1,4 @@
-import { BRAND_COLORS } from '../lib/brandPalette'
+import { BRAND_COLORS, MOBILE_BRAND_COLORS } from '../lib/brandPalette'
 const DECORATIONS = [
   {
     src: "/landing/demo/deco-croissant.svg",
@@ -74,29 +74,27 @@ function Swatch({ color, active, onChange }) {
 }
 
 /**
- * Phone version of the customization rail: a horizontal strip of brand colors above the demo.
+ * Phone version of the customization rail: a horizontal strip of brand colors below the demo.
  * Scrolls sideways when the swatches don't fit.
  */
 export function MobileCustomizationBar({ color, onChange }) {
   return (
-    <div className="flex w-full items-center gap-3 rounded-full bg-white py-1.5 pr-1.5 pl-4 shadow-[0_6px_24px_rgba(85,76,241,0.12)] lg:hidden">
-      <span className="shrink-0 font-malibu text-sm leading-none text-primary">Customize</span>
+    <div className="demo-mobile-customization">
+      <span className="demo-customize-label">Customize</span>
       <div
         role="group"
         aria-label="Preview color"
-        className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="demo-mobile-swatches"
       >
-        {BRAND_COLORS.map(({ hex: swatch, name }) => (
+        {MOBILE_BRAND_COLORS.map(({ hex: swatch, name }) => (
           <button
             key={swatch}
             type="button"
             aria-label={`Use ${name ?? swatch} as the preview color`}
             aria-pressed={color === swatch}
             onClick={() => onChange(swatch)}
-            className={`size-7 shrink-0 rounded-full transition-transform focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-              color === swatch ? 'ring-2 ring-white ring-offset-2 ring-offset-primary' : ''
-            }`}
-            style={{ backgroundColor: swatch }}
+            className="demo-mobile-swatch"
+            style={{ backgroundColor: swatch, '--swatch-color': swatch }}
           />
         ))}
       </div>

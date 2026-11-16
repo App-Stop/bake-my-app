@@ -27,7 +27,7 @@ function DemoPhone() {
   return (
     <div
       // Phones size the mockup to the screen above the demo bar instead of the 1920×1174 frame.
-      className="brand-scope relative shrink-0 rounded-[calc(68*var(--d))] bg-primary-light max-lg:[--d:min(1px,calc((100vw_-_88px)/460),calc((100dvh_-_250px)/977))]"
+      className="demo-app-phone brand-scope relative shrink-0 rounded-[calc(68*var(--d))] bg-primary-light max-lg:[--d:min(1px,calc((100vw_-_88px)/460),calc((100dvh_-_250px)/977))]"
       style={{
         width: `calc(${SCREEN_WIDTH + 2 * BEZEL} * var(--d))`,
         height: `calc(${FRAME_HEIGHT} * var(--d))`,

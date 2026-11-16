@@ -3,6 +3,9 @@ export const BRAND_COLORS = [
   ['Cyan', '#00B4B2'], ['Red', '#F30000'], ['Orange', '#F96C00'],
   ['Blue', '#0095FF'], ['Yellow', '#C9B500'], ['Rose', '#D70048'], ['Brown', '#BD4A15'],
 ].map(([name, hex]) => ({ name, hex }))
+// The mobile setup and preview designs use the same palette in this order.
+export const MOBILE_BRAND_COLORS = ['Violet', 'Blue', 'Pink', 'Cyan', 'Green', 'Yellow', 'Orange', 'Red', 'Rose', 'Brown']
+  .map(name => BRAND_COLORS.find(color => color.name === name))
 export const DEFAULT_COLOR = '#BD4A15'
 export function presetColor(value) {
   return BRAND_COLORS.find(({ hex }) => hex === String(value).toUpperCase())?.hex ?? DEFAULT_COLOR

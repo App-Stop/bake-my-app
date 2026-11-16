@@ -34,7 +34,7 @@ function App() {
   }
 
   return (
-    <div className="brand-scope relative min-h-full overflow-hidden bg-primary-light" style={brandVars}>
+    <div className="setup-page-shell brand-scope relative min-h-full overflow-hidden bg-primary-light" style={brandVars}>
       <BakeryDecorations setup />
       <main className="relative z-10 h-full min-w-0 overflow-y-auto">
         <OnboardingScreen state={state} actions={actions} />

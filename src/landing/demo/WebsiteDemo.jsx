@@ -21,13 +21,13 @@ export function WebsiteDemo() {
 
 function MobileWebsiteDemo() {
   const ref = useRef(null)
-  const { height } = useElementSize(ref)
+  const { width, height } = useElementSize(ref)
   const { logo } = useDemoBrand()
 
   return (
-    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850} widePreview>
+    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850}>
       <div ref={ref} className="relative size-full overflow-hidden rounded-[20px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
-        {height > 0 && <WebsiteStorefront mobile summary={SUMMARY} logo={logo} height={height} />}
+        {width > 0 && height > 0 && <div className="absolute top-0 left-0 origin-top-left" style={{ width: 402, height: height * 402 / width, transform: `scale(${width / 402})` }}><WebsiteStorefront mobile summary={SUMMARY} logo={logo} height={height * 402 / width} /></div>}
       </div>
     </DemoPage>
   )
