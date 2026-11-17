@@ -55,7 +55,8 @@ export function PhoneFrame({ label, children, interactive = false, lightStatusBa
   )
 }
 
-function StatusBar({ light = false }) {
+/** iPhone status bar (time, Dynamic Island, signal), 241.2px wide × 34px tall. */
+export function StatusBar({ light = false }) {
   return (
     <div className="absolute inset-x-0 top-0 flex h-[34px] items-center px-[5.4px] pt-[1.4px]">
       <div className="flex min-w-px flex-1 items-center justify-center pr-[3.6px]">

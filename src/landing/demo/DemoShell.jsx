@@ -4,6 +4,7 @@ import { ROUTES } from '../../router'
 import { DEMO_UNIT, useElementSize, useIsDesktop, useScaleTo } from './demoScale'
 import { BakeryDecorations, CustomizationRail, MobileCustomizationBar } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
+import { StatusBar } from '../../preview/phone'
 import './demo-preview-mobile.css'
 
 const DEMO_TABS = [
@@ -101,18 +102,28 @@ export function MobileDemoBar({ active }) {
   </div>
 }
 
-/** Shared mobile page chrome. Demo content remains independent of the page layout. */
-function MobileDemoPage({ title, active, color, children }) {
+/**
+ * Shared mobile page chrome. Every demo sits in the same iPhone mockup as the mobile app; demos
+ * that don't draw their own phone (`statusBar`) get the iPhone status bar above their content.
+ */
+function MobileDemoPage({ title, active, color, statusBar, children }) {
   const stage = useRef(null)
   const { width, height } = useElementSize(stage)
   // Fit the preview to the space left by the actual controls, including safe areas and text wrapping.
   const phoneWidth = Math.max(0, Math.min(402, width, height * 402 / 874))
+  // The status bar is drawn at the 241.2px phone scale.
+  const barScale = phoneWidth / 241.2
 
   return <div className="demo-mobile-page">
     <header className="demo-mobile-header"><Link to={ROUTES.home}>Back to Home</Link></header>
     <main ref={stage} className="demo-mobile-stage">
       <h1 className="sr-only">{title}</h1>
-      <div className="brand-scope demo-mobile-frame" style={{ ...brandTheme(color), width: phoneWidth, height: phoneWidth * 874 / 402 }}>{children}</div>
+      <div className="brand-scope demo-mobile-frame" style={{ ...brandTheme(color), width: phoneWidth, height: phoneWidth * 874 / 402 }}>
+        {statusBar && <div className="demo-mobile-statusbar" style={{ height: 34 * barScale }}>
+          <div style={{ width: 241.2, height: 34, transform: `scale(${barScale})` }}><StatusBar /></div>
+        </div>}
+        <div className="demo-mobile-screen">{children}</div>
+      </div>
     </main>
     <footer className="demo-mobile-controls">
       <MobileCustomizationBar color={color} onChange={setDemoBrandColor} />
@@ -153,10 +164,10 @@ export function DemoWindow({ width, height, contentWidth = width, children }) {
  * A demo frame: `children` (e.g. a phone or app window) placed `top` Figma px down and `height`
  * tall, with the demo bar at its Figma position below. Phones use the dedicated mobile page shell.
  */
-export function DemoPage({ title, active, top, height, children }) {
+export function DemoPage({ title, active, top, height, statusBar = true, children }) {
   const { color } = useDemoBrand()
   const desktop = useIsDesktop()
-  if (!desktop) return <MobileDemoPage title={title} active={active} color={color}>{children}</MobileDemoPage>
+  if (!desktop) return <MobileDemoPage title={title} active={active} color={color} statusBar={statusBar}>{children}</MobileDemoPage>
 
   return (
     <div

@@ -109,14 +109,14 @@ function BillingToggle({ billing, onChange }) {
             role="radio"
             aria-checked={active}
             onClick={() => onChange(key)}
-            className={`flex min-w-px flex-1 flex-wrap items-center justify-center gap-1.5 rounded-[calc(60*var(--px))] px-3 py-4 text-[length:max(18*var(--m),20*var(--u))] leading-normal transition ${
+            className={`flex min-w-px flex-1 items-center justify-center gap-1 rounded-[calc(60*var(--px))] px-2 py-2 text-base leading-tight whitespace-nowrap transition sm:gap-1.5 sm:px-3 sm:py-4 sm:text-[length:max(18*var(--m),20*var(--u))] sm:leading-normal ${
               active ? 'bg-primary font-semibold text-white' : 'font-medium text-body hover:text-ink'
             }`}
           >
             {label}
             {badge && (
               <span
-                className={`whitespace-nowrap rounded-[calc(20*var(--px))] px-3 py-1 font-sans text-xs tracking-[calc(0.24*var(--px))] ${
+                className={`whitespace-nowrap rounded-[calc(20*var(--px))] px-2 py-0.5 font-sans text-[10px] tracking-[calc(0.24*var(--px))] sm:px-3 sm:py-1 sm:text-xs ${
                   active ? 'bg-white text-primary' : 'bg-primary text-white'
                 }`}
               >
