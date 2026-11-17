@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import logo from '../assets/logo.svg'
 import { PrimaryButton } from '../components/buttons'
 import { SectionLabel, TextField, UploadBox } from '../components/form'
@@ -80,7 +80,27 @@ export function OnboardingScreen({ state, actions }) {
   const { openExitOffer } = useModals()
   const [trap, setTrap] = useState('') // hidden spam-trap field
   const launched = useRef(false) // a double click must not send the lead twice
+  const viewportRef = useRef(null)
+  const formRef = useRef(null)
   const setShopField = (field) => (event) => actions.updateShop({ [field]: event.target.value })
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current
+    const form = formRef.current
+    const update = () => {
+      const padding = getComputedStyle(viewport)
+      const width = viewport.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight)
+      const height = viewport.clientHeight - parseFloat(padding.paddingTop) - parseFloat(padding.paddingBottom)
+      // Preserve the complete Figma composition and fit it uniformly to the available screen.
+      const scale = Math.min(1, width / form.offsetWidth, height / form.offsetHeight)
+      viewport.style.setProperty('--setup-scale', String(scale))
+    }
+    const observer = new ResizeObserver(update)
+    observer.observe(viewport)
+    observer.observe(form)
+    update()
+    return () => observer.disconnect()
+  }, [])
 
   const openDemo = () => {
     const picked = new URLSearchParams(window.location.search).get('demo')
@@ -96,8 +116,8 @@ export function OnboardingScreen({ state, actions }) {
   }
 
   return (
-    // Phones stack the header and card in the page flow; from md up they sit at their Figma positions.
-    <div className="onboarding-page relative mx-auto w-full max-w-[1440px] px-4 pt-5 pb-10 md:min-h-[calc(1024*var(--px))] md:px-6 md:py-0">
+    <div ref={viewportRef} className="onboarding-viewport">
+    <div ref={formRef} className="onboarding-page relative mx-auto w-full max-w-[1440px] px-4 pt-5 pb-10 md:min-h-[calc(1024*var(--px))] md:px-6 md:py-0">
       <header className="setup-header relative flex h-14 items-center justify-center md:static md:block md:h-auto">
         <img src={logo} alt="Bake My App" width={100.25} height={73.04} className="h-[52px] w-auto md:absolute md:left-1/2 md:top-12 md:h-[calc(73.04*var(--px))] md:w-[calc(100.25*var(--px))] md:-translate-x-1/2" />
         <button
@@ -131,7 +151,7 @@ export function OnboardingScreen({ state, actions }) {
               label="Upload company logo"
             />
             <p className="setup-upload-hint mt-2.5 text-center text-xs leading-normal text-muted">
-              PNG, JPG, or SVG <br className="max-md:hidden" /><span className="md:hidden">(</span>512×512 recommended<span className="md:hidden">)</span>
+              PNG, JPG, or SVG <br className="max-md:hidden" /><span className="setup-upload-hint-mobile md:hidden">(</span>512×512 recommended<span className="setup-upload-hint-mobile md:hidden">)</span>
             </p>
           </div>
 
@@ -184,6 +204,7 @@ export function OnboardingScreen({ state, actions }) {
         </div>
       </section>
       <p className="setup-mobile-consent md:hidden">By continuing you agree to our <Link to={ROUTES.comingSoon} className="text-primary underline">Privacy Policy</Link>.</p>
+    </div>
     </div>
   )
 }

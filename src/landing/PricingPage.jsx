@@ -157,7 +157,7 @@ function GetStarted({ planState }) {
         ))}
       </div>
       <div className="mt-[calc(48*var(--u))] flex flex-col items-center gap-[calc(12*var(--u))]">
-        <div className="flex gap-[calc(16*var(--u))]">
+        <div className="flex flex-col items-center gap-[calc(16*var(--u))] lg:flex-row">
           <Link to={planHref(planState, 'growth', 'year')} className="flex items-center gap-[calc(8*var(--u))] rounded-full bg-primary px-[calc(32*var(--u))] py-[calc(16*var(--u))] text-[length:calc(16*var(--u))] font-semibold text-white">
             Start for Free <img src={asset('pricing-page/arrow-small-white.svg')} alt="" width={20} height={20} className="h-[calc(20*var(--u))] w-[calc(20*var(--u))]" />
           </Link>

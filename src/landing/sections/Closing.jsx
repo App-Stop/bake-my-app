@@ -28,7 +28,7 @@ export function Ready() {
                 tone="purple"
                 size="lg"
                 note="Free trial. Cancel anytime."
-                buttonRowClassName="sm:flex-nowrap"
+                buttonRowClassName="lg:flex-nowrap"
               />
             </div>
           </div>

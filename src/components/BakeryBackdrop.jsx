@@ -80,7 +80,7 @@ function Swatch({ color, active, onChange }) {
 export function MobileCustomizationBar({ color, onChange }) {
   return (
     <div className="demo-mobile-customization">
-      <span className="demo-customize-label">Customize</span>
+      <img className="demo-customize-label" src="/figma/demo-preview/customize.svg" alt="Customize" width={73} height={17} />
       <div
         role="group"
         aria-label="Preview color"

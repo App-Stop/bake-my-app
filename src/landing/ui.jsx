@@ -96,7 +96,7 @@ export function CtaPair({
   const centered = align === 'center'
   return (
     <div className={`flex flex-col gap-2.5 ${centered ? 'items-center' : 'items-start'}`}>
-      <div className={`flex flex-wrap items-center ${centered ? 'justify-center' : ''} ${GAP[30]} ${buttonRowClassName}`}>
+      <div className={`flex flex-col flex-wrap items-center lg:flex-row ${centered ? 'justify-center' : 'max-lg:items-start'} ${GAP[30]} ${buttonRowClassName}`}>
         <Pill to={ROUTES.pricing} variant={onPurple ? 'white' : 'primary'} size={size}>
           {label}
         </Pill>

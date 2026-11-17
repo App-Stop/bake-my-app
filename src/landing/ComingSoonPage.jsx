@@ -24,7 +24,7 @@ export function ComingSoonPage() {
             We&apos;re putting the finishing touches on getting your own branded app. In the meantime, take the full
             demo for a spin.
           </p>
-          <div className={`flex flex-wrap items-center justify-center ${GAP[30]}`}>
+          <div className={`flex flex-col items-center justify-center lg:flex-row lg:flex-wrap ${GAP[30]}`}>
             <DemoPill variant="white" size="lg" />
             <Pill to={ROUTES.home} variant="glass" size="lg">
               Back to home

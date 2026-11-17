@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '../../components/Link'
 import { ROUTES } from '../../router'
-import { DEMO_UNIT, useIsDesktop, useScaleTo } from './demoScale'
+import { DEMO_UNIT, useElementSize, useIsDesktop, useScaleTo } from './demoScale'
 import { BakeryDecorations, CustomizationRail, MobileCustomizationBar } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
 import './demo-preview-mobile.css'
@@ -103,11 +103,16 @@ export function MobileDemoBar({ active }) {
 
 /** Shared mobile page chrome. Demo content remains independent of the page layout. */
 function MobileDemoPage({ title, active, color, children }) {
+  const stage = useRef(null)
+  const { width, height } = useElementSize(stage)
+  // Fit the preview to the space left by the actual controls, including safe areas and text wrapping.
+  const phoneWidth = Math.max(0, Math.min(402, width, height * 402 / 874))
+
   return <div className="demo-mobile-page">
     <header className="demo-mobile-header"><Link to={ROUTES.home}>Back to Home</Link></header>
-    <main className="demo-mobile-stage">
+    <main ref={stage} className="demo-mobile-stage">
       <h1 className="sr-only">{title}</h1>
-      <div className="brand-scope demo-mobile-frame" style={brandTheme(color)}>{children}</div>
+      <div className="brand-scope demo-mobile-frame" style={{ ...brandTheme(color), width: phoneWidth, height: phoneWidth * 874 / 402 }}>{children}</div>
     </main>
     <footer className="demo-mobile-controls">
       <MobileCustomizationBar color={color} onChange={setDemoBrandColor} />

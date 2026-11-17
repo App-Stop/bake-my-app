@@ -31,7 +31,7 @@ export function CheckoutSuccessPage() {
           <p className={TYPE.lead}>
             Thanks for subscribing to Bake My App. Our team will contact you shortly to set up your bakery&apos;s store.
           </p>
-          <div className={`flex flex-wrap items-center justify-center ${GAP[30]}`}>
+          <div className={`flex flex-col items-center justify-center lg:flex-row lg:flex-wrap ${GAP[30]}`}>
             <Pill to={ROUTES.home} variant="white" size="lg">
               Back to home
             </Pill>

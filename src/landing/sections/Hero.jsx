@@ -48,7 +48,12 @@ export function Hero() {
                 Your own branded app, ordering website, kitchen screen and sales dashboard. Live in 48 hours, with
                 0% commission on every order.
               </p>
-              <CtaPair tone="purple" size="md" align="center" note="Free setup. No contracts. We do the techy part." />
+              <CtaPair
+                tone="purple"
+                size="md"
+                align="center"
+                note="Free setup. No contracts. We do the techy part."
+              />
             </div>
           </div>
         </div>
