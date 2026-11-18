@@ -176,7 +176,8 @@ function DeviceViewport({ width, height, style, children }) {
     const doc = frame.current?.contentDocument
     if (!doc) return
     doc.open()
-    doc.write('<!doctype html><html><head><meta charset="utf-8"></head><body></body></html>')
+    // Phones and tablets overlay their scrollbars, so the preview reserves no width for them.
+    doc.write('<!doctype html><html><head><meta charset="utf-8"><style>*{scrollbar-width:none}*::-webkit-scrollbar{display:none}</style></head><body></body></html>')
     doc.close()
     const sync = () => {
       doc.head.querySelectorAll('[data-mirrored]').forEach((node) => node.remove())

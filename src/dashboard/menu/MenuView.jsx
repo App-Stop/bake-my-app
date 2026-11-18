@@ -472,7 +472,7 @@ export function MenuView({ onboardingState }) {
                   <button
                     type="button"
                     onClick={() => setEditingCategory(activeCategory)}
-                    className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] bg-white px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer max-sm:flex-1 max-sm:justify-center max-sm:border-0 max-sm:bg-[#f5f5f5] max-sm:py-2.5 max-sm:text-base max-sm:font-medium"
+                    className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] bg-white px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer max-sm:flex-1 max-sm:justify-center max-sm:border-0 max-sm:min-w-0 max-sm:whitespace-nowrap max-sm:bg-[#f5f5f5] max-sm:py-2.5 max-sm:text-sm max-sm:font-medium"
                   >
                     <HugeiconsIcon icon={PencilEdit02Icon} size={15} color="currentColor" />
                     <span>Edit Category</span>
@@ -482,7 +482,7 @@ export function MenuView({ onboardingState }) {
                   <button
                     type="button"
                     onClick={() => setIsAddItemOpen(true)}
-                    className={`flex items-center gap-1.5 rounded-full bg-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer max-sm:flex-1 max-sm:justify-center max-sm:py-2.5 max-sm:text-base ${activeCategory.items.length ? '' : 'max-sm:hidden'}`}
+                    className={`flex items-center gap-1.5 rounded-full bg-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:whitespace-nowrap max-sm:py-2.5 max-sm:text-sm ${activeCategory.items.length ? '' : 'max-sm:hidden'}`}
                     
                   >
                     <HugeiconsIcon icon={Add01Icon} size={15} color="currentColor" />
