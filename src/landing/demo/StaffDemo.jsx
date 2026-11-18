@@ -7,7 +7,7 @@ import { StaffScreen } from './StaffScreen'
  */
 export function StaffDemo() {
   return (
-    <DemoPage title="Bakery staff portal demo" active="Staff Portal" top={80} height={819.2}>
+    <DemoPage title="Bakery staff portal demo" active="Staff Portal" top={80} height={819.2} screen={() => <StaffScreen />} isolate>
       <DemoWindow width={1308} height={819.2}>
         <StaffScreen />
       </DemoWindow>

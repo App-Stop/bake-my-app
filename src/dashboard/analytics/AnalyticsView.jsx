@@ -358,7 +358,7 @@ export function AnalyticsView() {
         </div>
 
         {/* Time Filter Pills */}
-        <div className="flex items-center rounded-full border border-[#dcdcdc] bg-[#e8e8e8] p-1 self-start sm:self-auto shadow-xs">
+        <div className="flex items-center rounded-full border border-[#dcdcdc] bg-[#e8e8e8] p-1 self-start sm:self-auto shadow-xs max-sm:w-full max-sm:rounded-[10px]">
           {TIME_RANGES.map((range) => {
             const isSelected = activeRange === range.id
             return (
@@ -369,7 +369,7 @@ export function AnalyticsView() {
                   setActiveRange(range.id)
                   setHoveredPointIndex(null)
                 }}
-                className={`rounded-full px-3.5 sm:px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                className={`rounded-full px-3.5 sm:px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer max-sm:flex-1 max-sm:rounded-[6px] max-sm:px-1 max-sm:text-[13px] ${
                   isSelected
                     ? 'bg-white text-ink shadow-[0px_1px_3px_0px_rgba(16,24,40,0.1),0px_1px_2px_0px_rgba(16,24,40,0.06)]'
                     : 'text-muted hover:text-ink'

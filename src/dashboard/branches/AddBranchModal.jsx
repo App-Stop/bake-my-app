@@ -48,12 +48,12 @@ export function AddBranchModal({ isOpen, onClose, onAdd }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-branch-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[1px] overflow-y-auto"
+      className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[1px] overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="flex w-full max-w-[540px] flex-col gap-6 rounded-[20px] bg-white p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)] max-h-[92vh] overflow-y-auto my-auto">
+      <div className="dash-sheet flex w-full max-w-[540px] flex-col gap-6 rounded-[20px] bg-white p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)] max-h-[92vh] overflow-y-auto my-auto">
         <h2 id="add-branch-title" className="text-lg font-semibold text-ink">
           Add Branch
         </h2>

@@ -214,15 +214,15 @@ export function CustomersView() {
           <h1 className="text-2xl sm:text-[26px] lg:text-[28px] font-semibold tracking-tight text-ink">
             Customer Directory
           </h1>
-          <p className="text-xs sm:text-sm text-muted">
+          <p className="text-sm text-muted">
             Your customer base, loyalty engagement, and contact insights.
           </p>
         </div>
 
         {/* Controls: Search and Sort */}
-        <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
+        <div className="flex flex-nowrap items-center gap-3">
           {/* Search Input */}
-          <div className="flex w-full sm:w-64 md:w-72 lg:w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 shadow-sm focus-within:border-brand">
+          <div className="flex w-full min-w-0 sm:w-64 md:w-72 lg:w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 shadow-sm focus-within:border-brand max-sm:flex-1 max-sm:py-3">
             <HugeiconsIcon icon={Search01Icon} size={18} className="text-muted shrink-0" />
             <input
               type="text"
@@ -232,16 +232,16 @@ export function CustomersView() {
                 setCurrentPage(1)
               }}
               placeholder="Search customers..."
-              className="w-full text-xs font-normal text-ink outline-none placeholder:text-muted"
+              className="w-full text-xs font-normal text-ink outline-none placeholder:text-muted max-sm:text-sm"
             />
           </div>
 
           {/* Sort Dropdown */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
               type="button"
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-4 py-2 text-xs font-medium text-ink shadow-sm hover:bg-neutral-50 transition-colors"
+              className="flex items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-4 py-2 text-xs font-medium text-ink shadow-sm hover:bg-neutral-50 transition-colors max-sm:py-3 max-sm:text-sm"
             >
               <span>{sortBy === 'default' ? 'Sort' : SORT_OPTIONS.find((o) => o.id === sortBy)?.label}</span>
               <HugeiconsIcon
@@ -284,9 +284,9 @@ export function CustomersView() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="dash-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 w-full">
+      <div className="dash-stats grid grid-cols-2 lg:grid-cols-3 gap-4 max-sm:gap-3 lg:gap-5 w-full">
         {/* Stat Card 1: Total Customers */}
-        <div className="bg-white rounded-[16px] p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3">
+        <div className="bg-white rounded-[16px] p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3">
           <p className="text-xs sm:text-sm font-medium text-muted">
             Total Customers
           </p>
@@ -306,7 +306,7 @@ export function CustomersView() {
         </div>
 
         {/* Stat Card 2: Loyalty Members */}
-        <div className="bg-white rounded-[16px] p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3">
+        <div className="bg-white rounded-[16px] p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3">
           <p className="text-xs sm:text-sm font-medium text-muted">
             Loyalty Members
           </p>
@@ -331,7 +331,7 @@ export function CustomersView() {
         </div>
 
         {/* Stat Card 3: Avg Lifetime Value */}
-        <div className="bg-white rounded-[16px] p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3 sm:col-span-2 lg:col-span-1">
+        <div className="bg-white rounded-[16px] p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9] flex flex-col gap-3 col-span-2 lg:col-span-1">
           <p className="text-xs sm:text-sm font-medium text-muted">
             Avg. Lifetime Value
           </p>
@@ -353,8 +353,26 @@ export function CustomersView() {
 
       {/* Customer Directory Table Card */}
       <div className="bg-white rounded-[20px] p-4 sm:p-5 lg:p-6 border border-[#f0ece9] shadow-[0px_4px_10px_rgba(0,0,0,0.02)] flex flex-col gap-4 w-full">
+        {/* Phones: one row per customer with points, contact and membership. */}
+        <div className="flex flex-col divide-y divide-[#f0ece9] sm:hidden">
+          {paginatedCustomers.length === 0 ? (
+            <p className="py-12 text-center text-sm text-muted">No customers found matching &quot;{searchQuery}&quot;</p>
+          ) : (
+            paginatedCustomers.map((customer) => (
+              <div key={customer.id + customer.name} className="flex flex-col gap-1.5 py-3.5 first:pt-0 last:pb-0">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="min-w-0 truncate text-[15px] font-medium text-ink">{customer.name}</p>
+                  <p className="shrink-0 text-sm font-semibold text-brand">{customer.loyaltyPoints} pts</p>
+                </div>
+                <p className="truncate text-[13px] text-muted">{customer.email} · {customer.phone}</p>
+                <p className="text-[13px] text-muted">Member since {customer.memberSince} · {customer.totalOrders} orders</p>
+              </div>
+            ))
+          )}
+        </div>
+
         {/* Horizontal scroll for table responsiveness on smaller laptops and tablets */}
-        <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto max-sm:hidden">
           <div className="min-w-[840px] flex flex-col">
             {/* Table Header */}
             <div className="flex items-center px-3 py-2 text-xs font-semibold text-[#848484] border-b border-[#f0ece9]">
@@ -408,7 +426,7 @@ export function CustomersView() {
         </div>
 
         {/* Pagination Footer */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-[#f0ece9]">
+        <div className="flex flex-row items-center justify-between gap-3 pt-2 border-t border-[#f0ece9]">
           <p className="text-xs sm:text-[13px] text-muted font-normal">
             Showing {startIndex}-{endIndex} of {displayTotal} customers
           </p>

@@ -129,3 +129,14 @@ Existing product photos, category data, hero, film, footer logo, checkout illust
 `BrandImage` now recolors local website SVG primary and light colors as well as mobile-app SVGs. `useBrandedRaster` tints only blue/violet brand pixels in the existing phone mockups and pickup timing icon, preserving photography and transparency. Other illustrations use their existing ten-color palette exports. The leave-at-door illustration correctly maps to the door artwork rather than the shop. Preparing glows and bag motion retain Figma's 5-second loop; enroute rider motion uses its supplied timing, with reduced-motion support.
 
 Validation: production build; browser flows for delivery and pickup through tracking and completion, profile, wallet withdrawal, points, order history, favourites and reorder; layout/image checks at 320, 375, 402 and 768 viewport pixels; ten brand colors; desktop preview smoke check. Changed files pass targeted ESLint. Full ESLint retains the eight pre-existing `DeliveryPanels.jsx` errors concerning mixed component/helper exports and a ref assignment during render.
+
+## Responsive website — 261 iPad mini frames
+
+The tablet preview follows Home (`261:336`), Product (`261:1126`), delivery and pickup Checkout (`261:1841`, `261:2068`), the tracking states (`261:2277`, `261:2517`, `261:2757`, `261:3043`, `261:3292`) and the account screens (`261:3577`, `261:3859`, `261:4098`, `261:4362`, `261:4625`). It renders the phone markup on a 744px canvas with `ws-tablet` overrides in `website-tablet.css`: one-row navbar, three-column product grids, two-column product detail, checkout, tracking and account layouts, and the four-column footer.
+
+The tablet frames reuse the phone and desktop artwork; their glows, social icons and menu icon are identical to the existing files. The two masked phone-in-hand groups were rendered from Figma as static images into `public/figma/customer-website/tablet/`:
+
+| Filename | Source node | Size |
+| --- | --- | --- |
+| `app-phone-hand.png` | `261:718` (visible area) | 246 × 227 |
+| `checkout-phone-hand.png` | `261:1856` (visible area) | 113 × 101 |

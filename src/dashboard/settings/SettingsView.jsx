@@ -219,7 +219,7 @@ export function SettingsView({ state, actions }) {
       )}
 
       {/* Top Header Row */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 max-sm:flex-nowrap max-sm:items-start">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl sm:text-[28px] font-semibold tracking-tight text-ink">
             Store Settings
@@ -231,7 +231,7 @@ export function SettingsView({ state, actions }) {
         <button
           type="button"
           onClick={handleSaveChanges}
-          className="rounded-full bg-brand px-6 py-3 text-sm font-semibold text-on-brand shadow-sm transition-all hover:brightness-105 active:scale-95 cursor-pointer"
+          className="shrink-0 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-on-brand shadow-sm transition-all hover:brightness-105 active:scale-95 cursor-pointer max-sm:px-5"
         >
           Save Changes
         </button>
@@ -240,8 +240,9 @@ export function SettingsView({ state, actions }) {
       {/* Settings Split Layout */}
       <div className="flex flex-col lg:flex-row gap-5 lg:gap-6 items-start">
         {/* Left Side Navigation */}
-        <aside className="w-full lg:w-[240px] shrink-0 lg:sticky lg:top-4 bg-white rounded-[20px] p-2.5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 overflow-hidden">
-          <nav className="flex flex-row lg:flex-col gap-1.5 lg:gap-2 overflow-x-auto lg:overflow-visible no-scrollbar pb-1 lg:pb-0">
+        {/* Phones (264:9325) show the sections as underlined tabs. */}
+        <aside className="w-full lg:w-[240px] shrink-0 lg:sticky lg:top-4 bg-white rounded-[20px] p-2.5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 overflow-hidden max-sm:rounded-none max-sm:border-0 max-sm:border-b max-sm:border-[#dcdcdc] max-sm:bg-transparent max-sm:p-0 max-sm:shadow-none">
+          <nav className="flex flex-row lg:flex-col gap-1.5 lg:gap-2 overflow-x-auto lg:overflow-visible no-scrollbar pb-1 lg:pb-0 max-sm:gap-1 max-sm:pb-0">
             {SECTIONS.map((sec) => {
               const isActive = activeSection === sec.id
               return (
@@ -249,10 +250,10 @@ export function SettingsView({ state, actions }) {
                   key={sec.id}
                   type="button"
                   onClick={() => scrollToSection(sec.id)}
-                  className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all text-left whitespace-nowrap cursor-pointer shrink-0 ${
+                  className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all text-left whitespace-nowrap cursor-pointer shrink-0 max-sm:-mb-px max-sm:rounded-none max-sm:border-b-2 max-sm:bg-transparent max-sm:shadow-none ${
                     isActive
-                      ? 'bg-brand-light text-brand font-semibold shadow-xs'
-                      : 'text-body font-medium hover:bg-[#f5f5f5]'
+                      ? 'bg-brand-light text-brand font-semibold shadow-xs max-sm:border-brand'
+                      : 'text-body font-medium hover:bg-[#f5f5f5] max-sm:border-transparent'
                   }`}
                 >
                   {sec.label}

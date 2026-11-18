@@ -144,7 +144,7 @@ export function PromotionsView() {
           <h1 className="text-2xl sm:text-[26px] lg:text-[28px] font-semibold tracking-tight text-ink">
             Promotions &amp; Discounts
           </h1>
-          <p className="text-xs sm:text-sm text-muted">
+          <p className="text-sm text-muted">
             Reach your customers with targeted campaigns and offers.
           </p>
         </div>
@@ -152,7 +152,7 @@ export function PromotionsView() {
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="flex items-center gap-2 rounded-full bg-[var(--brand,#c15400)] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity cursor-pointer self-start sm:self-auto"
+          className="flex items-center gap-2 rounded-full bg-[var(--brand,#c15400)] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity cursor-pointer self-start sm:self-auto max-sm:w-full max-sm:justify-center max-sm:py-3 max-sm:text-sm"
         >
           <HugeiconsIcon icon={Add01Icon} size={16} />
           <span>Create Campaign</span>
@@ -180,9 +180,9 @@ export function PromotionsView() {
                     <span className="rounded-[4px] bg-[var(--brand-light,#fdf6ee)] px-2 py-0.5 text-[11px] font-medium text-[var(--brand,#c15400)]">
                       {camp.channel}
                     </span>
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted max-sm:flex-col max-sm:items-start max-sm:gap-1.5 max-sm:text-[13px]">
                       <span>Audience: {camp.audience}</span>
-                      <span>•</span>
+                      <span className="max-sm:hidden">•</span>
                       <span>{camp.timeInfo}</span>
                     </div>
                   </div>

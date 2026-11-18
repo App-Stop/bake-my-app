@@ -172,8 +172,91 @@ export function OrdersView() {
     setIsDrawerOpen(true)
   }
 
+  // Status badge and next-step action, shared by the table rows and the phone cards.
+  const renderBadge = (order) => (
+    <>
+      {order.status === 'Preparing' && (
+        <span className="inline-block rounded-full bg-[#f5f5f5] px-2.5 py-1 text-[11px] font-semibold text-[#777]">
+          Preparing
+        </span>
+      )}
+      {order.status === 'Ready' && (
+        <span className="inline-block rounded-full bg-[#fdf6ee] px-2.5 py-1 text-[11px] font-semibold text-brand">
+          Ready
+        </span>
+      )}
+      {order.status === 'En Route' && (
+        <span className="inline-block rounded-full bg-[#e6f6ff] px-2.5 py-1 text-[11px] font-semibold text-[#0095ff]">
+          En Route
+        </span>
+      )}
+      {order.status === 'Delivered' && (
+        <span className="inline-block rounded-full bg-[#effce8] px-2.5 py-1 text-[11px] font-semibold text-[#39ab00]">
+          Delivered
+        </span>
+      )}
+      {order.status === 'Cancelled' && (
+        <span className="inline-block rounded-full bg-[#fff0f0] px-2.5 py-1 text-[11px] font-semibold text-[#f30000]">
+          Cancelled
+        </span>
+      )}
+    </>
+  )
+  const renderAction = (order) => (
+    <>
+      {order.status === 'Preparing' && (
+        <button
+          type="button"
+          onClick={() => handleUpdateOrderStatus(order.id, 'Ready')}
+          className="rounded-full bg-brand px-3.5 py-1.5 text-[11px] font-semibold text-on-brand shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+        >
+          Mark as Ready
+        </button>
+      )}
+
+      {order.status === 'Ready' && (
+        <button
+          type="button"
+          onClick={() =>
+            handleUpdateOrderStatus(
+              order.id,
+              order.type === 'Delivery' ? 'En Route' : 'Delivered',
+            )
+          }
+          className={`rounded-full px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap ${
+            order.type === 'Delivery' ? 'bg-[#0095ff]' : 'bg-[#39ab00]'
+          }`}
+        >
+          {order.type === 'Delivery' ? 'Dispatch' : 'Received'}
+        </button>
+      )}
+
+      {order.status === 'En Route' && (
+        <button
+          type="button"
+          onClick={() => handleUpdateOrderStatus(order.id, 'Delivered')}
+          className="rounded-full bg-[#39ab00] px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+        >
+          Delivered
+        </button>
+      )}
+
+      {order.status === 'Delivered' && (
+        <span className="text-[11px] font-medium text-muted">
+          Completed
+        </span>
+      )}
+
+      {order.status === 'Cancelled' && (
+        <span className="text-[11px] font-medium text-[#f30000]">
+          Cancelled
+        </span>
+      )}
+    </>
+  )
+
   return (
-    <div className="mx-auto flex max-w-[1360px] flex-col gap-7 pb-16">
+    <div className="mx-auto flex max-w-[1360px] flex-col gap-7 pb-16 max-sm:gap-4 max-sm:pb-6">
       {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-full bg-ink text-white px-5 py-3 shadow-xl animate-fadeIn">
@@ -188,13 +271,13 @@ export function OrdersView() {
           <h1 className="text-2xl sm:text-[28px] font-semibold tracking-tight text-ink">
             Orders
           </h1>
-          <p className="text-xs sm:text-sm text-muted">
+          <p className="text-sm text-muted">
             Live ticket stream, processing and delivery timeline manager.
           </p>
         </div>
 
         {/* Time Filter Pills */}
-        <div className="flex items-center gap-1 rounded-[10px] border border-[#dcdcdc] bg-[#e8e8e8] p-1">
+        <div className="flex items-center gap-1 rounded-[10px] border border-[#dcdcdc] bg-[#e8e8e8] p-1 max-sm:w-full">
           {TIME_RANGES.map((range) => {
             const isSelected = activeTimeRange === range
             return (
@@ -202,7 +285,7 @@ export function OrdersView() {
                 key={range}
                 type="button"
                 onClick={() => setActiveTimeRange(range)}
-                className={`rounded-[6px] px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                className={`rounded-[6px] px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer max-sm:flex-1 max-sm:text-[13px] ${
                   isSelected
                     ? 'bg-white text-ink shadow-[0px_1px_3px_0px_rgba(16,24,40,0.1),0px_1px_2px_0px_rgba(16,24,40,0.06)]'
                     : 'text-body hover:text-ink'
@@ -216,22 +299,22 @@ export function OrdersView() {
       </div>
 
       {/* Top 3 Stat Cards */}
-      <div className="dash-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60">
+      <div className="dash-stats grid grid-cols-2 lg:grid-cols-3 gap-5 max-sm:gap-3">
+        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60">
           <p className="text-sm font-medium text-muted">Total Revenue</p>
           <div className="flex items-center justify-between">
             <p className="text-[28px] font-semibold text-ink leading-tight">$1,247.50</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60">
+        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60">
           <p className="text-sm font-medium text-muted">Order per Branch</p>
           <div className="flex items-center justify-between">
             <p className="text-[28px] font-semibold text-ink leading-tight">14</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 sm:col-span-2 lg:col-span-1">
+        <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 max-sm:p-4 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 col-span-2 lg:col-span-1">
           <p className="text-sm font-medium text-muted">Most ordered branch</p>
           <div className="flex items-center justify-between">
             <p className="text-base font-semibold text-ink leading-snug">
@@ -243,9 +326,9 @@ export function OrdersView() {
 
       {/* Order Tabs & Controls Bar */}
       <div className="flex flex-col gap-3.5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 max-sm:gap-3">
           {/* Tabs */}
-          <div className="flex items-center border-b border-[#dcdcdc] overflow-x-auto no-scrollbar gap-1 sm:gap-2">
+          <div className="flex items-center border-b border-[#dcdcdc] overflow-x-auto no-scrollbar gap-1 sm:gap-2 max-sm:w-full">
             {[
               { id: 'Active', count: activeCount },
               { id: 'Completed', count: completedCount },
@@ -283,9 +366,9 @@ export function OrdersView() {
           </div>
 
           {/* Right Filter Dropdowns & Search */}
-          <div className="flex flex-wrap items-center gap-2.5 flex-1 justify-end min-w-[280px]">
+          <div className="flex flex-wrap items-center gap-2.5 flex-1 justify-end min-w-[280px] max-sm:min-w-0 max-sm:basis-full">
             {/* Status Dropdown */}
-            <div className="relative">
+            <div className="relative max-sm:min-w-0 max-sm:flex-1">
               <select
                 aria-label="Filter by status"
                 value={statusFilter}
@@ -293,7 +376,7 @@ export function OrdersView() {
                   setStatusFilter(e.target.value)
                   setCurrentPage(1)
                 }}
-                className="appearance-none rounded-full border border-[#f0ece9] bg-white pl-4 pr-9 py-2.5 text-[13px] text-ink shadow-xs outline-none cursor-pointer hover:border-[#dcdcdc] transition-colors"
+                className="appearance-none rounded-full border border-[#f0ece9] bg-white pl-4 pr-9 py-2.5 text-[13px] text-ink shadow-xs outline-none cursor-pointer hover:border-[#dcdcdc] transition-colors max-sm:w-full"
               >
                 {STATUS_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
@@ -309,7 +392,7 @@ export function OrdersView() {
             </div>
 
             {/* Branch Dropdown */}
-            <div className="relative">
+            <div className="relative max-sm:min-w-0 max-sm:flex-1">
               <select
                 aria-label="Filter by branch"
                 value={branchFilter}
@@ -317,7 +400,7 @@ export function OrdersView() {
                   setBranchFilter(e.target.value)
                   setCurrentPage(1)
                 }}
-                className="appearance-none rounded-full border border-[#f0ece9] bg-white pl-4 pr-9 py-2.5 text-[13px] text-ink shadow-xs outline-none cursor-pointer hover:border-[#dcdcdc] transition-colors"
+                className="appearance-none rounded-full border border-[#f0ece9] bg-white pl-4 pr-9 py-2.5 text-[13px] text-ink shadow-xs outline-none cursor-pointer hover:border-[#dcdcdc] transition-colors max-sm:w-full"
               >
                 {BRANCH_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
@@ -333,7 +416,7 @@ export function OrdersView() {
             </div>
 
             {/* Search Input */}
-            <div className="flex items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 text-[13px] text-muted shadow-xs flex-1 max-w-[260px] focus-within:border-brand">
+            <div className="flex items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 text-[13px] text-muted shadow-xs flex-1 max-w-[260px] focus-within:border-brand max-sm:max-w-none max-sm:basis-full max-sm:py-2.5">
               <HugeiconsIcon icon={Search01Icon} size={16} className="text-muted shrink-0" />
               <input
                 type="text"
@@ -350,8 +433,45 @@ export function OrdersView() {
         </div>
 
         {/* Orders Stream Table Card */}
-        <div className="rounded-[20px] bg-white px-3 sm:px-4 py-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 flex flex-col gap-4">
-          <div className="w-full overflow-x-auto">
+        <div className="rounded-[20px] bg-white px-3 sm:px-4 py-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 flex flex-col gap-4 max-sm:py-2">
+          <div className="flex flex-col divide-y divide-[#f0ece9] sm:hidden">
+            {paginatedOrders.length === 0 ? (
+              <p className="py-12 text-center text-sm text-muted">No orders found matching the current filters.</p>
+            ) : (
+              paginatedOrders.map((order) => {
+                // Settled tickets show their total in place of the status and next action.
+                const settled = order.status === 'Delivered' || order.status === 'Cancelled'
+                return (
+                  <div
+                    key={order.id}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleRowClick(order)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleRowClick(order)}
+                    className="flex cursor-pointer flex-col gap-2 px-1 py-4 text-ink"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="min-w-0 truncate text-[15px] font-semibold">{order.id} · {order.customer}</p>
+                      {settled ? <span className="shrink-0 text-[15px] font-semibold">${order.total.toFixed(2)}</span> : <span className="shrink-0">{renderBadge(order)}</span>}
+                    </div>
+                    <p className="truncate text-xs text-muted">{order.itemsSummary}</p>
+                    <div className="flex min-h-7 items-center justify-between gap-3">
+                      <p className="flex min-w-0 items-center gap-1.5 text-xs text-muted">
+                        {order.type === 'Delivery' ? <ScooterIcon className="size-5 text-ink" /> : <PackagingIcon className="size-5 text-ink" />}
+                        <span className="text-sm font-medium text-ink">{order.type}</span>
+                        {!settled && <span>· ${order.total.toFixed(2)}</span>}
+                        <span>· {order.payment}</span>
+                      </p>
+                      {!settled && <div className="shrink-0" onClick={(e) => e.stopPropagation()}>{renderAction(order)}</div>}
+                    </div>
+                    <p className="text-xs text-muted">{order.date}</p>
+                  </div>
+                )
+              })
+            )}
+          </div>
+
+          <div className="w-full overflow-x-auto max-sm:hidden">
             <div className="min-w-[940px]">
               {/* Table Header */}
               <div className="flex items-center px-3 pb-3 text-xs font-semibold text-[#848484] border-b border-[#f0ece9]">
@@ -438,31 +558,7 @@ export function OrdersView() {
 
                         {/* Status Badge */}
                         <div className="w-[85px] shrink-0">
-                          {order.status === 'Preparing' && (
-                            <span className="inline-block rounded-full bg-[#f5f5f5] px-2.5 py-1 text-[11px] font-semibold text-[#777]">
-                              Preparing
-                            </span>
-                          )}
-                          {order.status === 'Ready' && (
-                            <span className="inline-block rounded-full bg-[#fdf6ee] px-2.5 py-1 text-[11px] font-semibold text-brand">
-                              Ready
-                            </span>
-                          )}
-                          {order.status === 'En Route' && (
-                            <span className="inline-block rounded-full bg-[#e6f6ff] px-2.5 py-1 text-[11px] font-semibold text-[#0095ff]">
-                              En Route
-                            </span>
-                          )}
-                          {order.status === 'Delivered' && (
-                            <span className="inline-block rounded-full bg-[#effce8] px-2.5 py-1 text-[11px] font-semibold text-[#39ab00]">
-                              Delivered
-                            </span>
-                          )}
-                          {order.status === 'Cancelled' && (
-                            <span className="inline-block rounded-full bg-[#fff0f0] px-2.5 py-1 text-[11px] font-semibold text-[#f30000]">
-                              Cancelled
-                            </span>
-                          )}
+                          {renderBadge(order)}
                         </div>
 
                         {/* Action Button */}
@@ -470,54 +566,7 @@ export function OrdersView() {
                           className="w-[125px] flex items-center justify-center shrink-0"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {order.status === 'Preparing' && (
-                            <button
-                              type="button"
-                              onClick={() => handleUpdateOrderStatus(order.id, 'Ready')}
-                              className="rounded-full bg-brand px-3.5 py-1.5 text-[11px] font-semibold text-on-brand shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
-                            >
-                              Mark as Ready
-                            </button>
-                          )}
-
-                          {order.status === 'Ready' && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleUpdateOrderStatus(
-                                  order.id,
-                                  order.type === 'Delivery' ? 'En Route' : 'Delivered',
-                                )
-                              }
-                              className={`rounded-full px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap ${
-                                order.type === 'Delivery' ? 'bg-[#0095ff]' : 'bg-[#39ab00]'
-                              }`}
-                            >
-                              {order.type === 'Delivery' ? 'Dispatch' : 'Received'}
-                            </button>
-                          )}
-
-                          {order.status === 'En Route' && (
-                            <button
-                              type="button"
-                              onClick={() => handleUpdateOrderStatus(order.id, 'Delivered')}
-                              className="rounded-full bg-[#39ab00] px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-xs hover:brightness-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
-                            >
-                              Delivered
-                            </button>
-                          )}
-
-                          {order.status === 'Delivered' && (
-                            <span className="text-[11px] font-medium text-muted">
-                              Completed
-                            </span>
-                          )}
-
-                          {order.status === 'Cancelled' && (
-                            <span className="text-[11px] font-medium text-[#f30000]">
-                              Cancelled
-                            </span>
-                          )}
+                          {renderAction(order)}
                         </div>
                       </div>
                     )

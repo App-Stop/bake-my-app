@@ -167,7 +167,7 @@ export function BranchesView({ onNavigateToOrders }) {
       )}
 
       {/* Header Row */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 max-sm:flex-nowrap max-sm:items-start">
         <div className="flex flex-col gap-1">
           <h1 className="text-[28px] font-semibold tracking-tight text-ink">Branches</h1>
           <p className="text-sm text-muted">
@@ -179,7 +179,7 @@ export function BranchesView({ onNavigateToOrders }) {
         <button
           type="button"
           onClick={() => setIsAddOpen(true)}
-          className="flex items-center gap-2 rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer"
+          className="flex shrink-0 items-center gap-2 rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer max-sm:px-5 max-sm:py-3"
         >
           <HugeiconsIcon icon={Add01Icon} size={16} color="currentColor" />
           <span>Add Branch</span>
@@ -187,7 +187,7 @@ export function BranchesView({ onNavigateToOrders }) {
       </div>
 
       {/* Stats Row */}
-      <div className="dash-stats grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="dash-stats grid grid-cols-2 gap-5 max-sm:gap-3 xl:grid-cols-4">
         {/* Total Branches */}
         <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
           <p className="text-sm font-medium text-muted">Total Branches</p>
@@ -281,7 +281,7 @@ export function BranchesView({ onNavigateToOrders }) {
         </div>
 
         {/* Search */}
-        <div className="flex w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2.5 shadow-sm focus-within:border-brand">
+        <div className="flex w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2.5 shadow-sm focus-within:border-brand max-sm:w-full">
           <HugeiconsIcon icon={Search01Icon} size={18} className="text-muted shrink-0" />
           <input
             type="text"

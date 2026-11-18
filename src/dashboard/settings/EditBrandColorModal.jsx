@@ -58,9 +58,9 @@ export function EditBrandColorModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/45 backdrop-blur-[2px] animate-fadeIn">
+    <div className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/45 backdrop-blur-[2px] animate-fadeIn">
       <div
-        className="relative flex flex-col md:flex-row w-full max-w-[920px] max-h-[92vh] overflow-hidden rounded-[20px] bg-white shadow-[0px_10px_40px_0px_rgba(0,0,0,0.16)] border border-[#e8e8e8]"
+        className="dash-sheet relative flex flex-col md:flex-row w-full max-w-[920px] max-h-[92vh] overflow-hidden rounded-[20px] bg-white shadow-[0px_10px_40px_0px_rgba(0,0,0,0.16)] border border-[#e8e8e8]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button on Mobile / Top Corner */}
@@ -74,7 +74,7 @@ export function EditBrandColorModal({
         </button>
 
         {/* Left Column: Color Controls */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 flex flex-col justify-between gap-6">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 flex flex-col justify-between gap-6 max-sm:contents">
           <div className="flex flex-col gap-6">
             {/* Header */}
             <div className="flex flex-col gap-1">
@@ -87,7 +87,7 @@ export function EditBrandColorModal({
             {/* Presets */}
             <div className="flex flex-col gap-2.5">
               <p className="text-sm sm:text-base font-medium text-ink">Presets</p>
-              <div className="grid grid-cols-4 gap-2.5 max-w-[310px]">
+              <div className="grid grid-cols-4 gap-2.5 max-w-[310px] max-sm:max-w-none max-sm:grid-cols-8 max-sm:gap-[10px]">
                 {PRESETS.map((preset) => {
                   const selected = isCurrent(preset.hex)
                   return (
@@ -97,7 +97,7 @@ export function EditBrandColorModal({
                       aria-label={`${preset.name} color`}
                       onClick={() => handleSelectColor(preset.hex)}
                       style={{ backgroundColor: preset.hex }}
-                      className={`size-14 sm:size-[68px] rounded-[10px] transition-transform hover:scale-105 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+                      className={`size-14 sm:size-[68px] max-sm:h-[68px] max-sm:w-auto rounded-[10px] transition-transform hover:scale-105 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
                         selected ? 'border-2 border-ink ring-2 ring-black/10' : ''
                       }`}
                     />
@@ -110,7 +110,7 @@ export function EditBrandColorModal({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#f0ece9]">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#f0ece9] max-sm:order-last max-sm:border-0 max-sm:pt-0">
             <button
               type="button"
               onClick={onClose}
@@ -136,7 +136,7 @@ export function EditBrandColorModal({
         </div>
 
         {/* Right Column: Live Storefront Preview */}
-        <div className="w-full md:w-[450px] lg:w-[491px] bg-[#f5f5f5] p-5 sm:p-8 flex flex-col items-center justify-start shrink-0 relative overflow-hidden border-t md:border-t-0 md:border-l border-[#f0ece9]">
+        <div className="w-full md:w-[450px] lg:w-[491px] bg-[#f5f5f5] p-5 sm:p-8 flex flex-col items-center justify-start shrink-0 relative overflow-hidden border-t md:border-t-0 md:border-l border-[#f0ece9] max-sm:rounded-[20px] max-sm:border-0">
           {/* Header Preview bar */}
           <div className="flex items-center justify-center gap-4 mb-4 z-10">
             <span className="text-base font-medium text-ink">Preview</span>
@@ -166,7 +166,7 @@ export function EditBrandColorModal({
 
           {/* Interactive Preview Canvas with Draft Brand Variables */}
           <div
-            className="brand-scope relative flex items-center justify-center size-full min-h-[460px]"
+            className="brand-scope relative flex items-center justify-center size-full min-h-[460px] max-sm:items-start max-sm:min-h-[450px]"
             style={previewVars}
           >
             {device === 'mobile' ? (

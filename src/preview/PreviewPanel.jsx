@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { Cancel01Icon, ComputerIcon, SmartPhone01Icon } from '@hugeicons/core-free-icons'
+import { Cancel01Icon, ComputerIcon, SmartPhone01Icon, Tablet01Icon } from '@hugeicons/core-free-icons'
 import { navigate, ROUTES } from '../router'
 import { DESKTOP_HEIGHT, DESKTOP_WIDTH, DesktopScreen } from './DesktopScreen'
 import { getStoreSummary } from './storeSummary'
@@ -35,14 +35,17 @@ function useStageScale(ref, stage) {
   return scale
 }
 
-export function DeviceToggle({ device, onChange }) {
-  const options = [
-    { id: 'mobile', icon: SmartPhone01Icon, label: 'Mobile preview' },
-    { id: 'desktop', icon: ComputerIcon, label: 'Desktop preview' },
-  ]
+const DEVICE_OPTIONS = {
+  mobile: { icon: SmartPhone01Icon, label: 'Mobile preview' },
+  tablet: { icon: Tablet01Icon, label: 'Tablet preview' },
+  desktop: { icon: ComputerIcon, label: 'Desktop preview' },
+}
+
+/** Preview device switch; `options` lists the devices to offer, in display order. */
+export function DeviceToggle({ device, onChange, options = ['mobile', 'desktop'], className = '' }) {
   return (
-    <div role="tablist" aria-label="Preview device" className="flex items-start rounded-full border border-line-strong bg-line p-0.5">
-      {options.map(({ id, icon, label }) => (
+    <div role="tablist" aria-label="Preview device" className={`flex items-start rounded-full border border-line-strong bg-line p-0.5 ${className}`}>
+      {options.map((id) => ({ id, ...DEVICE_OPTIONS[id] })).map(({ id, icon, label }) => (
         <button
           key={id}
           type="button"

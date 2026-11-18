@@ -4,6 +4,7 @@ import {
   Add01Icon,
   Clock01Icon,
   DragDropVerticalIcon,
+  MenuRestaurantIcon,
   PencilEdit02Icon,
   Search01Icon,
 } from '@hugeicons/core-free-icons'
@@ -344,28 +345,59 @@ export function MenuView({ onboardingState }) {
           <h1 className="text-2xl sm:text-[26px] lg:text-[28px] font-semibold tracking-tight text-ink">
             Menu Catalog
           </h1>
-          <p className="text-xs sm:text-sm text-muted">
+          <p className="text-sm text-muted">
             Edit your products, availability, prices, and categories in real-time.
           </p>
         </div>
 
         {/* Search */}
-        <div className="flex w-full sm:w-64 md:w-72 lg:w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 shadow-sm focus-within:border-brand">
+        <div className="flex w-full sm:w-64 md:w-72 lg:w-80 items-center gap-2 rounded-full border border-[#f0ece9] bg-white px-3.5 py-2 shadow-sm focus-within:border-brand max-sm:py-3">
           <HugeiconsIcon icon={Search01Icon} size={16} className="text-muted shrink-0" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="w-full text-xs font-normal text-ink outline-none placeholder:text-muted"
+            className="w-full text-xs font-normal text-ink outline-none placeholder:text-muted max-sm:text-sm"
           />
         </div>
+      </div>
+
+      {/* Phones: category chips */}
+      <div role="group" aria-label="Categories" className="-mx-4 flex gap-2 overflow-x-auto px-4 no-scrollbar sm:hidden">
+        {categories.map((category) => {
+          const isSelected = activeCategory?.id === category.id
+          return (
+            <button
+              key={category.id}
+              type="button"
+              aria-pressed={isSelected}
+              onClick={() => setSelectedCategoryId(category.id)}
+              className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-sm font-medium transition-colors cursor-pointer ${
+                isSelected ? 'bg-brand-light text-brand' : 'bg-white text-ink'
+              }`}
+            >
+              <span>{category.name}</span>
+              <span className={`flex size-5 items-center justify-center rounded-full text-[10px] font-semibold ${isSelected ? 'bg-brand text-white' : 'bg-[#f5f5f5] text-[#848484]'}`}>
+                {category.items.length}
+              </span>
+            </button>
+          )
+        })}
+        <button
+          type="button"
+          onClick={() => setIsAddCategoryOpen(true)}
+          className="flex shrink-0 items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-sm font-medium text-ink cursor-pointer"
+        >
+          <HugeiconsIcon icon={Add01Icon} size={15} color="currentColor" />
+          <span>Add Category</span>
+        </button>
       </div>
 
       {/* Main 2-Column Catalog Layout */}
       <div className="grid grid-cols-1 items-start gap-4 lg:gap-6 md:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
         {/* Left Column: Categories Panel */}
-        <div className="flex flex-col gap-3 sm:gap-4 rounded-[16px] lg:rounded-[20px] bg-white p-4 lg:p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/80">
+        <div className="flex flex-col gap-3 sm:gap-4 rounded-[16px] lg:rounded-[20px] bg-white p-4 lg:p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/80 max-sm:hidden">
           <h2 className="text-sm lg:text-base font-semibold text-ink">Categories</h2>
 
           {/* Categories List */}
@@ -416,17 +448,17 @@ export function MenuView({ onboardingState }) {
         </div>
 
         {/* Right Column: Category Items */}
-        <div className="flex flex-col gap-4 sm:gap-5 lg:gap-6 rounded-[16px] lg:rounded-[20px] bg-white p-4 sm:p-5 lg:p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/80">
+        <div className="flex flex-col gap-4 sm:gap-5 lg:gap-6 rounded-[16px] lg:rounded-[20px] bg-white p-4 sm:p-5 lg:p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/80 max-sm:gap-5 max-sm:rounded-[20px] max-sm:px-6 max-sm:py-4">
           {activeCategory ? (
             <>
               {/* Category Header */}
-              <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[#f0ece9] pb-4 lg:pb-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[#f0ece9] pb-4 lg:pb-5 max-sm:gap-4 max-sm:border-0 max-sm:pb-0">
                 <div className="flex items-center gap-2.5 sm:gap-3">
-                  <div className="flex size-9 sm:size-10 lg:size-11 items-center justify-center rounded-full bg-brand-light text-brand shadow-sm">
+                  <div className="flex size-9 sm:size-10 lg:size-11 items-center justify-center rounded-full bg-brand-light text-brand shadow-sm max-sm:size-11">
                     <CategoryIcon icon={activeCategory.icon} size={20} color="var(--brand)" />
                   </div>
                   <div className="flex flex-col">
-                    <h2 className="text-base sm:text-lg font-semibold text-ink leading-tight">
+                    <h2 className="text-base sm:text-lg font-semibold text-ink leading-tight max-sm:text-lg">
                       {activeCategory.name}
                     </h2>
                     <span className="text-[11px] sm:text-xs text-muted">
@@ -435,12 +467,12 @@ export function MenuView({ onboardingState }) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 max-sm:w-full max-sm:gap-2.5">
                   {/* Edit Category */}
                   <button
                     type="button"
                     onClick={() => setEditingCategory(activeCategory)}
-                    className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] bg-white px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] bg-white px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer max-sm:flex-1 max-sm:justify-center max-sm:border-0 max-sm:bg-[#f5f5f5] max-sm:py-2.5 max-sm:text-base max-sm:font-medium"
                   >
                     <HugeiconsIcon icon={PencilEdit02Icon} size={15} color="currentColor" />
                     <span>Edit Category</span>
@@ -450,7 +482,8 @@ export function MenuView({ onboardingState }) {
                   <button
                     type="button"
                     onClick={() => setIsAddItemOpen(true)}
-                    className="flex items-center gap-1.5 rounded-full bg-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer"
+                    className={`flex items-center gap-1.5 rounded-full bg-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 cursor-pointer max-sm:flex-1 max-sm:justify-center max-sm:py-2.5 max-sm:text-base ${activeCategory.items.length ? '' : 'max-sm:hidden'}`}
+                    
                   >
                     <HugeiconsIcon icon={Add01Icon} size={15} color="currentColor" />
                     <span>Add Item</span>
@@ -460,32 +493,35 @@ export function MenuView({ onboardingState }) {
 
               {/* Items List */}
               {displayedItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-2xl bg-[#fafafa] p-8 sm:p-12 text-center">
-                  <p className="text-sm sm:text-base font-semibold text-ink">No items found</p>
+                <div className="flex flex-col items-center justify-center rounded-2xl bg-[#fafafa] p-8 sm:p-12 text-center max-sm:bg-transparent max-sm:px-0 max-sm:pt-10 max-sm:pb-14">
+                  <span className="mb-4 flex size-20 items-center justify-center rounded-[20px] bg-[#e8e8e8] text-[#6a6a6a] sm:hidden">
+                    <HugeiconsIcon icon={MenuRestaurantIcon} size={40} color="currentColor" />
+                  </span>
+                  <p className="text-sm sm:text-base font-semibold text-ink max-sm:text-base max-sm:font-medium">{searchQuery.trim() ? 'No items found' : <><span className="sm:hidden">No Items</span><span className="max-sm:hidden">No items found</span></>}</p>
                   <p className="text-xs sm:text-sm text-muted mt-1">
                     {searchQuery.trim()
                       ? `No results match "${searchQuery}".`
-                      : 'This category is empty. Add your first item above.'}
+                      : <><span className="sm:hidden">Start by adding a product</span><span className="max-sm:hidden">This category is empty. Add your first item above.</span></>}
                   </p>
                   <button
                     type="button"
                     onClick={() => setIsAddItemOpen(true)}
-                    className="mt-4 flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-xs sm:text-sm font-semibold text-white cursor-pointer hover:opacity-90"
+                    className="mt-4 flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-xs sm:text-sm font-semibold text-white cursor-pointer hover:opacity-90 max-sm:mt-6 max-sm:px-6 max-sm:py-3 max-sm:text-base"
                   >
                     <HugeiconsIcon icon={Add01Icon} size={15} color="currentColor" />
-                    <span>Add New Item</span>
+                    <span><span className="sm:hidden">Add Item</span><span className="max-sm:hidden">Add New Item</span></span>
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-2.5 sm:gap-3">
+                <div className="flex flex-col gap-2.5 sm:gap-3 max-sm:gap-5">
                   {displayedItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 rounded-[14px] lg:rounded-[16px] border border-[#f0ece9] p-3 sm:p-3.5 lg:p-4 transition-colors hover:bg-[#fdfcfb]"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 rounded-[14px] lg:rounded-[16px] border border-[#f0ece9] p-3 sm:p-3.5 lg:p-4 transition-colors hover:bg-[#fdfcfb] max-sm:gap-2.5 max-sm:border-0 max-sm:p-0"
                     >
                       {/* Left: Thumbnail & Details */}
-                      <div className="flex items-center gap-3 lg:gap-3.5 min-w-0 flex-1">
-                        <div className="flex size-12 sm:size-13 lg:size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#e8e8e8] bg-white p-1">
+                      <div className="flex items-center gap-3 lg:gap-3.5 min-w-0 flex-1 max-sm:items-start">
+                        <div className="flex size-12 sm:size-13 lg:size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#e8e8e8] bg-white p-1 max-sm:size-14">
                           <img
                             src={item.image || flakyButterCroissantImg}
                             alt=""
@@ -494,16 +530,16 @@ export function MenuView({ onboardingState }) {
                         </div>
 
                         <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                          <h3 className="truncate text-xs sm:text-sm font-semibold text-ink leading-tight">
+                          <h3 className="truncate text-xs sm:text-sm font-semibold text-ink leading-tight max-sm:text-[15px] max-sm:font-medium">
                             {item.name}
                           </h3>
-                          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-muted">
+                          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-muted max-sm:mt-1 max-sm:items-start max-sm:text-[13px]">
                             <span className="flex items-center gap-1 font-medium shrink-0">
                               <HugeiconsIcon icon={Clock01Icon} size={12} className="text-muted" />
                               {item.prepTime}
                             </span>
-                            <span>•</span>
-                            <span className="truncate max-w-[140px] sm:max-w-[200px] md:max-w-[180px] lg:max-w-[260px] xl:max-w-[340px]">
+                            <span className="max-sm:hidden">•</span>
+                            <span className="truncate max-w-[140px] sm:max-w-[200px] md:max-w-[180px] lg:max-w-[260px] xl:max-w-[340px] max-sm:max-w-none max-sm:whitespace-normal">
                               {item.desc}
                             </span>
                           </div>
@@ -511,8 +547,8 @@ export function MenuView({ onboardingState }) {
                       </div>
 
                       {/* Right: Price, In Stock Toggle & Edit Button */}
-                      <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 lg:gap-5 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-[#f5f5f5]">
-                        <span className="text-xs sm:text-sm font-semibold text-ink min-w-[50px] text-left sm:text-right">
+                      <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 lg:gap-5 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-[#f5f5f5] max-sm:border-0 max-sm:pt-0 max-sm:pl-[68px]">
+                        <span className="text-xs sm:text-sm font-semibold text-ink min-w-[50px] text-left sm:text-right max-sm:mr-auto max-sm:text-[15px]">
                           {item.price}
                         </span>
 

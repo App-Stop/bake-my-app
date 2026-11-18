@@ -583,3 +583,48 @@ main:has(> .gold-decorations) { position: relative; }
     font-size: 12px;
   }
 }
+
+/* Horizontally scrolling rows (dashboard tabs and chips) hide their scrollbar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Dashboard dialogs become bottom sheets on phones (Figma 264:9568–264:11866): full width,
+   rounded top with a drag handle, anchored to the bottom over a dark backdrop. */
+@media (width < 40rem) {
+  .dash-sheet-backdrop {
+    align-items: flex-end !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: rgb(27 27 27 / 0.92) !important;
+    backdrop-filter: none !important;
+  }
+  .dash-sheet {
+    position: relative;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: calc(100% - 24px) !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    border: 0 !important;
+    border-radius: 30px 30px 0 0 !important;
+    padding: 34px 20px calc(24px + env(safe-area-inset-bottom)) !important;
+    gap: 20px !important;
+    box-shadow: none !important;
+    animation: dash-sheet-in 0.25s ease-out;
+  }
+  .dash-sheet::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 40px;
+    height: 5px;
+    border-radius: 5px;
+    background: #dcdcdc;
+    translate: -50% 0;
+  }
+}
+@keyframes dash-sheet-in { from { translate: 0 40px; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .dash-sheet { animation: none; } }

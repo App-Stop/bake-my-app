@@ -1,0 +1,119 @@
+/* cozy / responsive website, 744px iPad mini frames 261:336–261:4625.
+   Tablet previews render the phone markup (.ws-mobile) on a 744px canvas; these rules lay it out
+   for the wider screen. The frame's 36px status bar sits above the website. */
+
+/* Navbar 261:1083: logo, location and actions on one row. */
+.ws-tablet .ws-mobile-header { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 14px; padding: 18px 16px 14px; }
+.ws-tablet .ws-mobile-top { display: contents; }
+.ws-tablet .ws-mobile-top > button { order: 0; display: flex; align-items: center; }
+.ws-tablet .ws-mobile-header .ws-location { order: 1; flex: 1; }
+.ws-tablet .ws-mobile-actions { order: 2; }
+.ws-tablet .ws-mobile-header .ws-search, .ws-tablet .ws-mobile-menu { order: 3; flex-basis: 100%; }
+.ws-tablet .ws-mobile-menu { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Home 261:336 and product grids: three 229px cards per row. */
+.ws-tablet .ws-product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* App promo 261:694: copy on the left, phone in hand on the right, store badges in a row. */
+.ws-tablet .ws-wide-promo { height: 238px; margin-top: 62px; padding: 28px 16px 80px; }
+.ws-tablet[data-screen=home] .ws-wide-promo + .ws-product-section { margin-top: 53px; }
+.ws-tablet[data-screen=product] .ws-wide-promo { margin-top: 43px; }
+.ws-tablet[data-screen=product] .ws-wide-promo + .ws-product-section { margin-top: 50px; }
+.ws-tablet .ws-wide-promo h2 { max-width: 397px; }
+.ws-tablet .ws-wide-promo p { max-width: 422px; }
+.ws-tablet .ws-store-badges { flex-direction: row; align-items: center; margin-top: 27px; }
+.ws-tablet .ws-wide-promo .ws-phone-hand { width: 246px; height: 227px; top: auto; right: 4.26px; bottom: 0; }
+.ws-tablet .ws-wide-promo .ws-phone-hand img { width: 100%; height: 100%; }
+
+/* Brand film 261:1008. */
+.ws-tablet .ws-film h2 { width: 712px; max-width: 100%; font-size: 30px; line-height: normal; letter-spacing: -2px; }
+
+/* Footer 261:1016: brand beside newsletter, then four link columns. */
+.ws-tablet .ws-footer-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 48px; }
+.ws-tablet .ws-footer-brand { grid-column: 1; grid-row: 1; }
+.ws-tablet .ws-newsletter { grid-column: 2; grid-row: 1; }
+.ws-tablet .ws-footer-links { grid-column: 1 / -1; grid-row: 2; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Product detail 261:1136: 320 × 380 photo beside the product information. */
+.ws-tablet .ws-detail { flex-direction: row; align-items: flex-start; gap: 28px; }
+.ws-tablet .ws-detail > .ws-detail-image { flex-shrink: 0; align-self: flex-start; width: 320px; height: 380px; aspect-ratio: auto; }
+.ws-tablet .ws-detail-info { flex: 1; }
+.ws-tablet .ws-detail-info h1 { font-size: 28px; font-weight: 500; }
+
+/* Checkout 261:1841 / 261:2068: form (388) beside the order summary (300); promo below both. */
+.ws-tablet .ws-checkout .ws-two-columns { grid-template-columns: minmax(0, 388fr) minmax(0, 300fr); gap: 40px 24px; align-items: start; }
+.ws-tablet .ws-checkout-left { gap: 40px; }
+.ws-tablet .ws-checkout-right { display: contents; }
+.ws-tablet .ws-checkout-right > .dv-checkout-summary { grid-column: 2; grid-row: 1; }
+.ws-tablet .ws-checkout-right > .ws-app-promo { grid-column: 1 / -1; grid-row: 2; }
+.ws-tablet .ws-option-end { margin-left: auto; }
+.ws-tablet .ws-mobile-place-order { gap: 10px; padding: 14px 16px; box-shadow: 0 20px 60px #0000004d; }
+.ws-tablet.ws-checkout-page .ws-scroll { padding-bottom: 150px; }
+.ws-tablet.ws-checkout-page .ws-notice { bottom: 150px; }
+
+/* Small app promo 261:1849: one row of copy, phone in hand at the right edge. */
+.ws-tablet .ws-app-promo { height: auto; padding: 20px 150px 24px 20px; }
+.ws-tablet .ws-app-promo h3, .ws-tablet .ws-app-promo > p { width: auto; }
+.ws-tablet .ws-app-promo .ws-phone-hand { width: 113px; height: 101px; top: auto; right: 0; bottom: 0; }
+.ws-tablet .ws-app-promo .ws-phone-hand img { width: 100%; height: 100%; }
+
+/* Tracking 261:2277–261:3292: status card beside the order details; support, recommendations
+   and promo span both columns. While a delivery is being prepared, support joins the details. */
+.ws-tablet .ws-tracking { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; padding: 16px 16px 120px; }
+.ws-tablet .ws-tracking[data-stage=enroute], .ws-tablet .ws-tracking[data-stage=arrived], .ws-tablet .ws-tracking[data-stage=ready] { grid-template-columns: minmax(0, 354fr) minmax(0, 334fr); }
+.ws-tablet .ws-tracking-left, .ws-tablet .ws-tracking-right { display: contents; }
+.ws-tablet .ws-tracking-left > :first-child { grid-column: 1; grid-row: 1; align-self: start; }
+.ws-tablet .ws-tracking-info { grid-column: 2; grid-row: 1; }
+.ws-tablet .ws-tracking .ws-support { grid-column: 1 / -1; grid-row: 2; }
+.ws-tablet .ws-tracking-right > section:not(.ws-support) { grid-column: 1 / -1; grid-row: 3; }
+.ws-tablet .ws-tracking .ws-app-promo { grid-column: 1 / -1; grid-row: 4; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-tracking-left > :first-child { grid-row: 1 / span 2; align-self: stretch; height: auto; min-height: 350px; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-support { grid-column: 2; grid-row: 1; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-tracking-info { grid-row: 2; margin-top: -22px; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-tracking-right > section:not(.ws-support) { grid-row: 3; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-support { flex-direction: row; gap: 40px; }
+.ws-tablet .ws-tracking[data-stage=preparing][data-fulfillment=delivery] .ws-support .ws-button { height: 50px; min-height: 50px; padding: 0 20px; font-size: 16px; }
+.ws-tablet .ws-support .ws-button { height: 50px; min-height: 50px; padding: 0 20px; font-size: 16px; }
+.ws-tablet .ws-support p { font-size: 16px; margin-top: 10px; }
+.ws-tablet .ws-preparing h1 { font-size: 20px; }
+.ws-tablet .ws-mobile .ws-mobile-glows .ws-glow-one, .ws-tablet .ws-mobile-glows .ws-glow-one { left: 206px; }
+.ws-tablet .ws-mobile-glows .ws-glow-two { left: 48px; }
+.ws-tablet .ws-tracking-info > section { box-shadow: 0 4px 15px #0000001a; border-radius: 20px; }
+.ws-tablet .ws-tracking-right h2 { font-size: 24px; margin-bottom: 20px; }
+
+/* Delivery map 261:2757 / 261:3292 (514 tall) and pickup map 261:3043 (237 tall). */
+.ws-tablet .dv-delivery-map, .ws-tablet .dv-delivery-map.dv-arrived { height: 514px; }
+.ws-tablet .dv-map-route, .ws-tablet .dv-route-scooter { left: calc(50% - 71px); }
+.ws-tablet .dv-route-home { left: calc(50% - 14px); }
+.ws-tablet .dv-arrived .dv-home-marker { top: 145px; }
+.ws-tablet .dv-arrived .dv-scooter-marker { top: 212px; }
+.ws-tablet [data-fulfillment=pickup] .dv-delivery-map.dv-arrived { height: 237px; }
+.ws-tablet [data-fulfillment=pickup] .dv-arrived .dv-home-marker { top: 32px; }
+.ws-tablet [data-fulfillment=pickup] .dv-arrived .dv-scooter-marker { top: 85px; }
+
+/* Recommendations: three compact 160px-photo cards. */
+.ws-tablet .ws-recommendations { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.ws-tablet .ws-recommendations > :nth-child(n+4) { display: none; }
+.ws-tablet .ws-compact { padding: 0 20px 20px; }
+.ws-tablet .ws-compact > button > .ws-product-image { width: 160px; height: 160px; }
+.ws-tablet .ws-compact .ws-card-glow, .ws-tablet .ws-compact .ws-card-glow .ws-product-image { width: 274px; height: 274px; }
+.ws-tablet .ws-compact .ws-button { height: 44px; min-height: 44px; }
+
+/* Account 261:3577–261:4625: two 344px columns. */
+.ws-tablet .ws-account .mp-scroll { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, auto) 1fr; gap: 40px 24px; align-items: start; padding: 16px 16px 62px; }
+.ws-tablet .ws-account .mp-scroll > * { grid-column: 1; }
+.ws-tablet .mp-profile-scroll > .wa-recent { grid-column: 2; grid-row: 1 / -1; }
+.ws-tablet .mp-wallet-scroll > .mp-section:last-child { grid-column: 2; grid-row: 1 / -1; }
+.ws-tablet .mp-points-scroll > .mp-points-summary { grid-column: 1 / -1; margin-top: -16px; }
+.ws-tablet .mp-points-scroll > .mp-section:last-child { grid-column: 2; grid-row: 2 / -1; }
+.ws-tablet .mp-points-scroll { grid-template-rows: auto auto 1fr; }
+.ws-tablet .ws-account .mp-wallet-scroll, .ws-tablet .ws-account .mp-points-scroll { row-gap: 30px; }
+.ws-tablet .wa-history { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; padding: 16px 16px 92px; }
+.ws-tablet .wa-order-detail { border-radius: 30px; }
+.ws-tablet .wa-order-detail > .ws-product-image { width: 140px; height: 140px; margin-top: 42px; }
+.ws-tablet .wa-order-selected { box-shadow: 0 0 0 2px #111; }
+.ws-tablet .wa-favorites { padding: 16px 16px 92px; }
+
+/* Dialogs keep a readable width on the wider screen. */
+.ws-tablet .ws-placing, .ws-tablet .dv-delivered, .ws-tablet .wl-dialog { width: min(100%, 520px); align-self: center; }
+.ws-tablet .ws-modal-backdrop { align-items: center; padding: 24px; }

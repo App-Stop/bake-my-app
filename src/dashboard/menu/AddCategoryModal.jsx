@@ -29,12 +29,12 @@ export function AddCategoryModal({ isOpen, onClose, onAdd }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-category-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[1px]"
+      className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[1px]"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="flex w-full max-w-[440px] flex-col gap-6 rounded-[20px] bg-white p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)]">
+      <div className="dash-sheet flex w-full max-w-[440px] flex-col gap-6 rounded-[20px] bg-white p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)]">
         {/* Title */}
         <div className="flex flex-col gap-1.5">
           <h2 id="add-category-title" className="text-lg font-semibold text-ink">

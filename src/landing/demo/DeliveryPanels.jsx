@@ -259,7 +259,7 @@ export function DeliveryTracking({
   const stage = order?.stage || 'preparing';
   const pickup = order?.fulfillment === 'pickup';
   const finished = pickup ? stage === 'complete' : stage === 'delivered';
-  return <main className="ws-tracking ws-two-columns"><div className="ws-tracking-left">
+  return <main className="ws-tracking ws-two-columns" data-stage={order ? stage : 'none'} data-fulfillment={pickup ? 'pickup' : 'delivery'}><div className="ws-tracking-left">
     {!order ? <section className="dv-no-order ws-shadow"><h1>No orders yet</h1><p>Place a delivery order to track it here.</p><Button onClick={() => actions.browse()}>Browse menu</Button></section> : stage === 'preparing' ? <button type="button" className="ws-preparing ws-shadow dv-stage-button" onClick={advance} aria-label={pickup ? 'Preparing your order. Advance demo to ready for pickup' : 'Preparing your order. Advance demo to delivery route'}><Glow tracking />{image('edec3.png', '', {
           className: 'ws-bag'
         })}<h1 aria-live="polite">Preparing your order</h1><p>Takes about 2-3 minutes</p></button> : finished ? <button className="ws-preparing ws-shadow dv-stage-button" onClick={reopenDelivered} aria-label={pickup ? 'Order complete. View pickup feedback' : 'Delivered. View delivery and feedback'}><Glow tracking />{image('delivered-check.png', '', {

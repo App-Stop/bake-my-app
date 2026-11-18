@@ -15,11 +15,14 @@ import playWordmark from '../../assets/desktop/store-play-wordmark.svg';
 import apple from '../../assets/desktop/store-apple.svg';
 import './website-storefront.css';
 import './website-mobile.css';
+import './website-tablet.css';
 import { WebsiteAccount } from './WebsiteAccount';
 import { LocationDialog } from './WebsiteLocationDialogs';
 import { DeliveryCheckout, DeliveryTracking, DeliveryCart, DeliveredDialog, DELIVERY_STAGES, DELIVERY_DELAYS, PICKUP_STAGES, PICKUP_DELAYS, deliveryTotals, useDeliveryDialogFocus } from './DeliveryPanels';
 const A = '/figma/customer-website/';
 const mobileAsset = (name, props = {}) => <BrandImage src={`${A}mobile/${name}`} alt="" {...props} />;
+// Tablet promo artwork: the masked phone-in-hand groups exported from the iPad frames (261:718, 261:1856).
+const tabletAsset = (name, props = {}) => <BrandImage src={`${A}tablet/${name}`} alt="" {...props} />;
 const SCALE = DESKTOP_WIDTH / 1920;
 const money = value => `$${value.toFixed(2)}`;
 const signature = {
@@ -108,10 +111,11 @@ function Footer({
 }
 function AppPromo({
   wide = false,
-  mobile = false
+  mobile = false,
+  tablet = false
 }) {
-  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><BrandImage src={play} alt="" /><div><small>GET IT ON</small><BrandImage className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><BrandImage src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{mobile ? mobileAsset('app-phone-hand.png') : asset('app-phone-hand.png')}</div></aside>;
-  return <aside className="ws-app-promo"><h3>Get 20% OFF on the app</h3><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-qr"><div>{asset('6965d.png', 'Scan to download the app')}</div><span>SCAN TO DOWNLOAD!</span></div><div className="ws-phone-hand">{asset('checkout-phone-hand.png')}</div></aside>;
+  if (wide) return <aside className="ws-wide-promo"><div><h2>Get exclusive discounts &amp; rewards on our app.</h2><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-store-badges"><span><BrandImage src={play} alt="" /><div><small>GET IT ON</small><BrandImage className="ws-play-wordmark" src={playWordmark} alt="Google Play" /></div></span><span><BrandImage src={apple} alt="" /><div><small>Download on the</small><strong>App Store</strong></div></span></div><div className="ws-wide-qr"><small>Or scan to download</small><div>{asset('6965d.png', 'Scan to download the app')}</div></div></div><div className="ws-phone-hand">{tablet ? tabletAsset('app-phone-hand.png') : mobile ? mobileAsset('app-phone-hand.png') : asset('app-phone-hand.png')}</div></aside>;
+  return <aside className="ws-app-promo"><h3>Get 20% OFF on the app</h3><p>Save more with every order — download now and enjoy free delivery on your first 3 orders.</p><div className="ws-qr"><div>{asset('6965d.png', 'Scan to download the app')}</div><span>SCAN TO DOWNLOAD!</span></div><div className="ws-phone-hand">{tablet ? tabletAsset('checkout-phone-hand.png') : asset('checkout-phone-hand.png')}</div></aside>;
 }
 function ProductCard({
   product,
@@ -166,7 +170,7 @@ function ProductDetail({
             }].map(extra => <div className="ws-extra" key={extra.name}>{asset(extra.file)}<p>{extra.name}</p><b>+{money(extra.price).replace('.00', '')}</b><button aria-label={`Add ${extra.name}`} aria-pressed={extras.some(item => item.name === extra.name)} onClick={() => setExtras(items => items.some(item => item.name === extra.name) ? items.filter(item => item.name !== extra.name) : [...items, {
                 ...extra,
                 image: existingAssets[extra.file] || A + extra.file
-              }])}>{extras.some(item => item.name === extra.name) ? '✓' : asset('08df2.svg')}</button></div>)}</div></div><div className="ws-ingredients"><h3>Ingredients</h3>{['50g white wheat', '20ml mineral water', '10ml cow milk', '1 whole egg'].map(text => <p key={text}>{text}</p>)}</div><div><h3>Allergens</h3><div className="ws-allergens">{[['f990a.svg', 'Glutten'], ['e92c1.svg', 'Eggs'], ['6e1d2.svg', 'Milk']].map(([src, label]) => <div key={label}>{asset(src)}<span>{label}</span></div>)}</div></div></div></section><ProductSection title="More like this" products={CROISSANTS} {...actions} /><AppPromo wide mobile={actions.mobile} /><ProductSection title="You may also want to try" products={CAKES.slice(0, 6)} {...actions} /><section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section></>;
+              }])}>{extras.some(item => item.name === extra.name) ? '✓' : asset('08df2.svg')}</button></div>)}</div></div><div className="ws-ingredients"><h3>Ingredients</h3>{['50g white wheat', '20ml mineral water', '10ml cow milk', '1 whole egg'].map(text => <p key={text}>{text}</p>)}</div><div><h3>Allergens</h3><div className="ws-allergens">{[['f990a.svg', 'Glutten'], ['e92c1.svg', 'Eggs'], ['6e1d2.svg', 'Milk']].map(([src, label]) => <div key={label}>{asset(src)}<span>{label}</span></div>)}</div></div></div></section><ProductSection title="More like this" products={CROISSANTS} {...actions} /><AppPromo wide mobile={actions.mobile} tablet={actions.tablet} /><ProductSection title="You may also want to try" products={CAKES.slice(0, 6)} {...actions} /><section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section></>;
 }
 function OrderLines({
   cart,
@@ -219,7 +223,7 @@ function MobileHome({
     <section className="ws-m-hero"><BrandImage src={hero} alt="" /><div><h1>Oven baked freshness,<br />at your home</h1><div className="ws-hero-actions"><Button onClick={() => actions.browse()}>Browse Menu</Button><button onClick={() => document.getElementById('ws-home-menu')?.scrollIntoView({ block: 'start' })}>or scroll down</button></div></div></section>
     <div id="ws-home-menu" className="ws-categories ws-m-tabs" role="group" aria-label="Categories">{Object.keys(HOME_SECTIONS).map((name, index) => <button aria-pressed={category === name} key={name} onClick={() => setCategory(name)}><span className="ws-category-icon" style={{ maskImage: `url(${A}mobile/${CATEGORY_ICONS[index]})` }} />{name}<sup>{CATEGORY_COUNTS[index]}</sup></button>)}</div>
     <ProductSection key={category} title={HOME_SECTIONS[category]} products={products} {...actions} />
-    <AppPromo wide mobile={actions.mobile} />
+    <AppPromo wide mobile={actions.mobile} tablet={actions.tablet} />
     <ProductSection title="Freshly Baked Cakes" products={CAKES} {...actions} />
     <section className="ws-film">{asset('1bd10.png')}<div><h2>Baked with precision, care and love for you</h2><Button onClick={() => actions.browse()}>Order Now</Button><i>Free Delivery*</i></div></section>
   </>;
@@ -232,7 +236,8 @@ export function WebsiteStorefront({
   summary,
   logo,
   height,
-  mobile = false
+  mobile = false,
+  tablet = false
 }) {
   const [screen, setScreen] = useState('home');
   const [product, setProduct] = useState(signature);
@@ -363,6 +368,7 @@ export function WebsiteStorefront({
   }
   const actions = {
     mobile,
+    tablet,
     add,
     openProduct,
     toggleFavorite,
@@ -468,14 +474,14 @@ export function WebsiteStorefront({
     asset,
     ProductImage,
     OrderLines,
-    AppPromo,
+    AppPromo: props => <AppPromo {...props} tablet={tablet} />,
     Glow: props => <Glow {...props} mobile={mobile} />,
     ProductCard,
     extraImage: file => existingAssets[file] || A + file,
     recommendations: [CROISSANTS[0], CROISSANTS[1], CROISSANTS[2], CROISSANTS[7]]
   };
   const accountScreen = ['profile', 'wallet', 'points', 'history', 'favorites'].includes(screen);
-  return <div className={`ws-viewport ${mobile ? 'ws-mobile' : ''} ${screen === 'checkout' ? 'ws-checkout-page' : ''}`} data-screen={screen} style={{
+  return <div className={`ws-viewport ${mobile ? 'ws-mobile' : ''} ${tablet ? 'ws-tablet' : ''} ${screen === 'checkout' ? 'ws-checkout-page' : ''}`} data-screen={screen} style={{
     width: mobile ? '100%' : DESKTOP_WIDTH,
     height
   }}>

@@ -136,10 +136,10 @@ export function CampaignModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto">
+    <div className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto">
       <div className="fixed inset-0" onClick={onClose} />
 
-      <div className="relative z-10 bg-white rounded-[20px] p-5 sm:p-8 max-w-[800px] w-full shadow-2xl flex flex-col gap-6 my-auto max-h-[92vh] overflow-y-auto">
+      <div className="dash-sheet relative z-10 bg-white rounded-[20px] p-5 sm:p-8 max-w-[800px] w-full shadow-2xl flex flex-col gap-6 my-auto max-h-[92vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
@@ -218,7 +218,7 @@ export function CampaignModal({
             </div>
 
             {/* Discount Value & Min Order Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
               <div className="flex flex-col gap-1 rounded-[10px] border border-[#e8e8e8] bg-white px-3.5 py-2.5 focus-within:border-brand transition-colors">
                 <label className="text-xs font-medium text-muted">
                   {type === 'Fix Price OFF'
@@ -251,7 +251,7 @@ export function CampaignModal({
             </div>
 
             {/* Date Range Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
               <div className="relative flex flex-col gap-1 rounded-[10px] border border-[#e8e8e8] bg-white px-3.5 py-2.5 focus-within:border-brand transition-colors">
                 <label className="text-xs font-medium text-muted">Valid From</label>
                 <div className="flex items-center justify-between">

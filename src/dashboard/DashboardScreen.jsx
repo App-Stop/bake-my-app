@@ -127,18 +127,19 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
   return (
     <div className={`brand-scope relative flex w-full overflow-hidden bg-[#f5f5f5] font-sans text-ink max-lg:flex-col ${className}`}>
       {/* Phones and tablets: a top bar whose menu button slides the sidebar in as a drawer. */}
-      <header className="flex shrink-0 items-center gap-3 border-b border-[#f0ece9] bg-white px-4 py-3 lg:hidden">
+      <header className="flex shrink-0 items-center gap-3 border-b border-[#f0ece9] bg-white px-4 py-3 lg:hidden max-sm:justify-between max-sm:border-0 max-sm:bg-transparent max-sm:pt-1 max-sm:pb-0">
         <button
           type="button"
           onClick={() => setNavOpen(true)}
           aria-label="Open navigation"
           aria-expanded={navOpen}
           aria-controls="dashboard-sidebar"
-          className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-[#e8e8e8] text-ink transition-colors hover:bg-[#f5f5f5]"
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-[#e8e8e8] text-ink transition-colors hover:bg-[#f5f5f5] max-sm:border-0 max-sm:bg-white"
         >
           <HugeiconsIcon icon={Menu01Icon} size={20} color="currentColor" />
         </button>
-        <p className="min-w-0 flex-1 truncate text-base font-semibold text-ink">{activeLabel}</p>
+        <p className={`min-w-0 flex-1 truncate text-base font-semibold text-ink ${sidebarLogo ? 'max-sm:hidden' : ''}`}>{activeLabel}</p>
+        {sidebarLogo && <div className="h-[37.944px] w-[52.08px] shrink-0 sm:hidden [&>*]:!size-full">{sidebarLogo}</div>}
         <div className="flex size-9 shrink-0 overflow-hidden rounded-full bg-[#f0ece9]">
           <img src={state.shop?.logo || userAvatarImg} alt="" className="size-full object-cover" />
         </div>
@@ -287,7 +288,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
       </aside>
 
       {/* Main Content Area */}
-      <main className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10">
+      <main className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10 max-sm:pt-4 max-sm:pb-10">
         {activeNav === 'orders' ? (
           <OrdersView />
         ) : activeNav === 'settings' ? (
@@ -303,7 +304,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
         ) : activeNav === 'analytics' ? (
           <AnalyticsView />
         ) : activeNav === 'overview' ? (
-          <div className="mx-auto flex max-w-[1360px] flex-col gap-7">
+          <div className="mx-auto flex max-w-[1360px] flex-col gap-7 max-sm:gap-4">
             {/* Header Row */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-col gap-1">
@@ -314,7 +315,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Time Filter Pills */}
-            <div className="flex items-center gap-1 rounded-[10px] border border-[#dcdcdc] bg-[#e8e8e8] p-1">
+            <div className="flex items-center gap-1 rounded-[10px] border border-[#dcdcdc] bg-[#e8e8e8] p-1 max-sm:w-full">
               {TIME_RANGES.map((range) => {
                 const isSelected = activeTimeRange === range
                 return (
@@ -322,7 +323,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
                     key={range}
                     type="button"
                     onClick={() => setActiveTimeRange(range)}
-                    className={`rounded-[6px] px-3 py-1.5 text-xs font-semibold transition-all ${
+                    className={`rounded-[6px] px-3 py-1.5 text-xs font-semibold transition-all max-sm:flex-1 max-sm:py-1.5 max-sm:text-[13px] ${
                       isSelected
                         ? 'bg-white text-ink shadow-[0px_1px_3px_0px_rgba(16,24,40,0.1),0px_1px_2px_0px_rgba(16,24,40,0.06)]'
                         : 'text-body hover:text-ink'
@@ -336,9 +337,9 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
           </div>
 
           {/* Stats Row */}
-          <div className="dash-stats grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="dash-stats grid grid-cols-2 gap-5 max-sm:gap-3 xl:grid-cols-4">
             {/* Stat 1: Gross Revenue */}
-            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:min-h-[144px] max-sm:p-4">
               <p className="text-sm font-medium text-muted">Gross Revenue</p>
               <div className="flex flex-col">
                 <p className="text-[28px] font-semibold text-ink leading-tight">$1,247.50</p>
@@ -352,7 +353,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Stat 2: Orders & Avg Ticket */}
-            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:min-h-[144px] max-sm:p-4">
               <p className="text-sm font-medium text-muted">Orders & Avg Ticket</p>
               <div className="flex flex-col">
                 <p className="text-[28px] font-semibold text-ink leading-tight">24</p>
@@ -366,7 +367,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Stat 3: Branch Fleet Health */}
-            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:min-h-[144px] max-sm:p-4">
               <p className="text-sm font-medium text-muted">Branch Fleet Health</p>
               <div className="flex flex-col">
                 <p className="text-[28px] font-semibold text-ink leading-tight">4/4</p>
@@ -379,7 +380,7 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Stat 4: Fulfilment Velocity (Avg.) */}
-            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex flex-col gap-3 rounded-[16px] bg-white p-5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:min-h-[144px] max-sm:p-4">
               <p className="text-sm font-medium text-muted">Fulfilment Velocity (Avg.)</p>
               <div className="flex flex-col">
                 <p className="text-[28px] font-semibold text-ink leading-tight">14.8m</p>
@@ -393,23 +394,40 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
           </div>
 
           {/* Grid Row 1: Bestsellers + Category Share */}
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_400px]">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_400px] max-sm:contents">
             {/* Left: Product Velocity & Bestsellers Table */}
-            <div className="flex flex-col gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-ink">Product Velocity & Bestsellers</h2>
+            <div className="flex flex-col gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:order-2 max-sm:p-4">
+              <div className="flex items-center justify-between max-sm:gap-4">
+                <h2 className="text-lg font-semibold text-ink max-sm:text-base">Product Velocity & Bestsellers</h2>
                 <button
                   type="button"
                   onClick={() => setActiveNav('menu')}
-                  className="flex items-center gap-1.5 text-[13px] font-medium text-brand hover:opacity-85"
+                  className="flex shrink-0 items-center gap-1.5 text-[13px] font-medium text-brand hover:opacity-85 max-sm:gap-2.5 max-sm:text-sm"
                 >
                   <span>View Menu</span>
                   <HugeiconsIcon icon={ArrowRight02Icon} size={16} color="currentColor" />
                 </button>
               </div>
 
+              {/* Phones (264:7631): a list with price, units and status per product. */}
+              <div className="flex flex-col sm:hidden">
+                {products.map((p, idx) => (
+                  <div key={idx} className="flex items-center gap-3 border-b border-[#eee] py-2.5 last:border-0">
+                    <img src={p.image} alt="" className="size-11 shrink-0 rounded-lg border border-[#e8e8e8] object-cover" />
+                    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                      <p className="truncate text-[13px] font-medium text-ink">{p.name}</p>
+                      <p className="text-xs text-[#6a6a6a]">{p.price} · {p.sold} units sold</p>
+                    </div>
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <p className="text-[13px] font-semibold text-ink">{p.sales}</p>
+                      <span className="rounded-full bg-[#effce8] px-1.5 py-0.5 text-[11px] font-semibold text-[#39ab00]">{p.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {/* Table */}
-              <div className="w-full overflow-x-auto">
+              <div className="w-full overflow-x-auto max-sm:hidden">
                 <div className="min-w-[500px]">
                   {/* Table Header */}
                   <div className="flex items-center gap-2.5 pb-2 border-b border-[#f0ece9] text-xs font-semibold text-[#848484]">
@@ -450,8 +468,8 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Right: Category Share & Fulfillment Mix */}
-            <div className="flex flex-col justify-between gap-6 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
-              <h2 className="text-lg font-semibold text-ink">Category Share & Fulfillment Mix</h2>
+            <div className="flex flex-col justify-between gap-6 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:order-3 max-sm:gap-4 max-sm:p-4">
+              <h2 className="text-lg font-semibold text-ink max-sm:text-base">Category Share & Fulfillment Mix</h2>
 
               {/* Category Stacked Bar */}
               <div className="flex flex-col gap-4">
@@ -535,10 +553,10 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
           </div>
 
           {/* Grid Row 2: Operational Audit Timeline + Quick Access */}
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_400px]">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_400px] max-sm:contents">
             {/* Left: Operational Audit Timeline */}
-            <div className="flex flex-col gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
-              <h2 className="text-lg font-semibold text-ink">Operational Audit Timeline</h2>
+            <div className="flex flex-col gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:order-4 max-sm:p-4">
+              <h2 className="text-lg font-semibold text-ink max-sm:text-base">Operational Audit Timeline</h2>
 
               <div className="flex flex-col divide-y divide-[#f0ece9]">
                 {/* Event 1 */}
@@ -576,10 +594,10 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
             </div>
 
             {/* Right: Quick Access */}
-            <div className="flex flex-col justify-between gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)]">
-              <h2 className="text-lg font-semibold text-ink">Quick Access</h2>
+            <div className="flex flex-col justify-between gap-5 rounded-[20px] bg-white p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] max-sm:order-1 max-sm:gap-2.5 max-sm:p-4">
+              <h2 className="text-lg font-semibold text-ink max-sm:text-base">Quick Access</h2>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 max-sm:gap-2.5">
                 {/* Tile 1: Menu & Stock */}
                 <button
                   type="button"

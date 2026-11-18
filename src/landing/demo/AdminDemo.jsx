@@ -28,20 +28,22 @@ export function AdminDemo() {
     },
   }
 
+  const dashboard = (
+    <div className="brand-scope size-full">
+      <DashboardScreen
+        state={brandState}
+        actions={brandActions}
+        onEdit={() => navigate(appRouteFor('admin'))}
+        onStartOver={actions.reset}
+        className="h-full"
+        sidebarLogo={<DemoLogo className="h-[59px] w-[81px]" />}
+      />
+    </div>
+  )
+
   return (
-    <DemoPage title="Bakery admin portal demo" active="Admin Portal" top={81} height={822}>
-      <DemoWindow width={1310} height={822} contentWidth={1440}>
-        <div className="brand-scope size-full">
-          <DashboardScreen
-            state={brandState}
-            actions={brandActions}
-            onEdit={() => navigate(appRouteFor('admin'))}
-            onStartOver={actions.reset}
-            className="h-full"
-            sidebarLogo={<DemoLogo className="h-[59px] w-[81px]" />}
-          />
-        </div>
-      </DemoWindow>
+    <DemoPage title="Bakery admin portal demo" active="Admin Portal" top={81} height={822} screen={() => dashboard} isolate>
+      <DemoWindow width={1310} height={822} contentWidth={1440}>{dashboard}</DemoWindow>
     </DemoPage>
   )
 }

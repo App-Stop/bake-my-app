@@ -46,7 +46,7 @@ function DemoPhone() {
 /** Customer mobile app demo (Figma "Landing", 1920×1174). */
 export function MobileAppDemo() {
   return (
-    <DemoPage title="Bakery customer app demo" active="Customer Mobile App" top={FRAME_TOP} height={FRAME_HEIGHT} statusBar={false}>
+    <DemoPage title="Bakery customer app demo" active="Customer Mobile App" top={FRAME_TOP} height={FRAME_HEIGHT} statusBar={false} devices={['mobile']}>
       <DemoPhone />
     </DemoPage>
   )

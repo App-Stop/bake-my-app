@@ -12,12 +12,18 @@
   font-family: var(--font-sans);
   background: #eef0fd;
 }
-.demo-mobile-header { padding: max(4px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-left)) 0; }
+.demo-mobile-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: max(4px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); }
+/* Device switch: 44px touch targets on phones and tablets. */
+.demo-device-toggle { background: white; border-color: #554cf11f; }
+.demo-device-toggle button { width: 52px; min-height: 40px; }
+.demo-device-toggle button[aria-selected=true] { background: #eef0fd; color: #554cf1; }
 .demo-mobile-header a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px; color: #1118; font-size: 12px; line-height: 18px; border-radius: 100px; }
 .demo-mobile-header a:hover { background: #ffffff66; color: #111; }
 .demo-mobile-stage { min-width: 0; min-height: 0; margin: 8px max(16px, env(safe-area-inset-right)) 28px max(16px, env(safe-area-inset-left)); display: flex; justify-content: center; align-items: center; }
 /* Every demo shares the mobile app's phone mockup: rounded screen with a brand-tinted outline. */
 .demo-mobile-frame { position: relative; flex-shrink: 0; display: flex; flex-direction: column; overflow: clip; border-radius: 28px; background: white; box-shadow: 0 4px 60px 4px #554cf126; outline: 1px solid color-mix(in srgb, var(--brand) 45%, transparent); }
+/* iPad mini mockup: same treatment as the iPhone, with a radius proportional to its width. */
+.demo-tablet-frame { box-shadow: 0 4px 80px 6px #554cf126; }
 .demo-mobile-statusbar { position: relative; flex-shrink: 0; overflow: hidden; background: white; }
 .demo-mobile-statusbar > div { position: absolute; top: 0; left: 0; transform-origin: top left; }
 .demo-mobile-screen { position: relative; flex: 1; min-height: 0; border-radius: inherit; }

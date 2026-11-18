@@ -49,12 +49,12 @@ export function EditItemModal({ item, isOpen, onClose, onSave, onDelete }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="edit-item-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4 backdrop-blur-[1px] overflow-y-auto"
+      className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4 backdrop-blur-[1px] overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="flex w-full max-w-[540px] flex-col gap-4 sm:gap-5 lg:gap-6 rounded-[16px] lg:rounded-[20px] bg-white p-5 sm:p-6 lg:p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)] max-h-[90vh] overflow-y-auto my-auto">
+      <div className="dash-sheet flex w-full max-w-[540px] flex-col gap-4 sm:gap-5 lg:gap-6 rounded-[16px] lg:rounded-[20px] bg-white p-5 sm:p-6 lg:p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)] max-h-[90vh] overflow-y-auto my-auto">
         {/* Title */}
         <div className="flex flex-col gap-1.5">
           <h2 id="edit-item-title" className="text-lg font-semibold text-ink">

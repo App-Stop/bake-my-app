@@ -6,30 +6,29 @@ import { WebsiteStorefront } from './WebsiteStorefront'
 import { DemoBar, DemoPage } from './DemoShell'
 import { BakeryDecorations, CustomizationRail } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
-import { useElementSize, useIsDesktop } from './demoScale'
+import { usePreviewDevice } from './demoDevice'
 
 const SUMMARY = getStoreSummary(INITIAL_STATE)
 
 /**
- * Customer website demo (Figma "Landing" 123:3947): the storefront website fills the viewport —
- * the same screen as the desktop preview, scaled from its 641.2px design width — with the demo bar
- * floating over it. Phones get the website's own mobile layout above the mobile demo bar.
+ * Customer website demo (Figma "Landing" 123:3947). The desktop preview fills the viewport with
+ * the storefront website — the same screen as the desktop preview, scaled from its design width —
+ * under the floating demo bar. Tablet (iPad mini, 261:336–261:4625) and phone (402px, 246:2508–)
+ * previews draw the website's own responsive layout inside the device frame.
  */
 export function WebsiteDemo() {
-  return useIsDesktop() ? <DesktopWebsiteDemo /> : <MobileWebsiteDemo />
-}
-
-function MobileWebsiteDemo() {
-  const ref = useRef(null)
-  const { width, height } = useElementSize(ref)
+  const { viewer, device } = usePreviewDevice()
   const { logo } = useDemoBrand()
+  if (viewer === 'desktop' && device === 'desktop') return <DesktopWebsiteDemo />
 
   return (
-    <DemoPage title="Bakery customer website demo" active="Customer Website" top={100} height={850}>
-      <div ref={ref} className="relative size-full overflow-hidden rounded-[20px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
-        {width > 0 && height > 0 && <div className="absolute top-0 left-0 origin-top-left" style={{ width: 402, height: height * 402 / width, transform: `scale(${width / 402})` }}><WebsiteStorefront mobile summary={SUMMARY} logo={logo} height={height * 402 / width} /></div>}
-      </div>
-    </DemoPage>
+    <DemoPage
+      title="Bakery customer website demo"
+      active="Customer Website"
+      top={100}
+      height={850}
+      screen={(frame, height) => <WebsiteStorefront key={frame} mobile tablet={frame === 'tablet'} summary={SUMMARY} logo={logo} height={height} />}
+    />
   )
 }
 
