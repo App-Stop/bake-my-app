@@ -1,5 +1,5 @@
 import { GoldDecorations } from '../GoldDecorations'
-import { ROUTES } from '../../router'
+import { GROWTH_CHECKOUT } from '../../router'
 import { Pill } from '../ui'
 import { GAP, TYPE, asset } from '../styles'
 
@@ -74,7 +74,7 @@ export function Features() {
                   Website customers earn the same points and rewards.
                 </CardText>
               </div>
-              <Pill to={ROUTES.pricing} size="sm" className="self-start md:self-auto">
+              <Pill to={GROWTH_CHECKOUT} size="sm" className="self-start md:self-auto">
                 Get your Website
               </Pill>
             </div>

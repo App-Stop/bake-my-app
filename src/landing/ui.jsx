@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, FavouriteIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { Link } from '../components/Link'
-import { ROUTES } from '../router'
+import { GROWTH_CHECKOUT } from '../router'
 import { useModals } from './useModals'
 import { GAP, asset } from './styles'
 
@@ -78,8 +78,12 @@ export function DemoPill({ label = 'Launch Demo', ...props }) {
   )
 }
 
+// Below lg every CtaPair uses one button size, whatever its desktop `size`: 14px text, equal
+// heights, and both buttons stretched to the same width.
+const MOBILE_CTA = 'max-lg:!text-[14px] max-lg:!px-6 max-lg:!py-4 max-lg:!leading-[20px] max-lg:[&_svg]:!size-[20px]'
+
 /**
- * "Get …" CTA (to the plans on /pricing) + "Launch Demo" (demo picker), as used in every section, with the
+ * "Get …" CTA (to checkout, Growth plan picked) +"Launch Demo" (demo picker), as used in every section, with the
  * "FIRST MONTH FREE*" note underneath (left aligned, or centered with `align="center"`).
  */
 export function CtaPair({
@@ -96,11 +100,11 @@ export function CtaPair({
   const centered = align === 'center'
   return (
     <div className={`flex flex-col gap-2.5 ${centered ? 'items-center' : 'items-start'}`}>
-      <div className={`flex flex-col flex-wrap items-center lg:flex-row ${centered ? 'justify-center' : 'max-lg:items-start'} ${GAP[30]} ${buttonRowClassName}`}>
-        <Pill to={ROUTES.pricing} variant={onPurple ? 'white' : 'primary'} size={size}>
+      <div className={`flex flex-col flex-wrap items-center max-lg:w-full max-lg:max-w-[22rem] max-lg:items-stretch lg:flex-row ${centered ? 'justify-center' : ''} ${GAP[30]} ${buttonRowClassName}`}>
+        <Pill to={GROWTH_CHECKOUT} variant={onPurple ? 'white' : 'primary'} size={size} className={MOBILE_CTA}>
           {label}
         </Pill>
-        <DemoPill label={demoLabel} variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={demoClassName} />
+        <DemoPill label={demoLabel} variant={tone === 'light' ? 'soft' : 'glass'} size={size} className={`${MOBILE_CTA} ${demoClassName}`} />
       </div>
       <p className={`text-base leading-normal mb-10 italic opacity-80 ${tone === 'light' ? 'text-ink' : 'text-white'}`}>
         {note}

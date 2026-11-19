@@ -112,32 +112,103 @@ export function SettingsView({ state, actions }) {
   const logoInputRef = useRef(null)
 
 
-  // Track active section on scroll
+  const rootRef = useRef(null)
+  const asideRef = useRef(null)
+  const navRef = useRef(null)
+  // While a tab click is smooth-scrolling, keep that tab active instead of the ones scrolled past.
+  const scrollLockRef = useRef(null)
+
+  // The dashboard scrolls inside its <main> (and, in the landing demo, inside a device iframe), so
+  // find the real scroll container rather than assuming the window.
+  const getScroller = () => {
+    const root = rootRef.current
+    if (!root) return null
+    const win = root.ownerDocument.defaultView
+    for (let el = root.parentElement; el; el = el.parentElement) {
+      const overflowY = win.getComputedStyle(el).overflowY
+      if (overflowY === 'auto' || overflowY === 'scroll') return el
+    }
+    return root.ownerDocument.scrollingElement
+  }
+
+  // Space the sticky phone tabs take at the top of the scroller; the side nav needs only a margin.
+  const getStickyOffset = () => {
+    const aside = asideRef.current
+    if (!aside) return 24
+    const win = aside.ownerDocument.defaultView
+    const stacked = win.getComputedStyle(aside).position === 'sticky' && !win.matchMedia('(min-width: 64rem)').matches
+    return stacked ? aside.offsetHeight + 16 : 24
+  }
+
+  const getSectionTop = (scroller, el) => {
+    const scrollerTop = scroller === scroller.ownerDocument.scrollingElement ? 0 : scroller.getBoundingClientRect().top
+    return el.getBoundingClientRect().top - scrollerTop
+  }
+
+  // Track the active section as the settings scroll.
   useEffect(() => {
+    const scroller = getScroller()
+    const root = rootRef.current
+    if (!scroller || !root) return undefined
+    const target = scroller === root.ownerDocument.scrollingElement ? root.ownerDocument.defaultView : scroller
+
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 200
-      for (const sec of SECTIONS) {
-        const el = document.getElementById(sec.id)
-        if (el) {
-          const top = el.offsetTop
-          const height = el.offsetHeight
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sec.id)
-            break
-          }
+      if (scrollLockRef.current) return
+      const offset = getStickyOffset() + 8
+      const atBottom = scroller.scrollTop > 0 && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2
+      let current = SECTIONS[0].id
+      if (atBottom) current = SECTIONS[SECTIONS.length - 1].id
+      else {
+        for (const sec of SECTIONS) {
+          const el = root.querySelector(`#${sec.id}`)
+          if (el && getSectionTop(scroller, el) <= offset) current = sec.id
         }
       }
+      setActiveSection(current)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    const unlock = () => {
+      if (!scrollLockRef.current) return
+      clearTimeout(scrollLockRef.current.timer)
+      scrollLockRef.current = null
+    }
+
+    handleScroll()
+    target.addEventListener('scroll', handleScroll, { passive: true })
+    target.addEventListener('scrollend', unlock)
+    // A hand scroll takes over from a tab click straight away.
+    target.addEventListener('wheel', unlock, { passive: true })
+    target.addEventListener('touchstart', unlock, { passive: true })
+    return () => {
+      target.removeEventListener('scroll', handleScroll)
+      target.removeEventListener('scrollend', unlock)
+      target.removeEventListener('wheel', unlock)
+      target.removeEventListener('touchstart', unlock)
+      unlock()
+    }
   }, [])
+
+  // Keep the active tab visible in the horizontally scrolling phone tab strip.
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav || nav.scrollWidth <= nav.clientWidth) return
+    const btn = nav.querySelector(`[data-section="${activeSection}"]`)
+    if (!btn) return
+    const navRect = nav.getBoundingClientRect()
+    const btnRect = btn.getBoundingClientRect()
+    const left = nav.scrollLeft + (btnRect.left - navRect.left) - (navRect.width - btnRect.width) / 2
+    nav.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+  }, [activeSection])
 
   const scrollToSection = (id) => {
     setActiveSection(id)
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    const scroller = getScroller()
+    const el = rootRef.current?.querySelector(`#${id}`)
+    if (!scroller || !el) return
+    if (scrollLockRef.current) clearTimeout(scrollLockRef.current.timer)
+    scrollLockRef.current = { id, timer: setTimeout(() => { scrollLockRef.current = null }, 1000) }
+    const top = scroller.scrollTop + getSectionTop(scroller, el) - getStickyOffset()
+    scroller.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
   }
 
   const handleLogoUpload = async (e) => {
@@ -209,7 +280,7 @@ export function SettingsView({ state, actions }) {
   }
 
   return (
-    <div className="mx-auto flex max-w-[1360px] flex-col gap-6 lg:gap-8 pb-16">
+    <div ref={rootRef} className="mx-auto flex max-w-[1360px] flex-col gap-6 lg:gap-8 pb-16">
       {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-full bg-ink text-white px-5 py-3 shadow-xl animate-fadeIn">
@@ -241,14 +312,16 @@ export function SettingsView({ state, actions }) {
       <div className="flex flex-col lg:flex-row gap-5 lg:gap-6 items-start">
         {/* Left Side Navigation */}
         {/* Phones (264:9325) show the sections as underlined tabs. */}
-        <aside className="w-full lg:w-[240px] shrink-0 lg:sticky lg:top-4 bg-white rounded-[20px] p-2.5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 overflow-hidden max-sm:rounded-none max-sm:border-0 max-sm:border-b max-sm:border-[#dcdcdc] max-sm:bg-transparent max-sm:p-0 max-sm:shadow-none">
-          <nav className="flex flex-row lg:flex-col gap-1.5 lg:gap-2 overflow-x-auto lg:overflow-visible no-scrollbar pb-1 lg:pb-0 max-sm:gap-1 max-sm:pb-0">
+        <aside ref={asideRef} className="w-full lg:w-[240px] shrink-0 lg:sticky lg:top-4 bg-white rounded-[20px] p-2.5 shadow-[0px_4px_10px_rgba(0,0,0,0.02)] border border-[#f0ece9]/60 overflow-hidden max-sm:sticky max-sm:top-0 max-sm:z-20 max-sm:-mx-4 max-sm:w-[calc(100%+2rem)] max-sm:rounded-none max-sm:border-0 max-sm:border-b max-sm:border-[#dcdcdc] max-sm:bg-surface max-sm:px-4 max-sm:py-0 max-sm:shadow-none">
+          <nav ref={navRef} className="flex flex-row lg:flex-col gap-1.5 lg:gap-2 overflow-x-auto lg:overflow-visible no-scrollbar pb-1 lg:pb-0 max-sm:gap-1 max-sm:pb-0">
             {SECTIONS.map((sec) => {
               const isActive = activeSection === sec.id
               return (
                 <button
                   key={sec.id}
                   type="button"
+                  data-section={sec.id}
+                  aria-current={isActive ? 'true' : undefined}
                   onClick={() => scrollToSection(sec.id)}
                   className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all text-left whitespace-nowrap cursor-pointer shrink-0 max-sm:-mb-px max-sm:rounded-none max-sm:border-b-2 max-sm:bg-transparent max-sm:shadow-none ${
                     isActive

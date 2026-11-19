@@ -58,3 +58,6 @@ export function useSearchParams() {
 
   return new URLSearchParams(search)
 }
+
+/** Checkout with the Growth plan (billed yearly) picked: where the "Start for Free" and primary CTAs go. */
+export const GROWTH_CHECKOUT = `${ROUTES.checkout}?plan=growth&interval=year`

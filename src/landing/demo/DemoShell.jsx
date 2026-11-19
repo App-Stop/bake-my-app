@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ComputerIcon, SmartPhone01Icon, Tablet01Icon } from '@hugeicons/core-free-icons'
 import { Link } from '../../components/Link'
-import { ROUTES } from '../../router'
+import { GROWTH_CHECKOUT, ROUTES } from '../../router'
 import { DEMO_UNIT, useElementSize, useScaleTo } from './demoScale'
 import { BakeryDecorations, CustomizationRail, MobileCustomizationBar } from '../../components/BakeryBackdrop'
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
@@ -119,7 +119,7 @@ export function DemoBar({ active, devices = DEVICES }) {
         </p>
         <p className={`font-medium whitespace-nowrap text-ink ${BAR_TEXT}`}>1st MONTH FREE</p>
         <Link
-          to={ROUTES.checkout}
+          to={GROWTH_CHECKOUT}
           className={`shrink-0 rounded-full bg-primary px-[calc(32*var(--d))] py-[calc(16*var(--d))] font-bold whitespace-nowrap text-white transition hover:brightness-110 ${BAR_TEXT}`}
         >
           Continue to Checkout
@@ -141,7 +141,7 @@ export function MobileDemoBar({ active }) {
     </nav>
     <div className="demo-mobile-offer">
       <div><p><strong>{timeLeft}</strong> <span>REMAINING</span></p><b>1st MONTH FREE</b></div>
-      <Link to={ROUTES.checkout}>Continue to Checkout</Link>
+      <Link to={GROWTH_CHECKOUT}>Continue to Checkout</Link>
     </div>
   </div>
 }

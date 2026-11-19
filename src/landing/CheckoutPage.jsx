@@ -48,7 +48,60 @@ function SummaryRow({ label, value, muted = false }) {
   )
 }
 
-function SummaryPanel({ name, terms, loading }) {
+const SWITCH_TEXT = 'text-[length:max(13px,calc(14*var(--u)))] leading-normal'
+const INTERVAL_LABELS = { month: 'Monthly', year: 'Yearly' }
+
+/** Lets the visitor change plan and billing without leaving checkout; the form keeps what they typed. */
+function PlanSwitcher({ plans, planKey, interval, onChange }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div role="radiogroup" aria-label="Plan" className="grid grid-cols-2 gap-2">
+        {CHECKOUT_PLANS.map((key) => {
+          const active = key === planKey
+          const price = priceForInterval(plans, key, interval)
+          return (
+            <button
+              key={key}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => onChange({ plan: key, interval })}
+              className={`flex flex-col items-start gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${SWITCH_TEXT} ${
+                active ? 'border-white bg-white text-[#232050]' : 'border-white/25 bg-white/5 text-white hover:bg-white/10'
+              }`}
+            >
+              <span className="font-semibold">{plans?.[key]?.name ?? FALLBACK_NAMES[key]}</span>
+              <span className={active ? 'text-[#232050]/70' : 'text-white/70'}>
+                {price ? `${formatMoney(price.monthlyEquivalent, price.currency)}/mo` : ' '}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      <div role="radiogroup" aria-label="Billing" className="flex self-start rounded-full bg-white/10 p-1">
+        {INTERVALS.map((key) => {
+          const active = key === interval
+          return (
+            <button
+              key={key}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => onChange({ plan: planKey, interval: key })}
+              className={`rounded-full px-4 py-1.5 font-medium transition-colors ${SWITCH_TEXT} ${
+                active ? 'bg-white text-[#232050]' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              {INTERVAL_LABELS[key]}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function SummaryPanel({ name, terms, loading, switcher }) {
   const placeholder = '—'
   return (
     <section className="flex justify-center bg-[#232050] px-6 py-12 text-white lg:w-1/2 lg:justify-end lg:pt-[calc(96*var(--u))] lg:pr-[calc(120*var(--u))] lg:pb-10">
@@ -71,6 +124,7 @@ function SummaryPanel({ name, terms, loading }) {
                 : `Then ${terms.amount} per ${terms.per}`}
           </p>
         </div>
+        {switcher}
         <div className="flex w-full flex-col gap-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-0.5">
@@ -255,11 +309,22 @@ function CheckoutUnavailable() {
   )
 }
 
-/** `/checkout?plan=<startup|growth>&interval=<month|year>`: collects contact details, then hands off to Stripe Checkout. */
+const DEFAULT_PLAN = 'growth'
+
+/**
+ * `/checkout?plan=<startup|growth>&interval=<month|year>`: collects contact details, then hands off to Stripe Checkout.
+ * With no plan in the URL it opens on Growth; the visitor can switch plan and billing here.
+ */
 export function CheckoutPage() {
   const params = useSearchParams()
-  const planKey = params.get('plan')
+  const planKey = params.get('plan') ?? DEFAULT_PLAN
   const interval = INTERVALS.includes(params.get('interval')) ? params.get('interval') : 'year'
+
+  // Swap the URL in place (no new history entry, no scroll jump) so a reload or share keeps the choice.
+  const choosePlan = ({ plan, interval: nextInterval }) => {
+    window.history.replaceState(window.history.state, '', `${ROUTES.checkout}?plan=${plan}&interval=${nextInterval}`)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+  }
   const validPlan = CHECKOUT_PLANS.includes(planKey)
   const { plans, failed } = usePlans()
 
@@ -278,7 +343,12 @@ export function CheckoutPage() {
   return (
     <main className="checkout-page flex min-h-dvh flex-col bg-white font-inter lg:flex-row">
         <GoldDecorations variant={4} />
-      <SummaryPanel name={name} terms={terms} loading={!plans && !failed} />
+      <SummaryPanel
+        name={name}
+        terms={terms}
+        loading={!plans && !failed}
+        switcher={<PlanSwitcher plans={plans} planKey={planKey} interval={interval} onChange={choosePlan} />}
+      />
       <div className="flex justify-center px-6 py-12 lg:w-1/2 lg:justify-start lg:pt-[calc(96*var(--u))] lg:pl-[calc(120*var(--u))]">
         {unavailable ? <CheckoutUnavailable /> : <CheckoutForm planKey={planKey} interval={interval} terms={terms} />}
       </div>

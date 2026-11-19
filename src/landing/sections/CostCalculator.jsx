@@ -1,7 +1,7 @@
 import { GoldDecorations } from '../GoldDecorations'
 import { useMemo, useState } from 'react'
 import { Link } from '../../components/Link'
-import { ROUTES } from '../../router'
+import { GROWTH_CHECKOUT } from '../../router'
 import { Deco } from '../ui'
 import { CONTAINER, TYPE } from '../styles'
 
@@ -144,7 +144,8 @@ export function CostCalculator() {
             <p className={TYPE.body}>Move the sliders to see what you&apos;d keep.</p>
           </div>
 
-          <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row lg:justify-between lg:gap-0">
+          {/* Stacked (below lg), the result card comes first and the sliders follow it. */}
+          <div className="flex w-full flex-col-reverse items-stretch gap-8 lg:flex-row lg:justify-between lg:gap-0">
             <div className="flex w-full flex-col gap-2.5 lg:w-[calc(644*var(--px))]">
               {SLIDERS.map((slider) => (
                 <CalculatorSlider
@@ -179,7 +180,7 @@ export function CostCalculator() {
 
               <div className="flex w-full flex-col gap-4">
                 <Link
-                  to={ROUTES.pricing}
+                  to={GROWTH_CHECKOUT}
                   className="flex w-full items-center justify-center rounded-full bg-white p-5 text-[length:max(18*var(--m),20*var(--u))] leading-normal font-semibold text-primary transition hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   Keep my {savings}
