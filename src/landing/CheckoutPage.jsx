@@ -7,7 +7,7 @@ import { ApiError, api } from '../lib/api'
 import { CHECKOUT_PLANS, formatDaysFromNow, formatMoney, priceForInterval, usePlans } from '../lib/plans'
 import { readUtm } from '../lib/utm'
 import { ROUTES, navigate, useSearchParams } from '../router'
-import { readSavedContact } from '../onboarding/useOnboardingState'
+import { readSavedContact } from '../lib/savedContact'
 import { Icon } from './ui'
 import { asset } from './styles'
 

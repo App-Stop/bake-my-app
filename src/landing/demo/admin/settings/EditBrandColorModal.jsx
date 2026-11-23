@@ -1,4 +1,4 @@
-import { BRAND_COLORS as PRESETS, presetColor } from '../../lib/brandPalette'
+import { BRAND_COLORS as PRESETS, presetColor } from '../../../../lib/brandPalette.js'
 import { useEffect, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
@@ -10,9 +10,9 @@ import {
   ShoppingBasket03Icon,
   StarIcon,
 } from '@hugeicons/core-free-icons'
-import { readableTextOn } from '../../lib/color'
-import { HomeScreen } from '../../preview/HomeScreen'
-import { getStoreSummary } from '../../preview/storeSummary'
+import { readableTextOn } from '../../../../lib/color.js'
+import { HomeScreen } from '../../../../preview/HomeScreen.jsx'
+import { getStoreSummary } from '../../../../preview/storeSummary.js'
 
 export function EditBrandColorModal({
   isOpen,

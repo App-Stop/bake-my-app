@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { INITIAL_STATE } from '../../onboarding/useOnboardingState'
+import { INITIAL_STATE } from './useDemoState.js'
 import { DESKTOP_WIDTH } from '../../preview/DesktopScreen'
 import { getStoreSummary } from '../../preview/storeSummary'
 import { WebsiteStorefront } from './WebsiteStorefront'

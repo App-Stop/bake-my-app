@@ -4,7 +4,7 @@ import {
   Add01Icon,
   RankingIcon,
 } from '@hugeicons/core-free-icons'
-import { CampaignModal } from './CampaignModal'
+import { CampaignModal } from './CampaignModal.jsx'
 
 const INITIAL_CAMPAIGNS = [
   {

@@ -5,8 +5,8 @@ import {
   Search01Icon,
   CheckmarkCircle02Icon,
 } from '@hugeicons/core-free-icons'
-import { INITIAL_ORDERS } from './mockOrders'
-import { OrderDetailsDrawer } from './OrderDetailsDrawer'
+import { INITIAL_ORDERS } from './mockOrders.js'
+import { OrderDetailsDrawer } from './OrderDetailsDrawer.jsx'
 
 const TIME_RANGES = ['Today', '7d', '30d', '6mo', '1y']
 

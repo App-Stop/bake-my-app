@@ -3,7 +3,7 @@ import caramelSauce from '../assets/addons/caramel-sauce.webp'
 import chocolateSyrup from '../assets/addons/chocolate-syrup.webp'
 import whippedCream from '../assets/addons/whipped-cream.webp'
 import deliveryRider from '../assets/delivery-rider.webp'
-import { formatMoney } from '../onboarding/useOnboardingState'
+import { formatMoney } from '../landing/demo/useDemoState.js'
 import { Icon, PhoneFrame, TabBar, glass } from './phone'
 
 const ADD_ONS = [

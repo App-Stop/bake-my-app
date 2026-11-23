@@ -323,28 +323,6 @@
 }
 
 /*
- * Setup form: laid out on a 1440×1024 frame. Like the landing hero, it shrinks with the viewport
- * height on shorter laptop screens so the whole card fits above the fold, never below 62% scale.
- */
-.onboarding-page {
-  --u: min(1px, max(calc(100vh / 1024), 0.62px));
-  --u: min(1px, max(calc(100svh / 1024), 0.62px));
-  --px: var(--u);
-  --spacing: calc(4 * var(--u));
-  --text-xs: calc(12 * var(--u));
-  --text-sm: calc(14 * var(--u));
-  --text-base: calc(16 * var(--u));
-  --text-4xl: calc(36 * var(--u));
-}
-
-/* Phones: the setup card sits in the page flow at the plain 1× scale. */
-@media (max-width: 47.999rem) {
-  .onboarding-page {
-    --u: 1px;
-  }
-}
-
-/*
  * Checkout: laid out for a 980px-tall screen. On desktop it shrinks with the viewport height on
  * shorter laptops (never below 75%); text sizes keep a 12px floor in the markup.
  */

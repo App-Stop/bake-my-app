@@ -1,22 +1,26 @@
 import { useState } from 'react'
-import { CategoryIcon } from './CategoryIcon'
-import { CATEGORY_ICONS } from './categoryIcons'
+import { CategoryIcon } from './CategoryIcon.jsx'
+import { CATEGORY_ICONS } from './categoryIcons.js'
 
-export function EditCategoryModal({ category, isOpen, onClose, onSave, onDelete }) {
-  const [name, setName] = useState(category?.name || '')
-  const [selectedIcon, setSelectedIcon] = useState(category?.icon || 'croissant')
+export function AddCategoryModal({ isOpen, onClose, onAdd }) {
+  const [name, setName] = useState('')
+  const [selectedIcon, setSelectedIcon] = useState('donut')
 
-  if (!isOpen || !category) return null
+  if (!isOpen) return null
 
-  const handleSave = (e) => {
+  const handleSubmit = (e) => {
     e?.preventDefault()
     if (!name.trim()) return
 
-    onSave({
-      ...category,
+    onAdd({
+      id: name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Date.now(),
       name: name.trim(),
       icon: selectedIcon,
+      items: [],
     })
+
+    setName('')
+    setSelectedIcon('donut')
     onClose()
   }
 
@@ -24,7 +28,7 @@ export function EditCategoryModal({ category, isOpen, onClose, onSave, onDelete 
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="edit-category-title"
+      aria-labelledby="add-category-title"
       className="dash-sheet-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[1px]"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
@@ -33,10 +37,10 @@ export function EditCategoryModal({ category, isOpen, onClose, onSave, onDelete 
       <div className="dash-sheet flex w-full max-w-[440px] flex-col gap-6 rounded-[20px] bg-white p-8 shadow-[0px_10px_20px_rgba(0,0,0,0.16)]">
         {/* Title */}
         <div className="flex flex-col gap-1.5">
-          <h2 id="edit-category-title" className="text-lg font-semibold text-ink">
-            Edit Category
+          <h2 id="add-category-title" className="text-lg font-semibold text-ink">
+            Add New Category
           </h2>
-          <p className="text-sm text-muted">Update category details and icon.</p>
+          <p className="text-sm text-muted">Organize your baked goods under a new category.</p>
         </div>
 
         {/* Input */}
@@ -46,7 +50,9 @@ export function EditCategoryModal({ category, isOpen, onClose, onSave, onDelete 
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Donuts"
             className="w-full text-base font-normal text-ink outline-none"
+            autoFocus
             required
           />
         </label>
@@ -77,36 +83,22 @@ export function EditCategoryModal({ category, isOpen, onClose, onSave, onDelete 
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-between pt-2">
-          {onDelete ? (
-            <button
-              type="button"
-              onClick={() => {
-                onDelete(category.id)
-                onClose()
-              }}
-              className="text-xs font-semibold text-[#ea0101] hover:underline cursor-pointer"
-            >
-              Delete Category
-            </button>
-          ) : <div />}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full border border-[#e8e8e8] bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              disabled={!name.trim()}
-              className="rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 cursor-pointer"
-            >
-              Save Changes
-            </button>
-          </div>
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-[#e8e8e8] bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-[#f5f5f5] cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!name.trim()}
+            className="rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 cursor-pointer"
+          >
+            Add Category
+          </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import { DashboardScreen } from '../../dashboard/DashboardScreen'
-import { INITIAL_STATE, useOnboardingState } from '../../onboarding/useOnboardingState'
-import { appRouteFor, navigate } from '../../router'
+import { DashboardScreen } from './admin/DashboardScreen.jsx'
+import { INITIAL_STATE, useDemoState } from './useDemoState.js'
+
 import { setDemoBrandColor, useDemoBrand } from './demoBrand'
 import { DemoLogo } from './DemoLogo'
 import { DemoPage, DemoWindow } from './DemoShell'
@@ -13,7 +13,7 @@ const DEMO_STATE = { ...INITIAL_STATE, launched: true }
  * shows the 1440-wide dashboard scaled down to fit, so it renders at 1440 here too.
  */
 export function AdminDemo() {
-  const [state, actions] = useOnboardingState({ persist: false, initial: DEMO_STATE })
+  const [state, actions] = useDemoState({ initial: DEMO_STATE })
   const { color, logo } = useDemoBrand()
 
   // Brand color and logo come from the shared demo brand; color edits in the dashboard's settings
@@ -33,7 +33,6 @@ export function AdminDemo() {
       <DashboardScreen
         state={brandState}
         actions={brandActions}
-        onEdit={() => navigate(appRouteFor('admin'))}
         onStartOver={actions.reset}
         className="h-full"
         sidebarLogo={<DemoLogo className="h-[59px] w-[81px]" />}

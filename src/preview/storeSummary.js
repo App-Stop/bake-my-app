@@ -3,7 +3,7 @@ import chocolateCroissant from '../assets/products/chocolate-croissant.webp'
 import lotusCroissant from '../assets/products/lotus-croissant.webp'
 import matchaCroissant from '../assets/products/matcha-croissant.webp'
 import signatureCroissant from '../assets/products/signature-croissant.webp'
-import { formatMoney, parseAmount } from '../onboarding/useOnboardingState'
+import { formatMoney, parseAmount } from '../landing/demo/useDemoState.js'
 
 // Fallbacks mirror the sample content in the Figma preview.
 const DEFAULT_DELIVERY_FEE = 1.2

@@ -4,7 +4,7 @@ import { Honeypot } from '../components/Honeypot'
 import { Link } from '../components/Link'
 import { api } from '../lib/api'
 import { readUtm } from '../lib/utm'
-import { ROUTES, appRouteFor, navigate } from '../router'
+import { ROUTES, DEMO_ROUTES, navigate } from '../router'
 import { asset } from './styles'
 import { ModalsContext } from './useModals'
 
@@ -445,7 +445,7 @@ const DEMOS = [
 function DemoModal({ onClose, closing, onClosed }) {
   const open = (demoKey) => {
     onClose()
-    navigate(appRouteFor(demoKey))
+    navigate(DEMO_ROUTES[demoKey] ?? ROUTES.demoWebsite)
   }
 
   return (

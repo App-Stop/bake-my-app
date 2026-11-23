@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import App from './App.jsx'
 import { SiteLoader } from './components/SiteLoader.jsx'
 import { ComingSoonPage } from './landing/ComingSoonPage.jsx'
 import { ContactPage } from './landing/ContactPage.jsx'
@@ -20,7 +19,6 @@ const PAGES = {
   [ROUTES.checkout]: { Page: CheckoutPage, title: 'Bake My App — Checkout' },
   [ROUTES.checkoutSuccess]: { Page: CheckoutSuccessPage, title: 'Bake My App — Welcome aboard' },
   [ROUTES.home]: { Page: LandingPage, title: 'Bake My App — Your café, beautifully baked' },
-  [ROUTES.app]: { Page: App, title: 'Bake My App — Set up your store' },
   [ROUTES.comingSoon]: { Page: ComingSoonPage, title: 'Bake My App — Coming soon' },
   [ROUTES.demoMobile]: { Page: MobileAppDemo, title: 'Bake My App — Customer app demo' },
   [ROUTES.demoWebsite]: { Page: WebsiteDemo, title: 'Bake My App — Customer website demo' },
@@ -28,10 +26,7 @@ const PAGES = {
   [ROUTES.demoStaff]: { Page: StaffDemo, title: 'Bake My App — Staff portal demo' },
 }
 
-/**
- * "/" is the landing page, "/app" the web app (onboarding + dashboard), "/coming-soon" the CTA stub,
- * "/demo/…" the product demos. Landing modals (promo, demo picker) are available on every page.
- */
+/** Marketing pages and product demos. The owner panel is a separate project. */
 export function Root() {
   const pathname = usePathname()
   const route = PAGES[pathname.replace(/\/+$/, '') || '/'] ?? PAGES[ROUTES.home]

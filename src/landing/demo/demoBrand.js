@@ -1,16 +1,12 @@
 import { useSyncExternalStore } from 'react'
 import { readableTextOn } from '../../lib/color'
 import { presetColor } from '../../lib/brandPalette'
-import { STORAGE_KEY } from '../../onboarding/useOnboardingState'
+const STORAGE_KEY = 'bake-my-app:demo-brand:v1'
 
 // Bake my App purple, for visitors who haven't been through the setup form.
 export const DEMO_BRAND_COLOR = '#903BFF'
 
-/*
- * One brand (color + logo) shared by all four demos. It is read from the setup form's saved answers,
- * so a logo and color picked there show up in every demo, and color picks on the demo rail are
- * written back so switching demos (or returning to setup) keeps the same color.
- */
+/* One independent demo brand (color + logo) shared by all four public demos. */
 const listeners = new Set()
 let snapshot = null
 
@@ -43,7 +39,7 @@ function subscribe(listener) {
   return () => {
     listeners.delete(listener)
     window.removeEventListener('storage', onStorage)
-    // Re-read on the next visit: the setup form may have changed the saved answers meanwhile.
+    // Re-read demo customization on the next visit.
     if (!listeners.size) snapshot = null
   }
 }

@@ -1,7 +1,6 @@
-import { DEFAULT_COLOR, presetColor } from '../lib/brandPalette'
-import { useEffect, useState } from 'react'
+import { DEFAULT_COLOR, presetColor } from '../../lib/brandPalette'
+import { useState } from 'react'
 
-export const STORAGE_KEY = 'bake-my-app:onboarding:v1'
 
 export const DEFAULT_BRAND_COLOR = DEFAULT_COLOR
 
@@ -71,68 +70,9 @@ export const INITIAL_STATE = {
   settings: DEFAULT_SETTINGS,
 }
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return INITIAL_STATE
-    const saved = JSON.parse(raw)
-    return {
-      ...INITIAL_STATE,
-      ...saved,
-      brandColor: presetColor(saved.brandColor),
-      shop: { ...INITIAL_STATE.shop, ...saved.shop },
-      menu: {
-        ...INITIAL_STATE.menu,
-        ...saved.menu,
-        item: { ...INITIAL_STATE.menu.item, ...saved.menu?.item },
-      },
-      delivery: { ...INITIAL_STATE.delivery, ...saved.delivery },
-      settings: {
-        ...DEFAULT_SETTINGS,
-        ...saved.settings,
-        orderSettings: {
-          ...DEFAULT_SETTINGS.orderSettings,
-          ...saved.settings?.orderSettings,
-        },
-        notifications: {
-          ...DEFAULT_SETTINGS.notifications,
-          ...saved.settings?.notifications,
-        },
-        security: {
-          ...DEFAULT_SETTINGS.security,
-          ...saved.settings?.security,
-        },
-        businessHours:
-          saved.settings?.businessHours && saved.settings.businessHours.length === 7
-            ? saved.settings.businessHours
-            : DEFAULT_SETTINGS.businessHours,
-      },
-    }
-  } catch {
-    return INITIAL_STATE
-  }
-}
-
-/**
- * Onboarding answers, persisted to localStorage so a refresh doesn't lose progress. Pass
- * `{ persist: false, initial }` for a throwaway copy (the landing demos), which never touches storage.
- */
-export function useOnboardingState({ persist = true, initial = INITIAL_STATE } = {}) {
-  const [state, setState] = useState(() => {
-    if (!persist) return initial
-    const saved = load()
-    // The setup form starts empty on every visit instead of showing earlier (or sample) answers.
-    return saved.launched ? saved : { ...saved, shop: { ...saved.shop, name: '', email: '', phone: '', logo: null } }
-  })
-
-  useEffect(() => {
-    if (!persist) return
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-    } catch {
-      // Storage full (large images) or unavailable — the flow still works in memory.
-    }
-  }, [state, persist])
+/** In-memory sample store used by the admin demo. */
+export function useDemoState({ initial = INITIAL_STATE } = {}) {
+  const [state, setState] = useState(initial)
 
   const actions = {
     updateShop: (patch) => setState((s) => ({ ...s, shop: { ...s.shop, ...patch } })),
@@ -166,24 +106,6 @@ export function useOnboardingState({ persist = true, initial = INITIAL_STATE } =
   return [state, actions]
 }
 
-/**
- * The contact details the visitor typed into the setup form (for pre-filling checkout), read straight
- * from storage. Empty strings for anything not filled in; the built-in sample values never count.
- */
-export function readSavedContact() {
-  let shop = {}
-  try {
-    shop = JSON.parse(localStorage.getItem(STORAGE_KEY))?.shop ?? {}
-  } catch {
-    // Unavailable or corrupt storage: nothing to pre-fill.
-  }
-  const pick = (field) => {
-    const value = typeof shop[field] === 'string' ? shop[field].trim() : ''
-    return value === INITIAL_STATE.shop[field] ? '' : value
-  }
-  return { email: pick('email'), businessName: pick('name'), phone: pick('phone') }
-}
-
 /** Parses "$1.25", "1.25" or "12%" into a number, or null when empty/invalid. */
 export function parseAmount(value) {
   const n = parseFloat(String(value).replace(/[^0-9.]/g, ''))
@@ -192,4 +114,4 @@ export function parseAmount(value) {
 
 export function formatMoney(n) {
   return `$${n.toFixed(2)}`
-}
+}

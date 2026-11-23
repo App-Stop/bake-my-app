@@ -20,18 +20,18 @@ import {
   Cancel01Icon,
 } from '@hugeicons/core-free-icons'
 
-import userAvatarImg from '../assets/dashboard/user-avatar.webp'
-import croissantImg from '../assets/dashboard/croissant.webp'
-import macchiatoImg from '../assets/dashboard/macchiato.webp'
-import almondCroissantImg from '../assets/products/almond-croissant.webp'
-import chocolateCroissantImg from '../assets/products/chocolate-croissant.webp'
-import { BranchesView } from './branches/BranchesView'
-import { MenuView } from './menu/MenuView'
-import { CustomersView } from './customers/CustomersView'
-import { PromotionsView } from './promotions/PromotionsView'
-import { AnalyticsView } from './analytics/AnalyticsView'
-import { SettingsView } from './settings/SettingsView'
-import { OrdersView } from './orders/OrdersView'
+import userAvatarImg from '../../../assets/dashboard/user-avatar.webp'
+import croissantImg from '../../../assets/dashboard/croissant.webp'
+import macchiatoImg from '../../../assets/dashboard/macchiato.webp'
+import almondCroissantImg from '../../../assets/products/almond-croissant.webp'
+import chocolateCroissantImg from '../../../assets/products/chocolate-croissant.webp'
+import { BranchesView } from './branches/BranchesView.jsx'
+import { MenuView } from './menu/MenuView.jsx'
+import { CustomersView } from './customers/CustomersView.jsx'
+import { PromotionsView } from './promotions/PromotionsView.jsx'
+import { AnalyticsView } from './analytics/AnalyticsView.jsx'
+import { SettingsView } from './settings/SettingsView.jsx'
+import { OrdersView } from './orders/OrdersView.jsx'
 
 const TIME_RANGES = ['Today', '7d', '30d', '6mo', '1y']
 
@@ -264,7 +264,8 @@ export function DashboardScreen({ state, actions, onEdit, onStartOver, className
                 type="button"
                 onClick={() => {
                   setShowUserMenu(false)
-                  onEdit?.()
+                  if (onEdit) onEdit()
+                  else setActiveNav('settings')
                 }}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-[#f5f5f5] cursor-pointer"
               >

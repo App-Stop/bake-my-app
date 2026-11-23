@@ -1,6 +1,6 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import { CroissantIcon } from '@hugeicons/core-free-icons'
-import { CATEGORY_ICONS } from './categoryIcons'
+import { CATEGORY_ICONS } from './categoryIcons.js'
 
 export function CategoryIcon({ icon, size = 20, color = 'currentColor', className = '' }) {
   const match = CATEGORY_ICONS.find((ci) => ci.id === icon)

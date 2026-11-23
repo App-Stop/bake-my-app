@@ -9,20 +9,20 @@ import {
   Search01Icon,
 } from '@hugeicons/core-free-icons'
 
-import flakyButterCroissantImg from '../../assets/menu/flaky-butter-croissant.webp'
-import almondFrangipaneCroissantImg from '../../assets/menu/almond-frangipane-croissant.webp'
-import doubleChocolateCroissantImg from '../../assets/menu/double-chocolate-croissant.webp'
-import matchaCreamCruffinImg from '../../assets/menu/matcha-cream-cruffin.webp'
-import savoryHamCheeseCroissantImg from '../../assets/menu/savory-ham-cheese-croissant.webp'
-import donutImg from '../../assets/menu/donut.webp'
-import macchiatoImg from '../../assets/dashboard/macchiato.webp'
+import flakyButterCroissantImg from '../../../../assets/menu/flaky-butter-croissant.webp'
+import almondFrangipaneCroissantImg from '../../../../assets/menu/almond-frangipane-croissant.webp'
+import doubleChocolateCroissantImg from '../../../../assets/menu/double-chocolate-croissant.webp'
+import matchaCreamCruffinImg from '../../../../assets/menu/matcha-cream-cruffin.webp'
+import savoryHamCheeseCroissantImg from '../../../../assets/menu/savory-ham-cheese-croissant.webp'
+import donutImg from '../../../../assets/menu/donut.webp'
+import macchiatoImg from '../../../../assets/dashboard/macchiato.webp'
 
-import { CategoryIcon } from './CategoryIcon'
-import { AddCategoryModal } from './AddCategoryModal'
-import { EditCategoryModal } from './EditCategoryModal'
-import { AddItemModal } from './AddItemModal'
-import { EditItemModal } from './EditItemModal'
-import { ToggleSwitch } from '../branches/ToggleSwitch'
+import { CategoryIcon } from './CategoryIcon.jsx'
+import { AddCategoryModal } from './AddCategoryModal.jsx'
+import { EditCategoryModal } from './EditCategoryModal.jsx'
+import { AddItemModal } from './AddItemModal.jsx'
+import { EditItemModal } from './EditItemModal.jsx'
+import { ToggleSwitch } from '../branches/ToggleSwitch.jsx'
 
 const INITIAL_CATEGORIES = [
   {
@@ -152,7 +152,7 @@ const INITIAL_CATEGORIES = [
   },
 ]
 
-const STORAGE_KEY = 'bake-my-app:menu-catalog:v1'
+const STORAGE_KEY = 'bake-my-app:demo:menu-catalog:v1'
 
 function loadCategories(onboardingState) {
   try {

@@ -8,7 +8,7 @@ import { BakeryDecorations, CustomizationRail, MobileCustomizationBar } from '..
 import { brandTheme, setDemoBrandColor, useDemoBrand } from './demoBrand'
 import { DEVICES, usePreviewDevice } from './demoDevice'
 import { Icon, StatusBar } from '../../preview/phone'
-import { DeviceToggle } from '../../preview/PreviewPanel'
+import { DeviceToggle } from '../../preview/DeviceToggle'
 import statusLevels from '../../assets/status-levels.svg'
 import './demo-preview-mobile.css'
 

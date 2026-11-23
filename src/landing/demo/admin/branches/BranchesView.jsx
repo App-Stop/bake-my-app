@@ -5,9 +5,9 @@ import {
   Search01Icon,
   TriangleAlertIcon,
 } from '@hugeicons/core-free-icons'
-import { AddBranchModal } from './AddBranchModal'
-import { EditBranchModal } from './EditBranchModal'
-import { DeleteBranchModal } from './DeleteBranchModal'
+import { AddBranchModal } from './AddBranchModal.jsx'
+import { EditBranchModal } from './EditBranchModal.jsx'
+import { DeleteBranchModal } from './DeleteBranchModal.jsx'
 
 const INITIAL_BRANCHES = [
   {
@@ -76,7 +76,7 @@ const INITIAL_BRANCHES = [
   },
 ]
 
-const STORAGE_KEY = 'bake-my-app:branches:v1'
+const STORAGE_KEY = 'bake-my-app:demo:branches:v1'
 
 function loadBranches() {
   try {

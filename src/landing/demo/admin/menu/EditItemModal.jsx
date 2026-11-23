@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Delete02Icon, Image01Icon } from '@hugeicons/core-free-icons'
-import { ToggleSwitch } from '../branches/ToggleSwitch'
+import { ToggleSwitch } from '../branches/ToggleSwitch.jsx'
 
 export function EditItemModal({ item, isOpen, onClose, onSave, onDelete }) {
   const [name, setName] = useState(item?.name || '')

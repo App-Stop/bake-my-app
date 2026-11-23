@@ -7,8 +7,8 @@ import {
   ViewIcon,
   ViewOffIcon,
 } from '@hugeicons/core-free-icons'
-import { SettingsToggle } from './SettingsToggle'
-import { EditBrandColorModal } from './EditBrandColorModal'
+import { SettingsToggle } from './SettingsToggle.jsx'
+import { EditBrandColorModal } from './EditBrandColorModal.jsx'
 
 const SECTIONS = [
   { id: 'store-info', label: 'Store Information' },
