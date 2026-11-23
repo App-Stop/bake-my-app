@@ -25,7 +25,7 @@
 
 /* Home */
 .ws-m-hero { position: relative; height: 380px; overflow: hidden; }
-.ws-m-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.ws-m-hero > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .ws-m-hero > div { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 20px; padding: 40px 16px; background: linear-gradient(180deg, transparent 7%, #0001 30%, #000b 83%); color: white; }
 .ws-mobile .ws-m-hero h1 { font-size: clamp(28px, 8.95cqw, 36px); font-weight: 500; letter-spacing: -2px; line-height: normal; text-shadow: 0 0 100px black; }
 .ws-hero-actions { display: flex; align-items: center; gap: 20px; font-size: 16px; font-weight: 600; }

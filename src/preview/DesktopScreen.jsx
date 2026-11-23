@@ -125,7 +125,16 @@ function Navbar({ logo, actions }) {
 function Hero({ actions }) {
   return (
     <div className="relative -mt-[1.112px] h-[267.166px] overflow-clip">
-      <img src={hero} alt="" className="absolute inset-0 size-full object-cover" />
+      <video
+        src="https://cozy-gamma-virid.vercel.app/assets/hero-BsReXMAR.mp4"
+        poster={hero}
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+        className="absolute inset-0 size-full object-cover"
+      />
       <div className="absolute inset-0" style={{ backgroundImage: HERO_SHADE }} />
       <div className="absolute top-1/2 left-[66.79px] flex w-[221.414px] -translate-y-1/2 flex-col items-start gap-[6.679px]">
         <p className={`whitespace-nowrap ${HEADLINE}`}>

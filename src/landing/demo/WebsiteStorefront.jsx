@@ -220,7 +220,7 @@ function MobileHome({
   const [category, setCategory] = useState('Croissants');
   const products = category === 'Croissants' ? CROISSANTS : WEBSITE_PRODUCTS.filter(item => item.category === category);
   return <>
-    <section className="ws-m-hero"><BrandImage src={hero} alt="" /><div><h1>Oven baked freshness,<br />at your home</h1><div className="ws-hero-actions"><Button onClick={() => actions.browse()}>Browse Menu</Button><button onClick={() => document.getElementById('ws-home-menu')?.scrollIntoView({ block: 'start' })}>or scroll down</button></div></div></section>
+    <section className="ws-m-hero"><video src="https://cozy-gamma-virid.vercel.app/assets/hero-BsReXMAR.mp4" poster={hero} autoPlay muted loop playsInline aria-hidden="true" /><div><h1>Oven baked freshness,<br />at your home</h1><div className="ws-hero-actions"><Button onClick={() => actions.browse()}>Browse Menu</Button><button onClick={() => document.getElementById('ws-home-menu')?.scrollIntoView({ block: 'start' })}>or scroll down</button></div></div></section>
     <div id="ws-home-menu" className="ws-categories ws-m-tabs" role="group" aria-label="Categories">{Object.keys(HOME_SECTIONS).map((name, index) => <button aria-pressed={category === name} key={name} onClick={() => setCategory(name)}><span className="ws-category-icon" style={{ maskImage: `url(${A}mobile/${CATEGORY_ICONS[index]})` }} />{name}<sup>{CATEGORY_COUNTS[index]}</sup></button>)}</div>
     <ProductSection key={category} title={HOME_SECTIONS[category]} products={products} {...actions} />
     <AppPromo wide mobile={actions.mobile} tablet={actions.tablet} />

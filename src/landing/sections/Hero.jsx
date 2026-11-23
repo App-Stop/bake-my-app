@@ -8,18 +8,20 @@ export function Hero() {
       <header data-nav-theme="dark" className="relative overflow-hidden bg-primary">
         <SiteNav />
         <div className="relative mx-auto max-w-[calc(1920*var(--u))] pt-[max(92*var(--m),136*var(--u))]">
+          {/*
+            The device collage is exported on the 1920 frame (1920×464). From md up it is shown at that
+            width in a 1920×440 strip, tall enough for the lowest hand (y=439), so no device is clipped.
+            On desktop the container is always 1920 * --u wide, so the same % sizing follows --u and the
+            collage shrinks and stays centred when the page is height-limited. Mobile frames just the phone.
+          */}
           <div className="relative overflow-hidden aspect-[800/544] md:aspect-[1920/440]">
-            <video
-              src="https://cozy-gamma-virid.vercel.app/assets/hero-BsReXMAR.mp4"
-              poster={asset('hero-devices.png')}
-              aria-label="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
+            <img
+              src={asset('hero-devices.png')}
+              alt="Bake my App on a kitchen tablet, a customer's phone and the business dashboard"
               width={1920}
               height={464}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
+              loading="eager"
+              fetchPriority="high"
               className="absolute top-[-0.500%] left-[-72%] h-auto w-[254.125%] max-w-none select-none md:top-0 md:left-0 md:w-full"
             />
           </div>
